@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - node
+  - 14
+  - 13
+  - 12
+
+install:
+  - "npm ci"
+script:
+  - "npm run-script clean"
+  - "npm run-script prepare"
+  - "npm run-script dev:readonly"
+  - "npm run-script test:report"
