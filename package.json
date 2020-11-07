@@ -1,5 +1,5 @@
 {
-  "name": "@spautz/devtools",
+  "name": "@spautz-devtools/workspace",
   "private": true,
   "version": "0.0.1",
   "description": "Some personal dev scripts, configs, and tooling",
@@ -15,7 +15,7 @@
     "url": "http://stevenpautz.com/"
   },
   "engines": {
-    "node": ">=10 <15",
+    "node": ">=10",
     "pnpm": "5.*"
   },
   "scripts": {

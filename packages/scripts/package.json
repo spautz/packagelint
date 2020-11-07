@@ -1,5 +1,5 @@
 {
-  "name": "@spautz/scripts",
+  "name": "@spautz-devtools/scripts",
   "binName": "spautz-scripts",
   "version": "0.0.1",
   "description": "Some personal dev scripts",
