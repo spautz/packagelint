@@ -33,8 +33,6 @@
     "preinstall": "npx only-allow pnpm",
     "prepublishOnly": "pnpm run dev:readonly",
     "____ INTEGRATION ___________________________________________________": "",
-    "clean": "true",
-    "test": "true",
     "dev": "pnpm run format && pnpm run lint",
     "dev:readonly": "pnpm run format:verify && pnpm run lint",
     "all": "pnpm run dev",
