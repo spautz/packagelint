@@ -4,9 +4,16 @@ node_js:
   - 14
   - 12
   - 10
+cache:
+  npm: false
+  directories:
+    - "~/.pnpm-store"
 
+before_install:
+  - curl -L https://unpkg.com/@pnpm/self-installer | node
+  - pnpm config set store-dir ~/.pnpm-store
 install:
-  - "npm ci"
+  - pnpm install --frozen-lockfile
 script:
-  - "npm run-script dev:readonly"
-  - "npm run-script test"
+  - pnpm recursive run dev:readonly
+  - pnpm recursive run test
