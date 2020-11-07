@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "packages": ["apps/*", "packages/*"],
+  "npmClient": "npm",
+
+  "command": {
+    "publish": {
+      "allowBranch": ["master", "next"]
+    },
+    "version": {
+      "allowBranch": ["master", "next"]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "name": "@spautz/scripts",
+  "binName": "spautz-scripts",
+  "version": "0.0.1",
+  "description": "Some personal dev scripts",
+  "keywords": [],
+  "license": "MIT",
+  "homepage": "https://github.com/spautz/devtools/packages/scripts#readme",
+  "bugs": "https://github.com/spautz/devtools/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spautz/devtools.git",
+    "directory": "packages/scripts"
+  },
+  "author": {
+    "name": "Steven Pautz",
+    "url": "http://stevenpautz.com/"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "LICENSE",
+    "*.md"
+  ],
+  "bin": {
+    "spautz-scripts": "./bin/spautz-scripts.js"
+  },
+  "scripts": {
+    "____ LIFECYCLE HOOKS _______________________________________________": "",
+    "prepublishOnly": "npm run-script dev:readonly",
+    "____ INTEGRATION ___________________________________________________": "",
+    "clean": "true",
+    "test": "true",
+    "dev": "npm run-script format && npm run-script lint",
+    "dev:readonly": "npm run-script format:verify && npm run-script lint",
+    "all": "npm run-script dev",
+    "all:readonly": "npm run-script dev:readonly",
+    "____ INDIVIDUAL COMMANDS ___________________________________________": "",
+    "format": "prettier --write .",
+    "format:verify": "prettier --list-different .",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "sade": "^1.7.4"
+  },
+  "devDependencies": {}
+}

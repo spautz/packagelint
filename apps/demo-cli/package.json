@@ -1,0 +1,35 @@
+{
+  "name": "@spautz/demo-cli",
+  "private": true,
+  "version": "0.0.1",
+  "description": "A demo of simple spautz-scripts commands",
+  "keywords": [],
+  "license": "MIT",
+  "homepage": "https://github.com/spautz/devtools/apps/demo-cli#readme",
+  "bugs": "https://github.com/spautz/devtools/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spautz/devtools.git",
+    "directory": "apps/demo-cli"
+  },
+  "author": {
+    "name": "Steven Pautz",
+    "url": "http://stevenpautz.com/"
+  },
+  "scripts": {
+    "____ INTEGRATION ___________________________________________________": "",
+    "clean": "true",
+    "test": "npm run-script version && npm run-script help && npm run-script hello-world",
+    "dev": "true",
+    "dev:readonly": "true",
+    "all": "npm run-script test",
+    "all:readonly": "npm run-script test",
+    "____ INDIVIDUAL COMMANDS ___________________________________________": "",
+    "version": "spautz-scripts --version",
+    "help": "spautz-scripts --help",
+    "hello-world": "spautz-scripts hello-world"
+  },
+  "dependencies": {
+    "@spautz/scripts": "^0.0.1"
+  }
+}
