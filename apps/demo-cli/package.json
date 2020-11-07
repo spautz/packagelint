@@ -17,13 +17,15 @@
     "url": "http://stevenpautz.com/"
   },
   "scripts": {
+    "____ LIFECYCLE HOOKS _______________________________________________": "",
+    "preinstall": "npx only-allow pnpm",
     "____ INTEGRATION ___________________________________________________": "",
     "clean": "true",
-    "test": "npm run-script version && npm run-script help && npm run-script hello-world",
+    "test": "pnpm run version && pnpm run help && pnpm run hello-world",
     "dev": "true",
     "dev:readonly": "true",
-    "all": "npm run-script test",
-    "all:readonly": "npm run-script test",
+    "all": "pnpm run test",
+    "all:readonly": "pnpm run test",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "version": "spautz-scripts --version",
     "help": "spautz-scripts --help",
