@@ -21,7 +21,8 @@
   },
   "files": [
     "bin/",
-    "lib/",
+    "dist/",
+    "src/",
     "LICENSE",
     "*.md"
   ],
@@ -30,14 +31,17 @@
   },
   "scripts": {
     "____ LIFECYCLE HOOKS _______________________________________________": "",
-    "preinstall": "npx only-allow pnpm",
+    "prebuild": "rimraf ./dist",
+    "prepare": "pnpm run build",
     "prepublishOnly": "pnpm run dev:readonly",
     "____ INTEGRATION ___________________________________________________": "",
+    "clean": "rimraf ./dist",
     "dev": "pnpm run format && pnpm run lint",
     "dev:readonly": "pnpm run format:verify && pnpm run lint",
     "all": "pnpm run dev",
     "all:readonly": "pnpm run dev:readonly",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
+    "build": "tsc -p tsconfig.json",
     "format": "prettier --write .",
     "format:verify": "prettier --list-different .",
     "lint": "eslint . --max-warnings 0"
@@ -45,5 +49,7 @@
   "dependencies": {
     "sade": "^1.7.4"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@tsconfig/node10": "1.0.7"
+  }
 }

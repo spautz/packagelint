@@ -29,6 +29,6 @@
     "hello-world": "spautz-scripts hello-world"
   },
   "dependencies": {
-    "@spautz/scripts": "^0.0.1"
+    "@spautz-devtools/scripts": "^0.0.1"
   }
 }
