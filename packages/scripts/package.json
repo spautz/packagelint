@@ -47,7 +47,8 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
-    "sade": "^1.7.4"
+    "sade": "^1.7.4",
+    "tsdx": "^0.14.1"
   },
   "devDependencies": {
     "@tsconfig/node10": "1.0.7"

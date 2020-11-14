@@ -10,6 +10,7 @@
 /storybook-static
 /apps/*/coverage-local
 /apps/*/build
+/apps/*/dist
 /packages/*/coverage-local
 /packages/*/dist
 

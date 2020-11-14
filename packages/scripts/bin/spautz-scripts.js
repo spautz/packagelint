@@ -3,12 +3,13 @@
 const sade = require('sade');
 
 const scriptsPackageJson = require('../package.json');
-const { helloWorldCommand } = require('../dist/commands');
+const { buildCommand, helloWorldCommand } = require('../dist/commands');
 
 const prog = sade(scriptsPackageJson.binName);
 
 prog.version(scriptsPackageJson.version);
 
-prog.command('hello-world').describe('Says "Hello World!"').action(helloWorldCommand);
+prog.command('build').describe('Run TSDX build').action(buildCommand);
+prog.command('hello-world').describe('Say "Hello World!"').action(helloWorldCommand);
 
 prog.parse(process.argv);
