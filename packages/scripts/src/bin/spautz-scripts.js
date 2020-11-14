@@ -2,8 +2,8 @@
 
 const sade = require('sade');
 
-const scriptsPackageJson = require('../package.json');
-const helloWorldCommand = require('./commands/hello-world').default;
+const scriptsPackageJson = require('../../package.json');
+const helloWorldCommand = require('../lib/commands/hello-world').default;
 
 const prog = sade(scriptsPackageJson.binName);
 
