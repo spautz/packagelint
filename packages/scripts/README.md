@@ -4,6 +4,10 @@ Some personal dev scripts
 
 ## Commands
 
+### `spautz-scripts build`
+
+Launches `tsdx build` (with no arguments)
+
 ### `spautz-scripts hello-world`
 
 Says "Hello World!"
