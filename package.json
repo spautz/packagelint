@@ -16,22 +16,26 @@
   },
   "engines": {
     "node": ">=10",
-    "pnpm": "5.*"
+    "pnpm": "^5"
   },
   "scripts": {
     "____ LIFECYCLE HOOKS _______________________________________________": "",
     "preinstall": "npx only-allow pnpm",
     "____ INTEGRATION ___________________________________________________": "",
+    "clean": "pnpm run -r clean",
+    "test": "pnpm run -r test",
     "dev": "pnpm run format && pnpm run lint",
     "dev:readonly": "pnpm run format:verify && pnpm run lint",
-    "all": "pnpm run dev",
-    "all:readonly": "pnpm run dev:readonly",
+    "all": "pnpm run clean && pnpm run dev && pnpm run -r build && pnpm run test",
+    "all:readonly": "pnpm run dev:readonly && pnpm run test",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "format": "prettier --write .",
     "format:verify": "prettier --list-different .",
     "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
+    "@tsconfig/recommended": "1.0.1",
+    "@types/node": "14.14.7",
     "@typescript-eslint/eslint-plugin": "4.6.1",
     "@typescript-eslint/parser": "4.6.1",
     "coveralls": "3.1.0",

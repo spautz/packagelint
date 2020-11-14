@@ -1,0 +1,5 @@
+dependencies:
+  '@spautz-devtools/scripts': 'link:../../packages/scripts'
+lockfileVersion: 5.2
+specifiers:
+  '@spautz-devtools/scripts': ^0.0.1
