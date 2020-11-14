@@ -1,16 +1,16 @@
 {
-  "name": "@spautz-devtools/demo-cli",
+  "name": "@spautz-devtools/demo-library",
   "private": true,
   "version": "0.0.1",
-  "description": "A demo of simple spautz-scripts CLI commands",
+  "description": "A demo of simple spautz-scripts library commands",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/devtools/apps/demo-cli#readme",
+  "homepage": "https://github.com/spautz/devtools/apps/demo-library#readme",
   "bugs": "https://github.com/spautz/devtools/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spautz/devtools.git",
-    "directory": "apps/demo-cli"
+    "directory": "apps/demo-library"
   },
   "author": {
     "name": "Steven Pautz",
@@ -20,13 +20,11 @@
     "____ LIFECYCLE HOOKS _______________________________________________": "",
     "preinstall": "npx only-allow pnpm",
     "____ INTEGRATION ___________________________________________________": "",
-    "test": "pnpm run version && pnpm run help && pnpm run hello-world",
-    "all": "pnpm run test",
-    "all:readonly": "pnpm run test",
+    "test": "pnpm run build",
+    "all": "pnpm run build",
+    "all:readonly": "pnpm run build",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
-    "version": "spautz-scripts --version",
-    "help": "spautz-scripts --help",
-    "hello-world": "spautz-scripts hello-world"
+    "build": "spautz-scripts build"
   },
   "dependencies": {
     "@spautz-devtools/scripts": "^0.0.1"
