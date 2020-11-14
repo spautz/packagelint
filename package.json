@@ -28,6 +28,7 @@
     "dev:readonly": "pnpm run format:verify && pnpm run lint",
     "all": "pnpm run clean && pnpm run dev && pnpm run -r build && pnpm run test",
     "all:readonly": "pnpm run dev:readonly && pnpm run test",
+    "ci": "pnpm run dev:readonly && pnpm run -r build && pnpm run test",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "format": "prettier --write .",
     "format:verify": "prettier --list-different .",
