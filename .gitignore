@@ -1,16 +1,15 @@
 # dependencies
 /.pnp
+/examples/*/node_modules
 /node_modules
-/apps/*/node_modules
 /packages/*/node_modules
 .pnp.js
 
 # outputs
 /coverage
-/storybook-static
-/apps/*/coverage-local
-/apps/*/build
-/apps/*/dist
+/examples/*/coverage-local
+/examples/*/build
+/examples/*/dist
 /packages/*/coverage-local
 /packages/*/dist
 

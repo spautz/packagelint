@@ -1,0 +1,51 @@
+{
+  "name": "@spautz-devtools/demo-library",
+  "private": true,
+  "version": "0.0.1",
+  "description": "A demo of simple spautz-scripts library commands",
+  "keywords": [],
+  "license": "MIT",
+  "homepage": "https://github.com/spautz/devtools/apps/demo-library#readme",
+  "bugs": "https://github.com/spautz/devtools/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spautz/devtools.git",
+    "directory": "apps/demo-library"
+  },
+  "author": {
+    "name": "Steven Pautz",
+    "url": "http://stevenpautz.com/"
+  },
+  "scripts": {
+    "____ LIFECYCLE HOOKS _______________________________________________": "",
+    "prepare": "yon run build",
+    "prebuild": "yon run build:clean",
+    "prerelease": "yon run clean",
+    "prepublishOnly": "yarn run dev:readonly && yarn run build",
+    "pretest": "yon run test:clean",
+    "____ INTEGRATION ___________________________________________________": "",
+    "clean": "yon run build:clean && yon run test:clean && rimraf ./node_modules/.cache",
+    "dev": "yarn run format && yarn run types && yarn run lint",
+    "dev:readonly": "yarn run format:verify && yarn run types && yarn run lint",
+    "all": "yarn run clean && yarn run dev && yarn run test:coverage && yarn run build",
+    "all:readonly": "yarn run dev:readonly && yarn run test:coverage",
+    "____ INDIVIDUAL COMMANDS ___________________________________________": "",
+    "build": "tsdx build",
+    "build:clean": "rimraf ./dist",
+    "build:watch": "tsdx watch",
+    "format": "prettier --write .",
+    "format:verify": "prettier --list-different .",
+    "lint": "tsdx lint . --max-warnings 0",
+    "release:changelog": "standard-version --skip.commit --skip.tag --release-as ",
+    "test": "yon run test:coverage",
+    "test:clean": "rimraf ./coverage-local",
+    "test:coverage": "tsdx test --coverage --passWithNoTests",
+    "test:nowatch": "tsdx test",
+    "test:watch": "tsdx test --watch",
+    "test:watchcoverage": "tsdx test --watchAll --coverage",
+    "types": "tsc --p tsconfig.json"
+  },
+  "dependencies": {
+    "@packagelint/core": "^0.0.1"
+  }
+}
