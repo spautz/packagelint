@@ -1,15 +1,15 @@
 {
-  "name": "@packagelint/core",
+  "name": "@packagelint/accumulate-rules",
   "version": "0.0.1",
-  "description": "@TODO",
+  "description": "Configure and override rule configs for a linter, in an extension-friendly way",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/devtools/packages/core#readme",
+  "homepage": "https://github.com/spautz/devtools/packages/accumulate-rules#readme",
   "bugs": "https://github.com/spautz/devtools/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/spautz/devtools.git",
-    "directory": "packages/core"
+    "directory": "packages/accumulate-rules"
   },
   "author": {
     "name": "Steven Pautz",
@@ -26,8 +26,8 @@
   ],
   "source": "src/index.ts",
   "main": "dist/index.js",
-  "module": "dist/packagelint-core.esm.js",
-  "jsnext:main": "dist/packagelint-core.esm.js",
+  "module": "dist/packagelint-accumulate-rules.esm.js",
+  "jsnext:main": "dist/packagelint-accumulate-rules.esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
