@@ -4,11 +4,11 @@
   "description": "Configure and override rule configs for a linter, in an extension-friendly way",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/devtools/packages/accumulate-rules#readme",
-  "bugs": "https://github.com/spautz/devtools/issues",
+  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/accumulate-rules#readme",
+  "bugs": "https://github.com/spautz/packagelint/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/spautz/devtools.git",
+    "url": "https://github.com/spautz/packagelint.git",
     "directory": "packages/accumulate-rules"
   },
   "author": {

@@ -4,11 +4,11 @@
   "description": "@TODO",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/devtools/packages/core#readme",
-  "bugs": "https://github.com/spautz/devtools/issues",
+  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/core#readme",
+  "bugs": "https://github.com/spautz/packagelint/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/spautz/devtools.git",
+    "url": "https://github.com/spautz/packagelint.git",
     "directory": "packages/core"
   },
   "author": {
