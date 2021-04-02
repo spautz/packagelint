@@ -1,14 +1,14 @@
 {
-  "name": "@spautz-devtools/workspace",
+  "name": "@packagelint/workspace",
   "private": true,
   "version": "0.0.1",
   "description": "Some personal dev scripts, configs, and tooling",
   "license": "MIT",
-  "homepage": "https://github.com/spautz/react-hibernate#readme",
-  "bugs": "https://github.com/spautz/react-hibernate/issues",
+  "homepage": "https://github.com/spautz/packagelint#readme",
+  "bugs": "https://github.com/spautz/packagelint/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spautz/devtools.git"
+    "url": "git+https://github.com/spautz/packagelint.git"
   },
   "author": {
     "name": "Steven Pautz",

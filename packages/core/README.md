@@ -8,4 +8,4 @@ A set of default rules for the PackageLint engine.
 
 (Docs pending)
 
-For more information or related packages, see the [PackageLint workspace](https://github.com/spautz/devtools).
+For more information or related packages, see the [PackageLint workspace](https://github.com/spautz/packagelint).

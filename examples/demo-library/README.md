@@ -1,3 +1,3 @@
-# @spautz-devtools/demo-library
+# @packagelint/demo-library
 
-A minimal demo that builds a library using [`@spautz-devtools/scripts`](https://github.com/spautz/devtools/tree/main/packages/scripts)
+A demo configuration of [packagelint](https://github.com/spautz/packagelint/packages/core) for a library.

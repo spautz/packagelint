@@ -1,16 +1,16 @@
 {
-  "name": "@spautz-devtools/demo-library",
+  "name": "@packagelint/demo-library",
   "private": true,
   "version": "0.0.1",
-  "description": "A demo of simple spautz-scripts library commands",
+  "description": "A demo configuration of packagelint for a library",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/devtools/apps/demo-library#readme",
-  "bugs": "https://github.com/spautz/devtools/issues",
+  "homepage": "https://github.com/spautz/packagelint/tree/main/examples/demo-library#readme",
+  "bugs": "https://github.com/spautz/packagelint/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spautz/devtools.git",
-    "directory": "apps/demo-library"
+    "url": "git+https://github.com/spautz/packagelint.git",
+    "directory": "examples/demo-library"
   },
   "author": {
     "name": "Steven Pautz",
