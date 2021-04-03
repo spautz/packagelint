@@ -87,7 +87,6 @@
     }
   },
   "workspaces": [
-    "examples/*",
     "packages/*"
   ]
 }
