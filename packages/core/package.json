@@ -19,16 +19,18 @@
     "access": "public"
   },
   "files": [
-    "dist/",
-    "src/",
+    "bin/",
+    "lib-dist/",
+    "lib-src/",
     "LICENSE",
     "*.md"
   ],
-  "source": "src/index.ts",
-  "main": "dist/index.js",
-  "module": "dist/packagelint-core.esm.js",
-  "jsnext:main": "dist/packagelint-core.esm.js",
-  "types": "dist/index.d.ts",
+  "bin": {
+    "packagelint": "bin/packagelint.js"
+  },
+  "source": "lib-src/api.ts",
+  "main": "lib-dist/api.js",
+  "types": "lib-dist/types.d.ts",
   "sideEffects": false,
   "scripts": {
     "____ LIFECYCLE HOOKS _______________________________________________": "",
