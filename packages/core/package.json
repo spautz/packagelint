@@ -61,6 +61,10 @@
     "test:watchcoverage": "tsdx test --watchAll --coverage",
     "types": "tsc --p tsconfig.json"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "semver": "7.3.5"
+  },
+  "devDependencies": {
+    "@types/semver": "7.3.4"
+  }
 }
