@@ -1,15 +1,15 @@
 {
-  "name": "@packagelint/accumulate-rules",
+  "name": "@packagelint/preset-for-library",
   "version": "0.0.1",
-  "description": "Configure and override rule configs for a linter, in an extension-friendly way",
+  "description": "Default set of rules for Packagelint",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/accumulate-rules#readme",
+  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/preset-for-library#readme",
   "bugs": "https://github.com/spautz/packagelint/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/spautz/packagelint.git",
-    "directory": "packages/accumulate-rules"
+    "directory": "packages/preset-for-library"
   },
   "author": {
     "name": "Steven Pautz",
@@ -57,8 +57,10 @@
     "test:nowatch": "tsdx test",
     "test:watch": "tsdx test --watch",
     "test:watchcoverage": "tsdx test --watchAll --coverage",
-    "types": "tsc --p tsconfig.json"
+    "types": "tsc --p tsconfig.json --noEmit"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@packagelint/core": "^0.0.1"
+  },
   "devDependencies": {}
 }

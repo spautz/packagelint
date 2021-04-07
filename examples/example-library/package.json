@@ -22,7 +22,7 @@
     "packagelint": "packagelint"
   },
   "devDependencies": {
-    "@packagelint/core": "^0.0.1",
-    "@packagelint/recommended-library-rules": "^0.0.1"
+    "@packagelint/packagelint": "^0.0.1",
+    "@packagelint/preset-for-library": "^0.0.1"
   }
 }

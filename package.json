@@ -53,7 +53,7 @@
     "test:nowatch": "tsdx test",
     "test:watch": "tsdx test --watch",
     "test:watchcoverage": "tsdx test --watchAll --coverage",
-    "types": "tsc --p tsconfig.json"
+    "types": "tsc --p tsconfig.json --noEmit"
   },
   "dependencies": {},
   "devDependencies": {
@@ -87,6 +87,7 @@
     }
   },
   "workspaces": [
+    "examples/*",
     "packages/*"
   ]
 }

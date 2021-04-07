@@ -12,7 +12,7 @@ modult.exports = {
     {
       name: '@packagelint/core/nvmrc',
       options: {
-        minVersion: '14',
+        version: '^14',
       },
     },
 
