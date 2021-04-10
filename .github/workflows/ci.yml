@@ -36,6 +36,9 @@ jobs:
       - name: Clear local caches
         run: yarn clean
 
+      - name: Bootstrap workspace
+        run: yarn bootstrap
+
       - name: Run CI checks
         run: yarn all:readonly
 
