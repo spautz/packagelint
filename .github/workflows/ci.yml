@@ -31,7 +31,7 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        run: yarn install --prefer-offline
+        run: yarn install --ignore-scripts --prefer-offline
 
       - name: Clear local caches
         run: yarn clean
@@ -48,7 +48,7 @@ jobs:
       - name: Check all examples
         run: yarn examples:packagelint
 
-      - name: Report test coverage to coveralls.io
-        uses: coverallsapp/github-action@v1.1.2
-        with:
-          github-token: ${{ github.token }}
+#      - name: Report test coverage to coveralls.io
+#        uses: coverallsapp/github-action@v1.1.2
+#        with:
+#          github-token: ${{ github.token }}
