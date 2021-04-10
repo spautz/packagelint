@@ -23,7 +23,7 @@
     "prepare": "husky install && yon run packages:prepare",
     "pretest": "yon run test:clean",
     "____ INTEGRATION ___________________________________________________": "",
-    "clean": "yon run test:clean && rimraf ./node_modules/.cache",
+    "clean": "yon run test:clean && rimraf ./node_modules/.cache && yon run packages:clean && yon run test:clean",
     "dev": "yon run format && yon run types && yon run lint",
     "dev:readonly": "yon run format:verify && yon run types && yon run lint",
     "all": "yon run prepare && yon run dev && yon run test:coverage",

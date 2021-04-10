@@ -23,6 +23,6 @@
   },
   "devDependencies": {
     "@packagelint/packagelint": "^0.0.1",
-    "@packagelint/preset-for-library": "^0.0.1"
+    "@packagelint/presets": "^0.0.1"
   }
 }

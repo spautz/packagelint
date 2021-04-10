@@ -1,14 +1,14 @@
 import { readFile } from 'fs/promises';
 import semver from 'semver';
 
-import { PackagelintRuleContext, PackagelintRuleInfo } from '../ruleTypes';
+import { PackagelintRuleDefinition, PackagelintValidationContext } from '../types';
 
 export type NvmrcRuleOptions = {
   fileName: string;
   version: string;
 };
 
-const nvmrcRuleInfo: PackagelintRuleInfo<NvmrcRuleOptions> = {
+const nvmrcRuleDefinition: PackagelintRuleDefinition<NvmrcRuleOptions> = {
   name: '@packagelint/core/nvmrc',
   docs: {
     description: 'require a .nvmrc file',
@@ -17,10 +17,6 @@ const nvmrcRuleInfo: PackagelintRuleInfo<NvmrcRuleOptions> = {
   defaultOptions: {
     fileName: '.nvmrc',
     version: '>=10',
-  },
-  optionsSchema: {
-    fileName: 'string',
-    version: 'semver',
   },
   messages: {
     fileNotFound: '{{fileName}} not found',
@@ -32,7 +28,7 @@ const nvmrcRuleInfo: PackagelintRuleInfo<NvmrcRuleOptions> = {
 
 async function nvmrcRuleValidation(
   options: NvmrcRuleOptions,
-  packageContext: PackagelintRuleContext,
+  packageContext: PackagelintValidationContext,
 ) {
   const { fileName, version } = options;
   const { findFileUp, createErrorToReturn, setErrorData } = packageContext;
@@ -56,4 +52,4 @@ async function nvmrcRuleValidation(
   return null;
 }
 
-export { nvmrcRuleInfo, nvmrcRuleValidation, nvmrcRuleInfo as rule };
+export { nvmrcRuleDefinition, nvmrcRuleValidation };

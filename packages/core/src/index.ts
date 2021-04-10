@@ -1,5 +1,16 @@
-import * as rules from './rules';
+import { PackagelintRuleDefinition } from './types';
 
-export * from './rules/ruleTypes';
+import { alwaysFailRuleDefinition } from './always-fail/always-fail';
+import { nvmrcRuleDefinition } from './nvmrc/nvmrc';
 
-export { rules };
+export * from './types';
+
+export * from './always-fail/always-fail';
+export * from './nvmrc/nvmrc';
+
+const packagelintRules: Record<string, PackagelintRuleDefinition<any>> = {
+  'always-fail': alwaysFailRuleDefinition,
+  nvmrc: nvmrcRuleDefinition,
+};
+
+export { packagelintRules };

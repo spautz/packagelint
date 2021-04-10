@@ -1,15 +1,15 @@
 {
-  "name": "@packagelint/preset-for-library",
+  "name": "@packagelint/presets",
   "version": "0.0.1",
   "description": "Default set of rules for Packagelint",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/preset-for-library#readme",
+  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/presets#readme",
   "bugs": "https://github.com/spautz/packagelint/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/spautz/packagelint.git",
-    "directory": "packages/preset-for-library"
+    "directory": "packages/presets"
   },
   "author": {
     "name": "Steven Pautz",
@@ -26,8 +26,8 @@
   ],
   "source": "src/index.ts",
   "main": "dist/index.js",
-  "module": "dist/packagelint-accumulate-rules.esm.js",
-  "jsnext:main": "dist/packagelint-accumulate-rules.esm.js",
+  "module": "dist/packagelint-presets.esm.js",
+  "jsnext:main": "dist/packagelint-presets.esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
