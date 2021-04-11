@@ -1,10 +1,10 @@
 // General Utility Types
 
-export type PackagelintErrorLevel = 'exception' | 'error' | 'warn' | 'log' | 'ignore';
+export type PackagelintErrorLevel = 'exception' | 'error' | 'warn' | 'suggestion' | 'ignore';
 export type PackagelintRuleName = string;
 
-type PackagelintUnknownOptions = Record<string, unknown>;
-type PackagelintUnknownErrorData = Record<string, unknown>;
+export type PackagelintUnknownOptions = Record<string, unknown>;
+export type PackagelintUnknownErrorData = Record<string, unknown>;
 
 // User Config
 
@@ -126,4 +126,19 @@ export interface PackagelintValidationError<ErrorDataType = PackagelintUnknownEr
   errorLevel: PackagelintErrorLevel;
   errorData: ErrorDataType;
   message: string;
+}
+
+// Output
+
+export interface PackagelintOutput {
+  // Information about the inputs will be placed here when using the higher-level entry points, but not the raw
+  // low-level functions
+  _inputUserConfig?: PackagelintUserConfig;
+  _inputRules?: Array<PackagelintProcessedRule>;
+  // Summary and detail information about error levels
+  highestErrorLevel: PackagelintErrorLevel | null;
+  errorLevelCounts: Record<PackagelintErrorLevel, number>;
+  exitCode: number;
+  // The full details used to generate the results
+  errorResults: Array<PackagelintValidationError>;
 }

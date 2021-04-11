@@ -1,3 +1,2 @@
-import { processConfig } from './validation';
-
-export { processConfig };
+export * from './validation';
+export * from './output';
