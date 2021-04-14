@@ -26,8 +26,8 @@
   ],
   "source": "src/index.ts",
   "main": "dist/index.js",
-  "module": "dist/packagelint-core.esm.js",
-  "jsnext:main": "dist/packagelint-core.esm.js",
+  "module": "dist/core.esm.js",
+  "jsnext:main": "dist/core.esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {

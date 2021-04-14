@@ -26,8 +26,8 @@
   ],
   "source": "src/index.ts",
   "main": "dist/index.js",
-  "module": "dist/packagelint-presets.esm.js",
-  "jsnext:main": "dist/packagelint-presets.esm.js",
+  "module": "dist/presets.esm.js",
+  "jsnext:main": "dist/presets.esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {

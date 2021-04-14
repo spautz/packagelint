@@ -1,3 +1,5 @@
+import { merge } from 'lodash-es';
+
 import {
   PackagelintRuleName,
   PackagelintRuleDefinition,
@@ -11,7 +13,16 @@ function resolveRule(
 
   // @TODO: Implement this
 
-  return require('@packagelint/core').packagelintRules['nvmrc'];
+  const packageName = '@packagelint/core';
+  const ruleOrRulesetName = 'nvmrc';
+
+  const packageExports = require(packageName);
+  const packageRulesAndRulesets: Record<
+    string,
+    PackagelintRuleDefinition | PackagelintRulesetDefinition
+  > = merge({}, packageExports.packagelintRules, packageExports.packagelintRulesets);
+
+  return packageRulesAndRulesets[ruleOrRulesetName];
 }
 
 export { resolveRule };

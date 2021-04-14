@@ -1,10 +1,8 @@
-import { PackagelintRulesetDefinition } from '@packagelint/core';
-
 import { libraryRulesetDefinition } from './library';
 
 export * from './library';
 
-const packagelintRulesets: Record<string, PackagelintRulesetDefinition> = {
+const packagelintRulesets = {
   library: libraryRulesetDefinition,
 };
 

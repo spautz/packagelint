@@ -3,9 +3,9 @@ import { PackagelintRuleDefinition, PackagelintValidationContext } from '../type
 export type AlwaysFailRuleOptions = {};
 
 const alwaysFailRuleDefinition: PackagelintRuleDefinition<AlwaysFailRuleOptions> = {
-  name: '@packagelint/core/always-fail',
+  name: 'always-fail',
   docs: {
-    description: 'This rule will always fail. Useful for testing.',
+    description: 'This rule will always fail.',
     url: 'https://github.com/spautz/packagelint',
   },
   defaultErrorLevel: 'error',

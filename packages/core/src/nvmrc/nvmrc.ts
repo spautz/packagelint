@@ -9,7 +9,7 @@ export type NvmrcRuleOptions = {
 };
 
 const nvmrcRuleDefinition: PackagelintRuleDefinition<NvmrcRuleOptions> = {
-  name: '@packagelint/core/nvmrc',
+  name: 'nvmrc',
   docs: {
     description: 'require a .nvmrc file',
     url: 'https://github.com/spautz/packagelint',
