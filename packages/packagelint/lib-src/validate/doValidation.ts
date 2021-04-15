@@ -1,15 +1,15 @@
 import {
-  PackagelintProcessedRule,
+  PackagelintPreparedRule,
   PackagelintOutput,
-  PackagelintProcessedConfig,
+  PackagelintPreparedConfig,
   PackagelintValidationResult,
   PackagelintUnknownOptions,
   PackagelintValidationContext,
 } from '@packagelint/core';
 
-function doValidation(processedConfig: PackagelintProcessedConfig): PackagelintOutput {
-  // const { failOnErrorLevel, rules } = processedConfig;
-  console.log('doValidation()', processedConfig);
+function doValidation(preparedConfig: PackagelintPreparedConfig): PackagelintOutput {
+  // const { failOnErrorLevel, rules } = preparedConfig;
+  console.log('doValidation()', preparedConfig);
   //
   // const errorResults = validateRuleList(rules);
   //
@@ -36,12 +36,12 @@ function doValidation(processedConfig: PackagelintProcessedConfig): PackagelintO
 }
 
 function validateRuleList(
-  ruleList: Array<PackagelintProcessedRule>,
+  ruleList: Array<PackagelintPreparedRule>,
   options: PackagelintUnknownOptions,
 ): Array<PackagelintValidationResult> {
-  return ruleList.map((processedRule) => {
+  return ruleList.map((preparedRule) => {
     const context = makeValidationContext();
-    return processedRule.doValidation(options, context) as PackagelintValidationResult;
+    return preparedRule.doValidation(options, context) as PackagelintValidationResult;
   });
 }
 

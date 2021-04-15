@@ -1,3 +1,1 @@
-const temp = {};
-
-export { temp };
+export {};

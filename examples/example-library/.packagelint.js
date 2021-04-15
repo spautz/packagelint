@@ -1,8 +1,8 @@
 module.exports = {
   failOnErrorLevel: 'warning',
-  rules: [
-    // `@packagelint/core` defines the rules, but rules are disabled by default:
-    // each `@packagelint/presets` ruleset enables a default set of core rules.
+  rules2: [
+    // `@packagelint/core` defines the rules, but each rule is disabled by default:
+    // each `@packagelint/presets` ruleset enables a set of those core rules.
     // '@packagelint/presets:library',
 
     // Update the `nvmrc` rule to require at least Node 14, instead of the default.
@@ -16,7 +16,7 @@ module.exports = {
     },
 
     // Update the `npmrc` rule to require `save-exact=true`.
-    // You would use a similar approach if your organization requires a specific `registry` to be set in .npmrc
+    // You could use a similar approach if your organization requires a specific `registry` to be set in .npmrc
     // {
     //   name: '@packagelint/core:npmrc',
     //   errorLevel: 'warning',

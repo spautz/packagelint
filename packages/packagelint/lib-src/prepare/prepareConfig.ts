@@ -1,7 +1,7 @@
 import {
   PackagelintUserConfig,
-  PackagelintProcessedConfig,
-  PackagelintProcessedRule,
+  PackagelintPreparedConfig,
+  PackagelintPreparedRule,
   PackagelintRuleConfig,
   PackagelintRulesetConfig,
 } from '@packagelint/core';
@@ -20,9 +20,9 @@ const defaultUserConfig: PackagelintUserConfig = {
 };
 
 /**
- * Expands, flattens, and resolves a User Config into a flat list of validation rules
+ * Expands, flattens, and resolves a User Config into a flat list of validate rules
  */
-function processConfig(actualProjectConfig: PackagelintUserConfig): PackagelintProcessedConfig {
+function prepareConfig(actualProjectConfig: PackagelintUserConfig): PackagelintPreparedConfig {
   const userConfig = {
     ...defaultUserConfig,
     ...actualProjectConfig,
@@ -31,8 +31,8 @@ function processConfig(actualProjectConfig: PackagelintUserConfig): PackagelintP
   const { rules } = userConfig;
   console.log('raw rules = ', rules);
 
-  const newRuleList: Array<PackagelintProcessedRule> = [];
-  const rulesByName: Record<string, PackagelintProcessedRule> = Object.create(null);
+  const newRuleList: Array<PackagelintPreparedRule> = [];
+  const rulesByName: Record<string, PackagelintPreparedRule> = Object.create(null);
 
   rules.forEach((ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig) => {
     addRuleToList(ruleInfo, newRuleList, rulesByName);
@@ -45,12 +45,12 @@ function processConfig(actualProjectConfig: PackagelintUserConfig): PackagelintP
 }
 
 /**
- * This mutates processedRuleList and processedRulesByName
+ * This mutates preparedRuleList and preparedRulesByName
  */
 function addRuleToList(
   ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig,
-  processedRuleList: Array<PackagelintProcessedRule>,
-  processedRulesByName: Record<string, PackagelintProcessedRule>,
+  preparedRuleList: Array<PackagelintPreparedRule>,
+  preparedRulesByName: Record<string, PackagelintPreparedRule>,
 ): void {
   if (typeof ruleInfo === 'string') {
     return addRuleToList(
@@ -58,8 +58,8 @@ function addRuleToList(
         name: ruleInfo,
         enabled: true,
       },
-      processedRuleList,
-      processedRulesByName,
+      preparedRuleList,
+      preparedRulesByName,
     );
   }
   if (Array.isArray(ruleInfo)) {
@@ -69,8 +69,8 @@ function addRuleToList(
         enabled: true,
         options: ruleInfo[1],
       },
-      processedRuleList,
-      processedRulesByName,
+      preparedRuleList,
+      preparedRulesByName,
     );
   }
 
@@ -78,12 +78,12 @@ function addRuleToList(
 
   const resolvedRule = resolveRule(name);
   // @TODO: Add/merge configs and options
-  // if (processedRulesByName[name]) {
+  // if (preparedRulesByName[name]) {
   //
   // }
 
   // @ts-ignore
-  processedRuleList.push(resolvedRule);
+  preparedRuleList.push(resolvedRule);
 }
 
-export { processConfig };
+export { prepareConfig };

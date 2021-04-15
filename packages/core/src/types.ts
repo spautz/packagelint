@@ -35,7 +35,7 @@ export interface PackagelintRuleDefinition<OptionsType = PackagelintUnknownOptio
   defaultErrorLevel?: PackagelintErrorLevel;
   /* Options for the rule, if not overridden by the user config or a ruleset */
   defaultOptions: OptionsType;
-  /* Human-readable messages for failed validation results */
+  /* Human-readable messages for failed validate results */
   messages: Record<string, string>;
   /* Function that implements the rule's checks. Required unless extending another rule */
   doValidation: PackagelintValidationFn<OptionsType>;
@@ -74,14 +74,14 @@ export type PackagelintRulesetConfig =
       // @TODO: globalOptions?: OptionsType;
     };
 
-// After Processing
+// After preparing config and loading rules
 
-export interface PackagelintProcessedConfig {
+export interface PackagelintPreparedConfig {
   failOnErrorLevel: PackagelintErrorLevel;
-  rules: Array<PackagelintProcessedRule>;
+  rules: Array<PackagelintPreparedRule>;
 }
 
-export interface PackagelintProcessedRule<OptionsType = PackagelintUnknownOptions> {
+export interface PackagelintPreparedRule<OptionsType = PackagelintUnknownOptions> {
   ruleName: PackagelintRuleName;
   docs: {
     description: string;
@@ -128,13 +128,13 @@ export interface PackagelintValidationError<ErrorDataType = PackagelintUnknownEr
   message: string;
 }
 
-// Output
+// Final results
 
 export interface PackagelintOutput {
   // Information about the inputs will be placed here when using the higher-level entry points, but not the raw
   // low-level functions
   _inputUserConfig?: PackagelintUserConfig;
-  _inputRules?: Array<PackagelintProcessedRule>;
+  _inputRules?: Array<PackagelintPreparedRule>;
   // Summary and detail information about error levels
   highestErrorLevel: PackagelintErrorLevel | null;
   errorLevelCounts: Record<PackagelintErrorLevel, number>;

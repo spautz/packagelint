@@ -9,5 +9,7 @@ const onFatalError = console.error;
   process.on('uncaughtException', onFatalError);
   process.on('unhandledRejection', onFatalError);
 
-  process.exitCode = await require('../lib-dist/cli').execute(process.argv);
+  const { packagelintCli } = require('../lib-dist/cli');
+  const [exitCode /*, validationOutput */] = await packagelintCli(process.argv);
+  process.exitCode = exitCode;
 })().catch(onFatalError);

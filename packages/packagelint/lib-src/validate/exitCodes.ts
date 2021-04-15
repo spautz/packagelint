@@ -4,7 +4,7 @@ export const FAILURE__NO_CONFIG = 1 as const;
 export const FAILURE__INVALID_CONFIG = 2 as const;
 export const FAILURE__VALIDATION = 3 as const;
 
-export type EXIT_CODE = typeof ALL_EXIT_CODE_VALUES[number];
+export type PackagelintExitCode = typeof ALL_EXIT_CODE_VALUES[number];
 
 const ALL_EXIT_CODES = {
   SUCCESS,

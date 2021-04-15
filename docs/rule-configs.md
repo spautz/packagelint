@@ -2,7 +2,7 @@
 
 This article walks through the different config objects that Packagelint consumes while validating rules.
 
-## Inputs (Before Processing)
+## Inputs (Before preparing config and loading rules)
 
 ### User Config
 
@@ -48,7 +48,7 @@ interface PackagelintRuleDefinition {
   defaultErrorLevel?: PackagelintErrorLevel;
   /* Options for the rule, if not overridden by the user config or a ruleset */
   defaultOptions: OptionsType;
-  /* Human-readable messages for failed validation results */
+  /* Human-readable messages for failed validate results */
   messages: Record<string, string>;
   /* Function that implements the rule's checks. Required unless extending another rule */
   doValidation: (
@@ -102,18 +102,18 @@ type PackagelintRulesetConfig =
     };
 ```
 
-## After Processing
+## After Preparing
 
 The rules and rulesets in the User Config are expanded, flattened, and resolved, becoming a list of ready-to-run
 validations:
 
 ```typescript
-interface PackagelintProcessedConfig {
+interface PackagelintPreparedConfig {
   failOnErrorLevel: 'exception' | 'error' | 'warn' | 'suggestion' | 'ignore';
-  rules: Array<PackagelintProcessedRule>;
+  rules: Array<PackagelintPreparedRule>;
 }
 
-interface PackagelintProcessedRule {
+interface PackagelintPreparedRule {
   ruleName: string;
   docs: {
     description: string;
