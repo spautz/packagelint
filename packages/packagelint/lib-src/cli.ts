@@ -42,10 +42,10 @@ async function packagelintCli(
   const packagelintUserConfig = require(packagelintConfigFileName);
   console.log('packagelintUserConfig = ', packagelintUserConfig);
 
-  const preparedConfig = prepareConfig(packagelintUserConfig);
+  const preparedConfig = await prepareConfig(packagelintUserConfig);
   console.log('preparedConfig = ', preparedConfig);
 
-  const validationOutput = doValidation(preparedConfig);
+  const validationOutput = await doValidation(preparedConfig);
   console.log('validationOutput = ', validationOutput);
 
   return [SUCCESS, validationOutput];

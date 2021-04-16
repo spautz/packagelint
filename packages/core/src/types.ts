@@ -45,15 +45,18 @@ export interface PackagelintRuleDefinition<OptionsType = PackagelintUnknownOptio
 
 export type PackagelintRuleConfig<OptionsType = PackagelintUnknownOptions> =
   | PackagelintRuleName
+  | [PackagelintRuleName, boolean]
   | [PackagelintRuleName, OptionsType]
-  | {
-      name: PackagelintRuleName;
-      enabled?: boolean;
-      extendRule?: PackagelintRuleName;
-      errorLevel?: PackagelintErrorLevel;
-      options?: OptionsType;
-      messages?: Record<string, string>;
-    };
+  | PackagelintRuleConfigObject<OptionsType>;
+
+export type PackagelintRuleConfigObject<OptionsType = PackagelintUnknownOptions> = {
+  name: PackagelintRuleName;
+  enabled?: boolean;
+  extendRule?: PackagelintRuleName;
+  errorLevel?: PackagelintErrorLevel;
+  options?: OptionsType;
+  messages?: Record<string, string>;
+};
 
 // Rulesets
 
@@ -66,13 +69,16 @@ export interface PackagelintRulesetDefinition {
 
 export type PackagelintRulesetConfig =
   | PackagelintRuleName
-  | {
-      name: PackagelintRuleName;
-      enabled?: boolean;
-      errorLevel?: PackagelintErrorLevel;
+  | [PackagelintRuleName, boolean]
+  | PackagelintRulesetConfigObject;
 
-      // @TODO: globalOptions?: OptionsType;
-    };
+export type PackagelintRulesetConfigObject = {
+  name: PackagelintRuleName;
+  enabled?: boolean;
+  errorLevel?: PackagelintErrorLevel;
+
+  // @TODO: globalOptions?: OptionsType;
+};
 
 // After preparing config and loading rules
 

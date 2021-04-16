@@ -3,19 +3,24 @@ import {
   PackagelintOutput,
   PackagelintPreparedConfig,
   PackagelintValidationResult,
-  PackagelintUnknownOptions,
   PackagelintValidationContext,
+  PackagelintValidationError,
 } from '@packagelint/core';
 
-function doValidation(preparedConfig: PackagelintPreparedConfig): PackagelintOutput {
-  // const { failOnErrorLevel, rules } = preparedConfig;
+async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<PackagelintOutput> {
+  const { rules } = preparedConfig;
   console.log('doValidation()', preparedConfig);
-  //
-  // const errorResults = validateRuleList(rules);
-  //
-  // const errorLevelCounts = errorResults.reduce((counts, )=> {
-  //   return counts
-  // },{})
+
+  const allResults = await validateRuleList(rules);
+
+  const errorResults = allResults.filter(
+    (validationResult) => !!validationResult,
+  ) as Array<PackagelintValidationError>;
+
+  // @TODO
+  // const errorLevelCounts = errorResults.reduce((counts) => {
+  //   return counts;
+  // }, {});
 
   return {
     _inputUserConfig: undefined,
@@ -31,22 +36,44 @@ function doValidation(preparedConfig: PackagelintPreparedConfig): PackagelintOut
     },
     exitCode: 0,
 
-    errorResults: [],
+    errorResults: errorResults,
   };
 }
 
-function validateRuleList(
-  ruleList: Array<PackagelintPreparedRule>,
-  options: PackagelintUnknownOptions,
-): Array<PackagelintValidationResult> {
-  return ruleList.map((preparedRule) => {
-    const context = makeValidationContext();
-    return preparedRule.doValidation(options, context) as PackagelintValidationResult;
-  });
-}
-
+/**
+ * @TODO
+ */
 function makeValidationContext(): PackagelintValidationContext {
   return {} as PackagelintValidationContext;
 }
 
-export { doValidation, validateRuleList };
+async function validateRuleList(
+  ruleList: Array<PackagelintPreparedRule>,
+): Promise<Array<PackagelintValidationResult>> {
+  return await Promise.all(ruleList.map(validateOneRule));
+}
+
+async function validateOneRule(
+  preparedRule: PackagelintPreparedRule,
+): Promise<PackagelintValidationResult> {
+  const { ruleName, options } = preparedRule;
+
+  const context = makeValidationContext();
+  let result;
+  console.log('validating rule....', preparedRule);
+  try {
+    result = await preparedRule.doValidation(options, context);
+  } catch (e) {
+    result = {
+      ruleName: ruleName,
+      errorLevel: 'exception',
+      errorData: {},
+      message: e.message,
+    } as const;
+  }
+  console.log('validating rule => ', result);
+
+  return result;
+}
+
+export { doValidation, validateRuleList, validateOneRule };

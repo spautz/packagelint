@@ -68,7 +68,6 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@types/lodash-es": "4.17.4",
     "@types/semver": "7.3.4"
   }
 }

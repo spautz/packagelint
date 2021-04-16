@@ -13,6 +13,7 @@ const alwaysFailRuleDefinition: PackagelintRuleDefinition<AlwaysFailRuleOptions>
   messages: {
     alwaysFail: 'This rule will always fail',
   },
+  // @ts-ignore
   doValidation: alwaysFailRuleValidationFn,
 };
 
@@ -20,8 +21,11 @@ function alwaysFailRuleValidationFn(
   _options: AlwaysFailRuleOptions,
   packageContext: PackagelintValidationContext,
 ) {
-  const { createErrorToReturn } = packageContext;
-  return createErrorToReturn('alwaysFail');
+  console.log('alwaysFailRuleValidationFn()', _options, packageContext);
+  // const { createErrorToReturn } = packageContext;
+  // return createErrorToReturn('alwaysFail');
+
+  throw new Error('Always Fail');
 }
 
 export { alwaysFailRuleDefinition, alwaysFailRuleValidationFn };

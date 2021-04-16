@@ -9,13 +9,12 @@ const { hasOwnProperty } = Object.prototype;
 function resolveRule(
   name: PackagelintRuleName,
 ): PackagelintRuleDefinition | PackagelintRulesetDefinition {
-  console.log('resolveRule()', name);
+  // @TODO: Implement this properly
+  // @TODO: Validation
 
-  // @TODO: Implement this
+  const [packageName, ruleOrRulesetName] = name.split(':');
 
-  const packageName = '@packagelint/core';
-  const ruleOrRulesetName = 'nvmrc';
-
+  // @TODO: Caching
   const packageExports = require(packageName);
   const packageRulesAndRulesets: Record<
     string,
@@ -27,15 +26,22 @@ function resolveRule(
     if (ruleSource) {
       Object.keys(ruleSource).forEach((ruleName) => {
         const ruleInfo = ruleSource[ruleName];
+
         if (
           hasOwnProperty.call(packageRulesAndRulesets, ruleName) &&
           packageRulesAndRulesets[ruleName] !== ruleInfo
         ) {
           throw new Error(`Package "${packageName}" defines rule "${ruleName}" more than once`);
         }
+
+        packageRulesAndRulesets[ruleName] = ruleInfo;
       });
     }
   });
+
+  if (!packageRulesAndRulesets[ruleOrRulesetName]) {
+    throw new Error(`Rule not found: ${name}`);
+  }
 
   return packageRulesAndRulesets[ruleOrRulesetName];
 }
