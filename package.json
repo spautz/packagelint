@@ -23,27 +23,29 @@
     "prepare": "husky install && yon run packages:prepare",
     "pretest": "yon run test:clean",
     "____ INTEGRATION ___________________________________________________": "",
-    "clean": "yon run test:clean && rimraf ./node_modules/.cache",
+    "clean": "yon run test:clean && rimraf ./node_modules/.cache && yon run packages:clean && yon run test:clean",
     "dev": "yon run format && yon run types && yon run lint",
     "dev:readonly": "yon run format:verify && yon run types && yon run lint",
-    "all": "yon run prepare && yon run dev && yon run test:coverage",
+    "all": "yon run prepare && yon run dev && yon run test:coverage && yon run examples:packagelint",
     "all:readonly": "yon run dev:readonly && yon run test:coverage",
     "____ BATCH COMMANDS FOR PACKAGES ___________________________________": "",
     "packages:prepare": "lerna run prepare",
     "packages:clean": "lerna run clean",
-    "packages:test": "lerna run test:coverage",
+    "packages:test": "lerna run test:coverage && lerna run examples:packagelint",
     "packages:dev": "lerna run dev",
     "packages:dev:readonly": "lerna run dev:readonly",
     "packages:all": "lerna run all",
     "packages:all:readonly": "lerna run all:readonly",
     "packages:build": "lerna run build",
     "packages:release:changelog": "lerna run release:changelog -- ",
+    "examples:packagelint": "lerna run packagelint",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "bootstrap": "lerna bootstrap",
     "format": "prettier --write .",
     "format:verify": "prettier --list-different .",
     "lint": "tsdx lint . --max-warnings 0",
     "lint-staged": "lint-staged",
+    "packagelint": "packagelint",
     "release:version": "yarn lerna version --no-changelog --no-push --no-git-tag-version ",
     "release:tag": "cross-env HUSKY_BYPASS=true yarn lerna version --no-changelog --no-push --sign-git-commit --amend ",
     "release:postpublish": "standard-version --commit-all --sign --skip.changelog --release-as ",
@@ -53,7 +55,7 @@
     "test:nowatch": "tsdx test",
     "test:watch": "tsdx test --watch",
     "test:watchcoverage": "tsdx test --watchAll --coverage",
-    "types": "tsc --p tsconfig.json"
+    "types": "tsc --p tsconfig.json --noEmit"
   },
   "dependencies": {},
   "devDependencies": {
@@ -87,6 +89,7 @@
     }
   },
   "workspaces": [
+    "examples/*",
     "packages/*"
   ]
 }

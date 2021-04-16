@@ -12,6 +12,7 @@
 /examples/*/dist
 /packages/*/coverage-local
 /packages/*/dist
+/packages/*/lib-dist
 
 # misc
 .idea/

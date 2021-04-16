@@ -1,15 +1,15 @@
 {
-  "name": "@packagelint/core",
+  "name": "@packagelint/presets",
   "version": "0.0.1",
-  "description": "Default set of rule definitions for Packagelint",
+  "description": "Default set of rules for Packagelint",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/core#readme",
+  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/presets#readme",
   "bugs": "https://github.com/spautz/packagelint/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/spautz/packagelint.git",
-    "directory": "packages/core"
+    "directory": "packages/presets"
   },
   "author": {
     "name": "Steven Pautz",
@@ -26,8 +26,8 @@
   ],
   "source": "src/index.ts",
   "main": "dist/index.js",
-  "module": "dist/core.esm.js",
-  "jsnext:main": "dist/core.esm.js",
+  "module": "dist/presets.esm.js",
+  "jsnext:main": "dist/presets.esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
@@ -59,6 +59,8 @@
     "test:watchcoverage": "tsdx test --watchAll --coverage",
     "types": "tsc --p tsconfig.json --noEmit"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@packagelint/core": "^0.0.1"
+  },
   "devDependencies": {}
 }

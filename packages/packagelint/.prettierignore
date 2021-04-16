@@ -19,5 +19,5 @@ build/
 dist/
 coverage/
 coverage-local/
+lib-dist/
 node_modules/
-storybook-static/

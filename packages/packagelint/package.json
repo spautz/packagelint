@@ -1,15 +1,15 @@
 {
-  "name": "@packagelint/accumulate-rules",
+  "name": "@packagelint/packagelint",
   "version": "0.0.1",
   "description": "Configure and override rule configs for a linter, in an extension-friendly way",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/accumulate-rules#readme",
+  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/core#readme",
   "bugs": "https://github.com/spautz/packagelint/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/spautz/packagelint.git",
-    "directory": "packages/accumulate-rules"
+    "directory": "packages/core"
   },
   "author": {
     "name": "Steven Pautz",
@@ -19,16 +19,18 @@
     "access": "public"
   },
   "files": [
-    "dist/",
-    "src/",
+    "bin/",
+    "lib-dist/",
+    "lib-src/",
     "LICENSE",
     "*.md"
   ],
-  "source": "src/index.ts",
-  "main": "dist/index.js",
-  "module": "dist/packagelint-accumulate-rules.esm.js",
-  "jsnext:main": "dist/packagelint-accumulate-rules.esm.js",
-  "types": "dist/index.d.ts",
+  "bin": {
+    "packagelint": "./bin/packagelint.js"
+  },
+  "source": "lib-src/api.ts",
+  "main": "lib-dist/api.js",
+  "types": "lib-dist/api.d.ts",
   "sideEffects": false,
   "scripts": {
     "____ LIFECYCLE HOOKS _______________________________________________": "",
@@ -38,15 +40,14 @@
     "prepublishOnly": "yarn run dev:readonly && yarn run build",
     "pretest": "yon run test:clean",
     "____ INTEGRATION ___________________________________________________": "",
-    "clean": "yon run build:clean && yon run test:clean && rimraf ./node_modules/.cache",
+    "clean": "yon run build:clean && yon run test:clean && rimraf ./lib-dist ./node_modules/.cache",
     "dev": "yarn run format && yarn run types && yarn run lint",
     "dev:readonly": "yarn run format:verify && yarn run types && yarn run lint",
     "all": "yarn run clean && yarn run dev && yarn run test:coverage && yarn run build",
     "all:readonly": "yarn run dev:readonly && yarn run test:coverage",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
-    "build": "tsdx build",
-    "build:clean": "rimraf ./dist",
-    "build:watch": "tsdx watch",
+    "build": "tsc",
+    "build:clean": "rimraf ./lib-dist",
     "format": "prettier --write .",
     "format:verify": "prettier --list-different .",
     "lint": "tsdx lint . --max-warnings 0",
@@ -57,8 +58,16 @@
     "test:nowatch": "tsdx test",
     "test:watch": "tsdx test --watch",
     "test:watchcoverage": "tsdx test --watchAll --coverage",
-    "types": "tsc --p tsconfig.json"
+    "types": "tsc --p tsconfig.json --noEmit"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@packagelint/core": "^0.0.1",
+    "find-up": "^5.0.0",
+    "semver": "^7.3.5",
+    "v8-compile-cache": "^2.3.0",
+    "yargs": "^16.2.0"
+  },
+  "devDependencies": {
+    "@types/semver": "7.3.4"
+  }
 }
