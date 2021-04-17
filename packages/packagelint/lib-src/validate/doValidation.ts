@@ -3,9 +3,7 @@ import {
   PackagelintOutput,
   PackagelintPreparedConfig,
   PackagelintValidationResult,
-  PackagelintValidationContext,
   PackagelintValidationError,
-  PackagelintUnknownErrorData,
 } from '@packagelint/core';
 
 import {
@@ -15,6 +13,7 @@ import {
   isErrorLessSevereThan,
 } from './errorLevels';
 import { SUCCESS, FAILURE__VALIDATION } from './exitCodes';
+import { makeValidationContext } from './validationContext';
 
 async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<PackagelintOutput> {
   const { failOnErrorLevel, rules } = preparedConfig;
@@ -42,42 +41,6 @@ async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<
     errorLevelCounts,
 
     errorResults: errorResults,
-  };
-}
-
-/**
- * @TODO
- */
-function makeValidationContext(
-  preparedRule: PackagelintPreparedRule,
-): PackagelintValidationContext {
-  const { ruleName } = preparedRule;
-
-  const accumulatedErrorData = {};
-
-  function setErrorData(errorData: PackagelintUnknownErrorData): void {
-    Object.assign(accumulatedErrorData, errorData);
-  }
-
-  return {
-    // General information
-    ruleName,
-
-    // Helpers so that rules don't have to implement everything themselves
-    findFileUp: (_fileGlob: string) => {
-      throw new Error('Not implemented');
-    },
-    // Setting errorData and returning errors
-    createErrorToReturn: (
-      errorName: string,
-      extraErrorData?: PackagelintUnknownErrorData,
-    ): [string, PackagelintUnknownErrorData] => {
-      if (extraErrorData) {
-        setErrorData(extraErrorData);
-      }
-      return [errorName, accumulatedErrorData];
-    },
-    setErrorData,
   };
 }
 
