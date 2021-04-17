@@ -63,7 +63,10 @@ class RuleAccumulator {
     }
 
     // @TODO: Validation for object type
-    return this._accumulateRuleConfigObject(ruleInfo);
+    return this._accumulateRuleConfigObject({
+      enabled: true,
+      ...ruleInfo,
+    });
   }
 
   /**

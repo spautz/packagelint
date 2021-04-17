@@ -56,23 +56,24 @@ async function validateRuleList(
 async function validateOneRule(
   preparedRule: PackagelintPreparedRule,
 ): Promise<PackagelintValidationResult> {
-  const { ruleName, options } = preparedRule;
+  const { ruleName, enabled, options } = preparedRule;
+  let result = null;
 
-  const context = makeValidationContext();
-  let result;
-  console.log('validating rule....', preparedRule);
-  try {
-    result = await preparedRule.doValidation(options, context);
-  } catch (e) {
-    result = {
-      ruleName: ruleName,
-      errorLevel: 'exception',
-      errorData: {},
-      message: e.message,
-    } as const;
+  if (enabled) {
+    const context = makeValidationContext();
+    console.log('validating rule....', preparedRule);
+    try {
+      result = await preparedRule.doValidation(options, context);
+    } catch (e) {
+      result = {
+        ruleName: ruleName,
+        errorLevel: 'exception',
+        errorData: {},
+        message: e.message,
+      } as const;
+    }
+    console.log('validating rule => ', result);
   }
-  console.log('validating rule => ', result);
-
   return result;
 }
 
