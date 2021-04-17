@@ -91,29 +91,42 @@ class RuleAccumulator {
     } = ruleInfo as PackagelintRuleConfigObject;
 
     if (!this._ruleInfo[name]) {
-      // We haven't seen this rule before: initialize its config
-      const resolvedRule = resolveRule(extendRule || name);
+      // We haven't seen this rule before: it's either a bulk modification, or we need to populate its base state
+      // before we apply the options/enabled/etc from above
+      let initialRule: PackagelintPreparedRule;
 
-      // @TODO: Handle rulesets
+      // @TODO: rulesets
+      // @TODO: self-implemented rules
+      // @TODO: wildcards
 
-      const {
-        docs,
-        defaultErrorLevel,
-        defaultOptions,
-        messages: defaultMessages,
-        doValidation,
-      } = resolvedRule as PackagelintRuleDefinition;
+      if (extendRule && this._ruleInfo[extendRule]) {
+        initialRule = {
+          ...this._ruleInfo[extendRule],
+          ruleName: name,
+          extendedFrom: extendRule,
+        };
+      } else {
+        const baseRule = resolveRule(extendRule || name);
 
-      this._ruleInfo[name] = {
-        ruleName: name,
-        docs,
-        enabled: false,
-        extendedFrom: extendRule || null,
-        errorLevel: defaultErrorLevel || ERROR_LEVEL__ERROR,
-        options: defaultOptions,
-        messages: defaultMessages,
-        doValidation,
-      };
+        // @TODO: Split between single rules and rulesets
+
+        if (isRuleDefinition(baseRule)) {
+          initialRule = {
+            ruleName: name,
+            docs: baseRule.docs,
+            enabled: false,
+            extendedFrom: extendRule || null,
+            errorLevel: baseRule.defaultErrorLevel || ERROR_LEVEL__ERROR,
+            options: baseRule.defaultOptions || {},
+            messages: baseRule.messages || {},
+            doValidation: baseRule.doValidation,
+          };
+        } else {
+          throw new Error('Not implemented: rulesets');
+        }
+      }
+
+      this._ruleInfo[name] = initialRule;
       this._ruleOrder.push(name);
     } else if (extendRule) {
       throw new Error('Not implemented: edge cases with extendRule');
@@ -141,4 +154,9 @@ class RuleAccumulator {
   }
 }
 
-export { accumulateRules, RuleAccumulator };
+function isRuleDefinition(ruleInfo: any): ruleInfo is PackagelintRuleDefinition {
+  // @TODO: Proper validation
+  return !!ruleInfo.doValidation;
+}
+
+export { accumulateRules, RuleAccumulator, isRuleDefinition };

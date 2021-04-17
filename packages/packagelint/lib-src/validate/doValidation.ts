@@ -58,7 +58,7 @@ async function validateOneRule(
 
   if (enabled) {
     const context = makeValidationContext(preparedRule);
-    console.log('validating rule....', preparedRule);
+
     try {
       const validationErrorInfo = await preparedRule.doValidation(options, context);
 
@@ -82,7 +82,6 @@ async function validateOneRule(
         message: e.message,
       };
     }
-    console.log('validating rule => ', result);
   }
   return result;
 }

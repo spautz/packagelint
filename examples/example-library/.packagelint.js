@@ -29,6 +29,50 @@ module.exports = {
 
     {
       name: '@packagelint/core:always-fail',
+      errorLevel: 'suggestion',
+      options: {
+        option1: true,
+      },
+    },
+    {
+      name: 'my-alias',
+      extendRule: '@packagelint/core:always-fail',
+      errorLevel: 'warning',
+      options: {
+        option2: true,
+      },
+    },
+    {
+      name: 'alias-of-my-alias',
+      extendRule: 'my-alias',
+      errorLevel: 'error',
+      options: {
+        option3: true,
+      },
+    },
+    {
+      name: 'a-different-alias',
+      extendRule: '@packagelint/core:always-fail',
+      errorLevel: 'warning',
+      options: {
+        option1: false,
+        option4: true,
+      },
+    },
+    {
+      name: 'my-alias',
+      errorLevel: 'ignore',
+      options: {
+        option2: false,
+      },
+    },
+    {
+      name: 'another-different-alias',
+      extendRule: 'my-alias',
+      errorLevel: 'warning',
+      options: {
+        option5: true,
+      },
     },
   ],
 };
