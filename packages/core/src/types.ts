@@ -1,6 +1,13 @@
 // General Utility Types
 
-export type PackagelintErrorLevel = 'exception' | 'error' | 'warn' | 'suggestion' | 'ignore';
+export type PackagelintErrorLevel = 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore';
+export type PackagelintErrorLevelCounts = {
+  exception: number;
+  error: number;
+  warning: number;
+  suggestion: number;
+  ignore: number;
+};
 export type PackagelintRuleName = string;
 
 export type PackagelintUnknownOptions = Record<string, unknown>;
@@ -94,7 +101,7 @@ export interface PackagelintPreparedRule<OptionsType = PackagelintUnknownOptions
     [key: string]: string;
   };
   enabled: boolean;
-  extendedFrom: string;
+  extendedFrom: string | null;
   errorLevel: PackagelintErrorLevel;
   options: OptionsType;
   messages: Record<string, string>;
@@ -110,41 +117,50 @@ export type PackagelintValidationFn<
   options: OptionsType,
   packageContext: PackagelintValidationContext<ErrorDataType>,
 ) =>
-  | PackagelintValidationResult<ErrorDataType>
-  | Promise<PackagelintValidationResult<ErrorDataType>>;
+  | PackagelintValidationFnReturn<ErrorDataType>
+  | Promise<PackagelintValidationFnReturn<ErrorDataType>>;
 
 export type PackagelintValidationContext<ErrorDataType = PackagelintUnknownErrorData> = {
+  // General information
+  ruleName: string;
+  // Helpers so that rules don't have to implement everything themselves
+  findFileUp: (fileGlob: string) => Promise<null | Array<string>>;
+  // Setting errorData and returning errors
   createErrorToReturn: (
     errorName: string,
-    ...extraErrorData: Array<ErrorDataType>
-  ) => PackagelintValidationError;
-  findFileUp: (fileGlob: string) => Promise<null | Array<string>>;
-  setErrorData: (errorData: ErrorDataType, ...extraErrorData: Array<ErrorDataType>) => void;
+    extraErrorData?: ErrorDataType,
+  ) => [string, ErrorDataType];
+  setErrorData: (errorData: ErrorDataType) => void;
 };
 
-export type PackagelintValidationResult<ErrorDataType = PackagelintUnknownErrorData> =
-  | PackagelintValidationError<ErrorDataType>
+export type PackagelintValidationFnReturn<ErrorDataType = PackagelintUnknownErrorData> =
+  | [string, ErrorDataType]
   | null
   | undefined;
+
+export type PackagelintValidationResult<
+  ErrorDataType = PackagelintUnknownErrorData
+> = PackagelintValidationError<ErrorDataType> | null;
 
 export interface PackagelintValidationError<ErrorDataType = PackagelintUnknownErrorData> {
   ruleName: PackagelintRuleName;
   errorLevel: PackagelintErrorLevel;
-  errorData: ErrorDataType;
+  errorName: string | null;
+  errorData: ErrorDataType | null;
   message: string;
 }
 
 // Final results
 
 export interface PackagelintOutput {
-  // Information about the inputs will be placed here when using the higher-level entry points, but not the raw
-  // low-level functions
-  _inputUserConfig?: PackagelintUserConfig;
-  _inputRules?: Array<PackagelintPreparedRule>;
+  // Overall results
+  numRules: number;
+  numRulesPassed: number;
+  numRulesFailed: number;
+  exitCode: number;
   // Summary and detail information about error levels
   highestErrorLevel: PackagelintErrorLevel | null;
-  errorLevelCounts: Record<PackagelintErrorLevel, number>;
-  exitCode: number;
+  errorLevelCounts: PackagelintErrorLevelCounts;
   // The full details used to generate the results
   errorResults: Array<PackagelintValidationError>;
 }
