@@ -3,14 +3,7 @@ import { accumulateRules } from './accumulateRules';
 
 const defaultUserConfig: PackagelintUserConfig = {
   failOnErrorLevel: 'error',
-  rules: [
-    {
-      name: '@packagelint/core:always-fail',
-      options: {
-        message: 'You must define packagelint rules in your config',
-      },
-    },
-  ],
+  rules: ['@packagelint/core:always-fail'],
 };
 
 /**

@@ -5,9 +5,11 @@ import {
   PackagelintRuleName,
   PackagelintRuleConfigObject,
   PackagelintRulesetConfigObject,
+  PackagelintRuleDefinition,
 } from '@packagelint/core';
 
 import { resolveRule } from './resolveRule';
+import { ERROR_LEVEL__ERROR } from '../validate/errorLevels';
 
 /**
  * Iterates through a list of user-specified rules and rulesets, resolving each and merging options to make a final list
@@ -79,8 +81,14 @@ class RuleAccumulator {
   _accumulateRuleConfigObject(
     ruleInfo: PackagelintRuleConfigObject | PackagelintRulesetConfigObject,
   ): void {
-    // @ts-ignore
-    const { name, enabled, extendRule, errorLevel, options, messages } = ruleInfo;
+    const {
+      name,
+      enabled,
+      extendRule,
+      errorLevel,
+      options,
+      messages,
+    } = ruleInfo as PackagelintRuleConfigObject;
 
     if (!this._ruleInfo[name]) {
       // We haven't seen this rule before: initialize its config
@@ -88,10 +96,23 @@ class RuleAccumulator {
 
       // @TODO: Handle rulesets
 
-      // @ts-ignore
+      const {
+        docs,
+        defaultErrorLevel,
+        defaultOptions,
+        messages: defaultMessages,
+        doValidation,
+      } = resolvedRule as PackagelintRuleDefinition;
+
       this._ruleInfo[name] = {
-        ...resolvedRule,
         ruleName: name,
+        docs,
+        enabled: false,
+        extendedFrom: extendRule || null,
+        errorLevel: defaultErrorLevel || ERROR_LEVEL__ERROR,
+        options: defaultOptions,
+        messages: defaultMessages,
+        doValidation,
       };
       this._ruleOrder.push(name);
     } else if (extendRule) {
@@ -112,10 +133,10 @@ class RuleAccumulator {
       existingConfig.errorLevel = errorLevel;
     }
     if (options) {
-      existingConfig.options = { ...(existingConfig.options || {}), options };
+      existingConfig.options = { ...(existingConfig.options || {}), ...options };
     }
     if (messages) {
-      existingConfig.messages = { ...(existingConfig.messages || {}), messages };
+      existingConfig.messages = { ...(existingConfig.messages || {}), ...messages };
     }
   }
 }
