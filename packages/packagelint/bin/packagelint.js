@@ -3,13 +3,23 @@
 
 require('v8-compile-cache');
 
-const onFatalError = console.error;
+const { FAILURE__UNKNOWN } = require('../lib-dist/api');
+
+const onFatalError = (...args) => {
+  console.log('onFatalError()', ...args);
+  console.error(...args);
+  process.exitCode = FAILURE__UNKNOWN;
+};
 
 (async function packagelint() {
   process.on('uncaughtException', onFatalError);
   process.on('unhandledRejection', onFatalError);
 
   const { packagelintCli } = require('../lib-dist/cli');
-  const [exitCode /*, validationOutput */] = await packagelintCli(process.argv);
-  process.exitCode = exitCode;
+  try {
+    const [exitCode /*, validationOutput */] = await packagelintCli(process.argv);
+    process.exitCode = exitCode;
+  } catch (e) {
+    onFatalError(e, 'errorFromInsideFn');
+  }
 })().catch(onFatalError);

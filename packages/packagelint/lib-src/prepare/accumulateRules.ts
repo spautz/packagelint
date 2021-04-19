@@ -1,11 +1,12 @@
 import {
   PackagelintPreparedRule,
   PackagelintRuleConfig,
-  PackagelintRulesetConfig,
-  PackagelintRuleName,
   PackagelintRuleConfigObject,
-  PackagelintRulesetConfigObject,
   PackagelintRuleDefinition,
+  PackagelintRuleName,
+  PackagelintRulesetConfig,
+  PackagelintRulesetConfigObject,
+  PackagelintRulesetDefinition,
 } from '@packagelint/core';
 
 import { resolveRule } from './resolveRule';
@@ -20,9 +21,7 @@ function accumulateRules(
 ): Array<PackagelintPreparedRule> {
   const accumulator = new RuleAccumulator();
 
-  rawRuleList.forEach((ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig) => {
-    accumulator.accumulateRule(ruleInfo);
-  });
+  accumulator.accumulateRuleList(rawRuleList);
 
   return accumulator.getPreparedRuleList();
 }
@@ -39,10 +38,26 @@ class RuleAccumulator {
   /**
    * @TODO
    */
-  accumulateRule(ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig): void {
+  accumulateRuleList(
+    ruleList: Array<PackagelintRuleConfig | PackagelintRulesetConfig>,
+    overrides?: Partial<PackagelintRuleConfigObject>,
+  ): void {
+    ruleList.forEach((ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig) => {
+      this.accumulateRule(ruleInfo, overrides);
+    });
+  }
+
+  /**
+   * @TODO
+   */
+  accumulateRule(
+    ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig,
+    overrides: Partial<PackagelintRuleConfigObject> = {},
+  ): void {
     // Shorthands
     if (typeof ruleInfo === 'string') {
       return this._accumulateRuleConfigObject({
+        ...overrides,
         name: ruleInfo,
         enabled: true,
       });
@@ -52,12 +67,14 @@ class RuleAccumulator {
       const [ruleName, ruleOptions] = ruleInfo;
       if (typeof ruleOptions === 'boolean') {
         return this._accumulateRuleConfigObject({
+          ...overrides,
           name: ruleName,
           enabled: ruleOptions,
         });
       }
       // @TODO: Validation for object type
       return this._accumulateRuleConfigObject({
+        ...overrides,
         name: ruleName,
         enabled: true,
         options: ruleOptions,
@@ -66,6 +83,7 @@ class RuleAccumulator {
 
     // @TODO: Validation for object type
     return this._accumulateRuleConfigObject({
+      ...overrides,
       enabled: true,
       ...ruleInfo,
     });
@@ -93,7 +111,7 @@ class RuleAccumulator {
     if (!this._ruleInfo[name]) {
       // We haven't seen this rule before: it's either a bulk modification, or we need to populate its base state
       // before we apply the options/enabled/etc from above
-      let initialRule: PackagelintPreparedRule;
+      let initialRule: PackagelintPreparedRule | null = null;
 
       // @TODO: rulesets
       // @TODO: self-implemented rules
@@ -121,13 +139,18 @@ class RuleAccumulator {
             messages: baseRule.messages || {},
             doValidation: baseRule.doValidation,
           };
+        } else if (isRulesetDefinition(baseRule)) {
+          // @TODO: Apply ruleset-wide options like errorLevel
+          return this.accumulateRuleList(baseRule.rules, {});
         } else {
-          throw new Error('Not implemented: rulesets');
+          throw new Error(`Unrecognized config for rule "${name}"`);
         }
       }
 
-      this._ruleInfo[name] = initialRule;
-      this._ruleOrder.push(name);
+      if (initialRule) {
+        this._ruleInfo[name] = initialRule;
+        this._ruleOrder.push(name);
+      }
     } else if (extendRule) {
       throw new Error('Not implemented: edge cases with extendRule');
       // @TODO: Handle edge cases with extendRule:
@@ -139,6 +162,7 @@ class RuleAccumulator {
     // Now apply the incoming config
     // We mutate because we created this config ourselves
     const existingConfig = this._ruleInfo[name];
+
     if (enabled != null) {
       existingConfig.enabled = enabled;
     }
@@ -157,6 +181,11 @@ class RuleAccumulator {
 function isRuleDefinition(ruleInfo: any): ruleInfo is PackagelintRuleDefinition {
   // @TODO: Proper validation
   return !!ruleInfo.doValidation;
+}
+
+function isRulesetDefinition(ruleInfo: any): ruleInfo is PackagelintRulesetDefinition {
+  // @TODO: Proper validation
+  return !!ruleInfo.rules;
 }
 
 export { accumulateRules, RuleAccumulator, isRuleDefinition };

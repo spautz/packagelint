@@ -13,6 +13,7 @@ function resolveRule(
   const [packageName, ruleOrRulesetName] = name.split(':');
 
   const packageExports = require(packageName);
+
   const packageRulesAndRulesets: Record<
     string,
     PackagelintRuleDefinition | PackagelintRulesetDefinition

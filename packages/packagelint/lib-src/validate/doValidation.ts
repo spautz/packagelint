@@ -61,6 +61,7 @@ async function validateOneRule(
 
     try {
       const validationErrorInfo = await preparedRule.doValidation(options, context);
+      console.log('doValidation()', preparedRule, ' => ', validationErrorInfo);
 
       if (validationErrorInfo) {
         const [errorName, errorData] = validationErrorInfo;
