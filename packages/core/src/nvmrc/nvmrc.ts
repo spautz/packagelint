@@ -1,7 +1,9 @@
-import { readFile } from 'fs/promises';
+import fs from 'fs';
 import semver from 'semver';
 
 import { PackagelintRuleDefinition, PackagelintValidationContext } from '../types';
+
+const { readFile } = fs.promises;
 
 export type NvmrcRuleOptions = {
   fileName: string;
