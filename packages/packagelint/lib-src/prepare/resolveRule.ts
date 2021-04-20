@@ -4,8 +4,6 @@ import {
   PackagelintRulesetDefinition,
 } from '@packagelint/core';
 
-const { hasOwnProperty } = Object.prototype;
-
 function resolveRule(
   name: PackagelintRuleName,
 ): PackagelintRuleDefinition | PackagelintRulesetDefinition {
@@ -14,8 +12,8 @@ function resolveRule(
 
   const [packageName, ruleOrRulesetName] = name.split(':');
 
-  // @TODO: Caching
   const packageExports = require(packageName);
+
   const packageRulesAndRulesets: Record<
     string,
     PackagelintRuleDefinition | PackagelintRulesetDefinition
@@ -27,10 +25,7 @@ function resolveRule(
       Object.keys(ruleSource).forEach((ruleName) => {
         const ruleInfo = ruleSource[ruleName];
 
-        if (
-          hasOwnProperty.call(packageRulesAndRulesets, ruleName) &&
-          packageRulesAndRulesets[ruleName] !== ruleInfo
-        ) {
+        if (packageRulesAndRulesets[ruleName] && packageRulesAndRulesets[ruleName] !== ruleInfo) {
           throw new Error(`Package "${packageName}" defines rule "${ruleName}" more than once`);
         }
 

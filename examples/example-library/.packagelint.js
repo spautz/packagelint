@@ -1,10 +1,10 @@
 module.exports = {
   failOnErrorLevel: 'warning',
   rules: [
-    //   // `@packagelint/core` defines the rules, but each rule is disabled by default:
-    //   // each `@packagelint/presets` ruleset enables a set of those core rules.
-    //   // '@packagelint/presets:library',
-    //
+    // `@packagelint/core` defines the rules, but each rule is disabled by default:
+    // each `@packagelint/presets` ruleset enables a set of those core rules.
+    '@packagelint/presets:library',
+
     //   // Update the `nvmrc` rule to require at least Node 14, instead of the default.
     //   // This could also be written like this, if you prefer shorthand:
     //   //  ['@packagelint/core:nvmrc', { minVersion: '14' }],
@@ -28,7 +28,29 @@ module.exports = {
     //   // },
 
     {
+      name: 'my-local-alias-1',
+      extendRule: '@packagelint/core:always-fail',
+    },
+    {
       name: '@packagelint/core:always-fail',
+      errorLevel: 'suggestion',
+      options: {
+        option1: true,
+      },
+    },
+    {
+      name: 'my-local-alias-2',
+      extendRule: '@packagelint/core:always-fail',
+      errorLevel: 'suggestion',
+      options: {
+        option2: true,
+      },
+    },
+    {
+      name: 'library-alias2',
+      options: {
+        oneMoreOption: true,
+      },
     },
   ],
 };

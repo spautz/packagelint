@@ -1,11 +1,12 @@
 import {
   PackagelintPreparedRule,
   PackagelintRuleConfig,
-  PackagelintRulesetConfig,
-  PackagelintRuleName,
   PackagelintRuleConfigObject,
-  PackagelintRulesetConfigObject,
   PackagelintRuleDefinition,
+  PackagelintRuleName,
+  PackagelintRulesetConfig,
+  PackagelintRulesetConfigObject,
+  PackagelintRulesetDefinition,
 } from '@packagelint/core';
 
 import { resolveRule } from './resolveRule';
@@ -20,9 +21,7 @@ function accumulateRules(
 ): Array<PackagelintPreparedRule> {
   const accumulator = new RuleAccumulator();
 
-  rawRuleList.forEach((ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig) => {
-    accumulator.accumulateRule(ruleInfo);
-  });
+  accumulator.accumulateRuleList(rawRuleList);
 
   return accumulator.getPreparedRuleList();
 }
@@ -39,10 +38,26 @@ class RuleAccumulator {
   /**
    * @TODO
    */
-  accumulateRule(ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig): void {
+  accumulateRuleList(
+    ruleList: Array<PackagelintRuleConfig | PackagelintRulesetConfig>,
+    overrides?: Partial<PackagelintRuleConfigObject>,
+  ): void {
+    ruleList.forEach((ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig) => {
+      this.accumulateRule(ruleInfo, overrides);
+    });
+  }
+
+  /**
+   * @TODO
+   */
+  accumulateRule(
+    ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig,
+    overrides: Partial<PackagelintRuleConfigObject> = {},
+  ): void {
     // Shorthands
     if (typeof ruleInfo === 'string') {
       return this._accumulateRuleConfigObject({
+        ...overrides,
         name: ruleInfo,
         enabled: true,
       });
@@ -52,12 +67,14 @@ class RuleAccumulator {
       const [ruleName, ruleOptions] = ruleInfo;
       if (typeof ruleOptions === 'boolean') {
         return this._accumulateRuleConfigObject({
+          ...overrides,
           name: ruleName,
           enabled: ruleOptions,
         });
       }
       // @TODO: Validation for object type
       return this._accumulateRuleConfigObject({
+        ...overrides,
         name: ruleName,
         enabled: true,
         options: ruleOptions,
@@ -66,6 +83,7 @@ class RuleAccumulator {
 
     // @TODO: Validation for object type
     return this._accumulateRuleConfigObject({
+      ...overrides,
       enabled: true,
       ...ruleInfo,
     });
@@ -91,30 +109,48 @@ class RuleAccumulator {
     } = ruleInfo as PackagelintRuleConfigObject;
 
     if (!this._ruleInfo[name]) {
-      // We haven't seen this rule before: initialize its config
-      const resolvedRule = resolveRule(extendRule || name);
+      // We haven't seen this rule before: it's either a bulk modification, or we need to populate its base state
+      // before we apply the options/enabled/etc from above
+      let initialRule: PackagelintPreparedRule | null = null;
 
-      // @TODO: Handle rulesets
+      // @TODO: rulesets
+      // @TODO: self-implemented rules
+      // @TODO: wildcards
 
-      const {
-        docs,
-        defaultErrorLevel,
-        defaultOptions,
-        messages: defaultMessages,
-        doValidation,
-      } = resolvedRule as PackagelintRuleDefinition;
+      if (extendRule && this._ruleInfo[extendRule]) {
+        initialRule = {
+          ...this._ruleInfo[extendRule],
+          ruleName: name,
+          extendedFrom: extendRule,
+        };
+      } else {
+        const baseRule = resolveRule(extendRule || name);
 
-      this._ruleInfo[name] = {
-        ruleName: name,
-        docs,
-        enabled: false,
-        extendedFrom: extendRule || null,
-        errorLevel: defaultErrorLevel || ERROR_LEVEL__ERROR,
-        options: defaultOptions,
-        messages: defaultMessages,
-        doValidation,
-      };
-      this._ruleOrder.push(name);
+        // @TODO: Split between single rules and rulesets
+
+        if (isRuleDefinition(baseRule)) {
+          initialRule = {
+            ruleName: name,
+            docs: baseRule.docs,
+            enabled: false,
+            extendedFrom: extendRule || null,
+            errorLevel: baseRule.defaultErrorLevel || ERROR_LEVEL__ERROR,
+            options: baseRule.defaultOptions || {},
+            messages: baseRule.messages || {},
+            doValidation: baseRule.doValidation,
+          };
+        } else if (isRulesetDefinition(baseRule)) {
+          // @TODO: Apply ruleset-wide options like errorLevel
+          return this.accumulateRuleList(baseRule.rules, {});
+        } else {
+          throw new Error(`Unrecognized config for rule "${name}"`);
+        }
+      }
+
+      if (initialRule) {
+        this._ruleInfo[name] = initialRule;
+        this._ruleOrder.push(name);
+      }
     } else if (extendRule) {
       throw new Error('Not implemented: edge cases with extendRule');
       // @TODO: Handle edge cases with extendRule:
@@ -126,6 +162,7 @@ class RuleAccumulator {
     // Now apply the incoming config
     // We mutate because we created this config ourselves
     const existingConfig = this._ruleInfo[name];
+
     if (enabled != null) {
       existingConfig.enabled = enabled;
     }
@@ -141,4 +178,14 @@ class RuleAccumulator {
   }
 }
 
-export { accumulateRules, RuleAccumulator };
+function isRuleDefinition(ruleInfo: any): ruleInfo is PackagelintRuleDefinition {
+  // @TODO: Proper validation
+  return !!ruleInfo.doValidation;
+}
+
+function isRulesetDefinition(ruleInfo: any): ruleInfo is PackagelintRulesetDefinition {
+  // @TODO: Proper validation
+  return !!ruleInfo.rules;
+}
+
+export { accumulateRules, RuleAccumulator, isRuleDefinition };

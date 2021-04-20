@@ -1,11 +1,3 @@
-// findFileUp: (fileGlob: string) => Promise<null | Array<string>>;
-// // Setting errorData and returning errors
-// createErrorToReturn: (
-//   errorName: string,
-//   ...extraErrorData: Array<ErrorDataType>
-// ) => [string, ErrorDataType];
-// setErrorData: (errorData: ErrorDataType, ...extraErrorData: Array<ErrorDataType>) => void;
-
 import {
   PackagelintPreparedRule,
   PackagelintUnknownErrorData,
