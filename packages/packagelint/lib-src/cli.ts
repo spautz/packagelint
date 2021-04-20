@@ -3,7 +3,7 @@ import findUp from 'find-up';
 import { PackagelintOutput } from '@packagelint/core';
 
 import { prepareConfig } from './prepare';
-import { SUCCESS, FAILURE__NO_CONFIG, PackagelintExitCode, doValidation } from './validate';
+import { FAILURE__NO_CONFIG, PackagelintExitCode, doValidation } from './validate';
 
 export interface PackagelintCliArgs {
   // @TODO
@@ -48,7 +48,7 @@ async function packagelintCli(
   const validationOutput = await doValidation(preparedConfig);
   console.log('validationOutput = ', validationOutput);
 
-  return [SUCCESS, validationOutput];
+  return [validationOutput.exitCode as PackagelintExitCode, validationOutput];
 }
 
 export { DEFAULT_CLI_ARGS, packagelintCli, findPackagelintConfigFile };

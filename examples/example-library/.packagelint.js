@@ -1,5 +1,5 @@
 module.exports = {
-  failOnErrorLevel: 'warning',
+  failOnErrorLevel: 'exception',
   rules: [
     // `@packagelint/core` defines the rules, but each rule is disabled by default:
     // each `@packagelint/presets` ruleset enables a set of those core rules.
