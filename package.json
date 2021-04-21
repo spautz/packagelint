@@ -15,7 +15,7 @@
     "url": "http://stevenpautz.com/"
   },
   "engines": {
-    "node": ">=10 <17",
+    "node": "^10 || >=12",
     "yarn": "1.*"
   },
   "scripts": {

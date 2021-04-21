@@ -27,7 +27,7 @@
     "*.md"
   ],
   "engines": {
-    "node": ">=10"
+    "node": "^10 || >=12"
   },
   "bin": {
     "packagelint": "./bin/packagelint.js"
