@@ -20,11 +20,15 @@
   },
   "files": [
     "bin/",
+    "docs/",
     "lib-dist/",
     "lib-src/",
     "LICENSE",
     "*.md"
   ],
+  "engines": {
+    "node": ">=10"
+  },
   "bin": {
     "packagelint": "./bin/packagelint.js"
   },
