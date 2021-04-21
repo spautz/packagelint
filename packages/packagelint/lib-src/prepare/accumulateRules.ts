@@ -105,6 +105,7 @@ class RuleAccumulator {
       extendRule,
       errorLevel,
       options,
+      resetOptions,
       messages,
     } = ruleInfo as PackagelintRuleConfigObject;
 
@@ -129,12 +130,19 @@ class RuleAccumulator {
         // @TODO: Split between single rules and rulesets
 
         if (isRuleDefinition(baseRule)) {
+          if (name === baseRule.name && baseRule.isAbstract) {
+            throw new Error(
+              `Rule "${name}" is abstract: make a new rule (extendRule) instead of using it directly`,
+            );
+          }
+
           initialRule = {
             ruleName: name,
             docs: baseRule.docs,
             enabled: false,
             extendedFrom: extendRule || null,
             errorLevel: baseRule.defaultErrorLevel || ERROR_LEVEL__ERROR,
+            defaultOptions: baseRule.defaultOptions || {},
             options: baseRule.defaultOptions || {},
             messages: baseRule.messages || {},
             doValidation: baseRule.doValidation,
@@ -169,11 +177,14 @@ class RuleAccumulator {
     if (errorLevel != null) {
       existingConfig.errorLevel = errorLevel;
     }
+    if (resetOptions) {
+      existingConfig.options = { ...existingConfig.defaultOptions };
+    }
     if (options) {
-      existingConfig.options = { ...(existingConfig.options || {}), ...options };
+      existingConfig.options = { ...existingConfig.options, ...options };
     }
     if (messages) {
-      existingConfig.messages = { ...(existingConfig.messages || {}), ...messages };
+      existingConfig.messages = { ...existingConfig.messages, ...messages };
     }
   }
 }

@@ -62,6 +62,7 @@ export type PackagelintRuleConfigObject<OptionsType = PackagelintUnknownOptions>
   extendRule?: PackagelintRuleName;
   errorLevel?: PackagelintErrorLevel;
   options?: OptionsType;
+  resetOptions?: boolean;
   messages?: Record<string, string>;
 };
 
@@ -103,6 +104,7 @@ export interface PackagelintPreparedRule<OptionsType = PackagelintUnknownOptions
   enabled: boolean;
   extendedFrom: string | null;
   errorLevel: PackagelintErrorLevel;
+  defaultOptions: OptionsType;
   options: OptionsType;
   messages: Record<string, string>;
   doValidation: PackagelintValidationFn;
