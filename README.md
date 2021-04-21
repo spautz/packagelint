@@ -1,5 +1,47 @@
-# @packagelint
+# Packagelint
 
-An in-progress tool for validating the structure of your NPM package, library, or app.
+[![build status](https://github.com/spautz/packagelint/workflows/CI/badge.svg)](https://github.com/spautz/packagelint/actions)
+[![test coverage](https://img.shields.io/coveralls/github/spautz/packagelint/main.svg)](https://coveralls.io/github/spautz/packagelint?branch=main)
 
-This is an experimental playground. Do not use.
+Packagelint is a linter for the files that live _around_ your code. It's meant to complement traditional code linters
+like ESLint.
+
+Packagelint runs a series of validation rules -- defined in `.packagelint.js` -- against your project directory.
+It's most useful when you have a group of projects that should all follow common standards, like having a `.npmrc`
+file, certain `.npmrc` settings, particular config values for ESLint or Jest, or a certain version of React.
+
+## NOT YET PUBLISHED
+
+This tool is not yet ready for public use. Version `0.1.0` will be the first public release. Full docs will be available
+after `0.2.0`.
+
+## Packages
+
+#### [@packagelint/core](./packages/core/)
+
+[![npm version](https://img.shields.io/npm/v/@packagelint/core.svg)](https://www.npmjs.com/package/@packagelint/core)
+[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/core)](https://david-dm.org/spautz/packagelint?path=packages/core)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/@packagelint/core@latest/dist/core.cjs.production.min.js?compression=gzip)](https://bundlephobia.com/result?p=@packagelint/core@latest)
+
+A collection of validation checks, covering various standards and tools that you might want to check for.
+
+#### [@packagelint/packagelint](./packages/packagelint/)
+
+[![npm version](https://img.shields.io/npm/v/@packagelint/packagelint.svg)](https://www.npmjs.com/package/@packagelint/packagelint)
+[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/packagelint)](https://david-dm.org/spautz/packagelint?path=packages/packagelint)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/@packagelint/packagelint@latest/dist/packagelint.cjs.production.min.js?compression=gzip)](https://bundlephobia.com/result?p=@packagelint/packagelint@latest)
+
+The `packagelint` command itself, available as a CLI tool or as an importable API.
+
+#### [@packagelint/presets](./packages/presets/)
+
+[![npm version](https://img.shields.io/npm/v/@packagelint/presets.svg)](https://www.npmjs.com/package/@packagelint/presets)
+[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/presets)](https://david-dm.org/spautz/packagelint?path=packages/presets)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/@packagelint/presets@latest/dist/presets.cjs.production.min.js?compression=gzip)](https://bundlephobia.com/result?p=@packagelint/presets@latest)
+
+A collection of validation presets: a ready-to-use ruleset that selects and configures some of the core rules for
+common scenarios.
+
+## Documentation (incomplete)
+
+- [Overview](./docs/overview.md)
