@@ -2,8 +2,8 @@ import { libraryRulesetDefinition } from './library';
 
 export * from './library';
 
-const packagelintExports = {
+const packagelintRules = {
   library: libraryRulesetDefinition,
 };
 
-export { packagelintExports };
+export { packagelintRules };

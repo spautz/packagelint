@@ -16,19 +16,19 @@ function resolveRule(
     throw new Error(`Rule "${name}" is not a valid rule name`);
   }
 
-  const { packagelintExports } = require(packageName);
+  const { packagelintRules } = require(packageName);
 
-  if (!packagelintExports) {
+  if (!packagelintRules) {
     throw new Error(`Package "${packageName}" does not provide any packagelint exports`);
   }
-  if (typeof packagelintExports !== 'object') {
+  if (typeof packagelintRules !== 'object') {
     throw new Error(`Package "${packageName}" does not provide any valid packagelint exports`);
   }
-  if (!Object.prototype.hasOwnProperty.call(packagelintExports, ruleOrRulesetName)) {
+  if (!Object.prototype.hasOwnProperty.call(packagelintRules, ruleOrRulesetName)) {
     throw new Error(`Package "${packageName}" does not provide rule "${ruleOrRulesetName}"`);
   }
 
-  return packagelintExports[ruleOrRulesetName];
+  return packagelintRules[ruleOrRulesetName];
 }
 
 export { resolveRule };

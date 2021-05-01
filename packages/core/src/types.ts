@@ -9,6 +9,7 @@ export type PackagelintErrorLevelCounts = {
   ignore: number;
 };
 export type PackagelintRuleName = string;
+export type PackagelintOutputName = string;
 
 export type PackagelintUnknownOptions = Record<string, unknown>;
 export type PackagelintUnknownErrorData = Record<string, unknown>;
@@ -20,6 +21,10 @@ export interface PackagelintUserConfig {
   failOnErrorLevel: PackagelintErrorLevel;
   /* The rules and rulesets to run */
   rules: Array<PackagelintRuleConfig | PackagelintRulesetConfig>;
+  /* Result reporters */
+  outputs: Record<string, any>;
+
+  // @TODO: aliases, outputAliases
 }
 
 // Rules
@@ -152,7 +157,7 @@ export interface PackagelintValidationError<ErrorDataType = PackagelintUnknownEr
   message: string;
 }
 
-// Final results
+// Final validation results
 
 export interface PackagelintOutput {
   // Overall results
@@ -166,3 +171,7 @@ export interface PackagelintOutput {
   // The full details used to generate the results
   errorResults: Array<PackagelintValidationError>;
 }
+
+// Output reporters
+
+// @TODO
