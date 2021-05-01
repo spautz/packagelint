@@ -19,10 +19,10 @@ function resolveRule(
   const { packagelintRules } = require(packageName);
 
   if (!packagelintRules) {
-    throw new Error(`Package "${packageName}" does not provide any packagelint exports`);
+    throw new Error(`Package "${packageName}" does not provide any packagelint rules`);
   }
   if (typeof packagelintRules !== 'object') {
-    throw new Error(`Package "${packageName}" does not provide any valid packagelint exports`);
+    throw new Error(`Package "${packageName}" does not provide any valid packagelint rules`);
   }
   if (!Object.prototype.hasOwnProperty.call(packagelintRules, ruleOrRulesetName)) {
     throw new Error(`Package "${packageName}" does not provide rule "${ruleOrRulesetName}"`);

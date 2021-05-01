@@ -5,7 +5,7 @@ const defaultUserConfig: PackagelintUserConfig = {
   failOnErrorLevel: 'error',
   rules: ['@packagelint/core:always-fail'],
   outputs: {
-    '@packagelint/core': ['internalDebug'],
+    '@packagelint/core:internalDebug': true,
   },
 };
 
@@ -33,4 +33,4 @@ function prepareConfig(actualProjectConfig: PackagelintUserConfig): PackagelintP
   return preparedConfig;
 }
 
-export { prepareConfig };
+export { defaultUserConfig, prepareConfig };

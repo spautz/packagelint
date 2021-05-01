@@ -159,6 +159,7 @@ export interface PackagelintValidationError<ErrorDataType = PackagelintUnknownEr
 
 // Final validation results
 
+// @TODO: Rename this
 export interface PackagelintOutput {
   // Overall results
   numRules: number;
@@ -174,4 +175,29 @@ export interface PackagelintOutput {
 
 // Output reporters
 
-// @TODO
+export type PackagelintOutputConstructor<OptionsType = any> = new (
+  options: OptionsType,
+) => PackagelintOutputDefinition<OptionsType>;
+
+export interface PackagelintOutputDefinition<OptionsType = any> {
+  new?(options: OptionsType): PackagelintOutputDefinition<OptionsType>;
+
+  readonly onConfigStart?: (userConfig: PackagelintUserConfig) => Promise<void> | void;
+
+  readonly onConfigReady?: (preparedConfig: PackagelintPreparedConfig) => Promise<void> | void;
+
+  readonly onValidationStart?: (preparedConfig: PackagelintPreparedConfig) => Promise<void> | void;
+
+  readonly onValidationComplete?: (fullResults: PackagelintOutput) => Promise<void> | void;
+
+  readonly onRuleStart?: (ruleInfo: PackagelintPreparedRule) => Promise<void> | void;
+
+  readonly onRuleResult?: (
+    ruleInfo: PackagelintPreparedRule,
+    ruleResult: PackagelintValidationResult,
+    // @TODO
+    aggregatedResults: any,
+  ) => Promise<void> | void;
+
+  readonly getLastError?: () => Error | void;
+}
