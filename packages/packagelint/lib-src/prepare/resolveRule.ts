@@ -12,33 +12,23 @@ function resolveRule(
 
   const [packageName, ruleOrRulesetName] = name.split(':');
 
-  const packageExports = require(packageName);
-
-  const packageRulesAndRulesets: Record<
-    string,
-    PackagelintRuleDefinition | PackagelintRulesetDefinition
-  > = Object.create(null);
-
-  // Merge rules and rulesets, no matter what keys they were found under
-  [packageExports.packagelintRules, packageExports.packagelintRulesets].forEach((ruleSource) => {
-    if (ruleSource) {
-      Object.keys(ruleSource).forEach((ruleName) => {
-        const ruleInfo = ruleSource[ruleName];
-
-        if (packageRulesAndRulesets[ruleName] && packageRulesAndRulesets[ruleName] !== ruleInfo) {
-          throw new Error(`Package "${packageName}" defines rule "${ruleName}" more than once`);
-        }
-
-        packageRulesAndRulesets[ruleName] = ruleInfo;
-      });
-    }
-  });
-
-  if (!packageRulesAndRulesets[ruleOrRulesetName]) {
-    throw new Error(`Rule not found: ${name}`);
+  if (!packageName || !ruleOrRulesetName) {
+    throw new Error(`Rule "${name}" is not a valid rule name`);
   }
 
-  return packageRulesAndRulesets[ruleOrRulesetName];
+  const { packagelintExports } = require(packageName);
+
+  if (!packagelintExports) {
+    throw new Error(`Package "${packageName}" does not provide any packagelint exports`);
+  }
+  if (typeof packagelintExports !== 'object') {
+    throw new Error(`Package "${packageName}" does not provide any valid packagelint exports`);
+  }
+  if (!Object.prototype.hasOwnProperty.call(packagelintExports, ruleOrRulesetName)) {
+    throw new Error(`Package "${packageName}" does not provide rule "${ruleOrRulesetName}"`);
+  }
+
+  return packagelintExports[ruleOrRulesetName];
 }
 
 export { resolveRule };
