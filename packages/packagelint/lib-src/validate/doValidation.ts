@@ -24,8 +24,6 @@ async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<
 
   const allResults = await validateRuleList(rules, reporters);
 
-  broadcastEvent(preparedConfig, 'onValidationComplete', allResults);
-
   const errorResults = allResults.filter(
     (validationResult) => !!validationResult,
   ) as Array<PackagelintValidationError>;
@@ -36,7 +34,7 @@ async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<
     ? SUCCESS
     : FAILURE__VALIDATION;
 
-  return {
+  const output = {
     numRules: rules.length,
     numRulesPassed: rules.length - errorResults.length,
     numRulesFailed: errorResults.length,
@@ -47,6 +45,10 @@ async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<
 
     errorResults: errorResults,
   };
+
+  broadcastEvent(preparedConfig, 'onValidationComplete', output);
+
+  return output;
 }
 
 async function validateRuleList(
