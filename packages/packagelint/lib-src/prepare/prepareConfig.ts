@@ -1,9 +1,14 @@
 import { PackagelintUserConfig, PackagelintPreparedConfig } from '@packagelint/core';
+
+import { broadcastEventUsingReporters, prepareReporters } from '../report';
 import { accumulateRules } from './accumulateRules';
 
 const defaultUserConfig: PackagelintUserConfig = {
   failOnErrorLevel: 'error',
   rules: ['@packagelint/core:always-fail'],
+  reporters: {
+    '@packagelint/core:internalDebugReporter': true,
+  },
 };
 
 /**
@@ -18,16 +23,22 @@ function prepareConfig(actualProjectConfig: PackagelintUserConfig): PackagelintP
     ...actualProjectConfig,
   };
 
+  const reporters = prepareReporters(finalUserConfig);
+
   // @TODO: Validate config
-  console.log('finalUserConfig = ', finalUserConfig);
+
+  broadcastEventUsingReporters(reporters, 'onConfigStart', finalUserConfig);
 
   // @TODO: Verbose option
 
   const preparedConfig = {
     ...finalUserConfig,
-    rules: accumulateRules(finalUserConfig.rules),
+    rules: accumulateRules(finalUserConfig),
+    reporters,
   };
+
+  broadcastEventUsingReporters(reporters, 'onConfigReady', preparedConfig);
   return preparedConfig;
 }
 
-export { prepareConfig };
+export { defaultUserConfig, prepareConfig };

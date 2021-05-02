@@ -7,6 +7,7 @@ import {
   PackagelintRulesetConfig,
   PackagelintRulesetConfigObject,
   PackagelintRulesetDefinition,
+  PackagelintUserConfig,
 } from '@packagelint/core';
 
 import { resolveRule } from './resolveRule';
@@ -16,12 +17,10 @@ import { ERROR_LEVEL__ERROR } from '../validate/errorLevels';
  * Iterates through a list of user-specified rules and rulesets, resolving each and merging options to make a final list
  * of validation-ready rules.
  */
-function accumulateRules(
-  rawRuleList: Array<PackagelintRuleConfig | PackagelintRulesetConfig>,
-): Array<PackagelintPreparedRule> {
+function accumulateRules(packagelintConfig: PackagelintUserConfig): Array<PackagelintPreparedRule> {
   const accumulator = new RuleAccumulator();
 
-  accumulator.accumulateRuleList(rawRuleList);
+  accumulator.accumulateRuleList(packagelintConfig.rules);
 
   return accumulator.getPreparedRuleList();
 }
@@ -199,4 +198,4 @@ function isRulesetDefinition(ruleInfo: any): ruleInfo is PackagelintRulesetDefin
   return !!ruleInfo.rules;
 }
 
-export { accumulateRules, RuleAccumulator, isRuleDefinition };
+export { accumulateRules, RuleAccumulator, isRuleDefinition, isRulesetDefinition };

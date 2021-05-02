@@ -9,6 +9,7 @@ export type PackagelintErrorLevelCounts = {
   ignore: number;
 };
 export type PackagelintRuleName = string;
+export type PackagelintReporterName = string;
 
 export type PackagelintUnknownOptions = Record<string, unknown>;
 export type PackagelintUnknownErrorData = Record<string, unknown>;
@@ -20,6 +21,10 @@ export interface PackagelintUserConfig {
   failOnErrorLevel: PackagelintErrorLevel;
   /* The rules and rulesets to run */
   rules: Array<PackagelintRuleConfig | PackagelintRulesetConfig>;
+  /* Result reporters */
+  reporters: Record<PackagelintReporterName, unknown>;
+
+  // @TODO: aliases, reporterAliases
 }
 
 // Rules
@@ -93,6 +98,7 @@ export type PackagelintRulesetConfigObject = {
 export interface PackagelintPreparedConfig {
   failOnErrorLevel: PackagelintErrorLevel;
   rules: Array<PackagelintPreparedRule>;
+  reporters: Array<PackagelintReporter>;
 }
 
 export interface PackagelintPreparedRule<OptionsType = PackagelintUnknownOptions> {
@@ -152,7 +158,7 @@ export interface PackagelintValidationError<ErrorDataType = PackagelintUnknownEr
   message: string;
 }
 
-// Final results
+// Final validation results
 
 export interface PackagelintOutput {
   // Overall results
@@ -166,3 +172,46 @@ export interface PackagelintOutput {
   // The full details used to generate the results
   errorResults: Array<PackagelintValidationError>;
 }
+
+// Progress/Output/Result reporters
+
+export type PackagelintReporterEventName =
+  | 'onConfigStart'
+  | 'onConfigReady'
+  | 'onValidationStart'
+  | 'onValidationComplete'
+  | 'onRuleStart'
+  | 'onRuleResult'
+  | 'getLastError';
+
+export interface PackagelintReporter {
+  readonly onConfigStart?: (userConfig: PackagelintUserConfig) => Promise<void> | void;
+
+  readonly onConfigReady?: (preparedConfig: PackagelintPreparedConfig) => Promise<void> | void;
+
+  readonly onValidationStart?: (preparedConfig: PackagelintPreparedConfig) => Promise<void> | void;
+
+  readonly onValidationComplete?: (fullResults: PackagelintOutput) => Promise<void> | void;
+
+  readonly onRuleStart?: (ruleInfo: PackagelintPreparedRule) => Promise<void> | void;
+
+  readonly onRuleResult?: (
+    ruleInfo: PackagelintPreparedRule,
+    ruleResult: PackagelintValidationResult,
+    // @TODO
+    // aggregatedResults: any,
+  ) => Promise<void> | void;
+
+  readonly getLastError?: () => Error | void;
+}
+
+export interface PackagelintReporterClassConstructor<OptionsType = any> {
+  new (options: OptionsType): PackagelintReporter;
+}
+export type PackagelintReporterConstructorFunction<OptionsType = any> = (
+  options: OptionsType,
+) => PackagelintReporter;
+
+export type PackagelintReporterConstructor<OptionsType = any> =
+  | PackagelintReporterClassConstructor<OptionsType>
+  | PackagelintReporterConstructorFunction<OptionsType>;

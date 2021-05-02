@@ -4,6 +4,7 @@ import {
   PackagelintPreparedConfig,
   PackagelintValidationResult,
   PackagelintValidationError,
+  PackagelintReporter,
 } from '@packagelint/core';
 
 import {
@@ -14,12 +15,16 @@ import {
 } from './errorLevels';
 import { SUCCESS, FAILURE__VALIDATION } from './exitCodes';
 import { makeValidationContext } from './validationContext';
+import { broadcastEvent, broadcastEventUsingReporters } from '../report';
 
 async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<PackagelintOutput> {
-  const { failOnErrorLevel, rules } = preparedConfig;
-  console.log('doValidation()', preparedConfig);
+  const { failOnErrorLevel, rules, reporters } = preparedConfig;
 
-  const allResults = await validateRuleList(rules);
+  broadcastEvent(preparedConfig, 'onValidationStart', preparedConfig);
+
+  const allResults = await validateRuleList(rules, reporters);
+
+  broadcastEvent(preparedConfig, 'onValidationComplete', allResults);
 
   const errorResults = allResults.filter(
     (validationResult) => !!validationResult,
@@ -46,22 +51,29 @@ async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<
 
 async function validateRuleList(
   ruleList: Array<PackagelintPreparedRule>,
+  reporterList: Array<PackagelintReporter>,
 ): Promise<Array<PackagelintValidationResult>> {
-  return await Promise.all(ruleList.map(validateOneRule));
+  return await Promise.all(
+    ruleList.map((preparedRule) => {
+      return validateOneRule(preparedRule, reporterList);
+    }),
+  );
 }
 
 async function validateOneRule(
   preparedRule: PackagelintPreparedRule,
+  reporterList: Array<PackagelintReporter>,
 ): Promise<PackagelintValidationResult> {
   const { ruleName, enabled, errorLevel, options, messages } = preparedRule;
   let result = null;
 
   if (enabled) {
+    broadcastEventUsingReporters(reporterList, 'onRuleStart', preparedRule);
+
     const context = makeValidationContext(preparedRule);
 
     try {
       const validationErrorInfo = await preparedRule.doValidation(options, context);
-      console.log('doValidation()', preparedRule, ' => ', validationErrorInfo);
 
       if (validationErrorInfo) {
         const [errorName, errorData] = validationErrorInfo;
@@ -83,6 +95,7 @@ async function validateOneRule(
         message: e.message,
       };
     }
+    broadcastEventUsingReporters(reporterList, 'onRuleResult', preparedRule, result);
   }
   return result;
 }
