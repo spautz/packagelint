@@ -4,8 +4,8 @@ import { accumulateRules } from './accumulateRules';
 const defaultUserConfig: PackagelintUserConfig = {
   failOnErrorLevel: 'error',
   rules: ['@packagelint/core:always-fail'],
-  outputs: {
-    '@packagelint/core:internalDebug': true,
+  reporters: {
+    '@packagelint/core:internalDebugReporter': true,
   },
 };
 

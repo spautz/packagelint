@@ -1,24 +1,24 @@
-import { PackagelintRuleDefinition, PackagelintOutputConstructor } from './types';
+import { PackagelintRuleDefinition, PackagelintReporterConstructor } from './types';
 
 import { alwaysFailRuleDefinition } from './rules/always-fail/always-fail';
 import { nvmrcRuleDefinition } from './rules/nvmrc/nvmrc';
 
-import { InternalDebugOutput } from './outputs/internalDebugOutput/InternalDebugOutput';
+import { InternalDebugReporter } from './reporters/internalDebugReporter/InternalDebugReporter';
 
 export * from './types';
 
 export * from './rules/always-fail/always-fail';
 export * from './rules/nvmrc/nvmrc';
 
-export * from './outputs/internalDebugOutput/InternalDebugOutput';
+export * from './reporters/internalDebugReporter/InternalDebugReporter';
 
 const packagelintRules: Record<string, PackagelintRuleDefinition<any>> = {
   'always-fail': alwaysFailRuleDefinition,
   nvmrc: nvmrcRuleDefinition,
 };
 
-const packagelintOutputs: Record<string, PackagelintOutputConstructor<any>> = {
-  internalDebug: InternalDebugOutput,
+const packagelintReporters: Record<string, PackagelintReporterConstructor<any>> = {
+  internalDebugReporter: InternalDebugReporter,
 };
 
-export { packagelintRules, packagelintOutputs };
+export { packagelintRules, packagelintReporters };

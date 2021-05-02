@@ -1,6 +1,6 @@
-import { PackagelintOutputDefinition } from '../../types';
+import { PackagelintReporterDefinition } from '../../types';
 
-export type PackagelintOutputEventName =
+export type PackagelintReporterEventName =
   | 'constructor'
   | 'onConfigStart'
   | 'onConfigReady'
@@ -10,13 +10,13 @@ export type PackagelintOutputEventName =
   | 'onRuleResult'
   | 'getLastError';
 
-type PackagelintInternalDebugOutput_EventsToLog = Record<PackagelintOutputEventName, boolean>;
+type PackagelintInternalDebugReporter_EventsToLog = Record<PackagelintReporterEventName, boolean>;
 
-export type PackagelintInternalDebugOutputOptions =
-  | Partial<PackagelintInternalDebugOutput_EventsToLog>
+export type PackagelintInternalDebugReporterOptions =
+  | Partial<PackagelintInternalDebugReporter_EventsToLog>
   | boolean;
 
-const defaultEventsToLog: PackagelintInternalDebugOutput_EventsToLog = {
+const defaultEventsToLog: PackagelintInternalDebugReporter_EventsToLog = {
   constructor: true,
   onConfigStart: true,
   onConfigReady: true,
@@ -27,13 +27,13 @@ const defaultEventsToLog: PackagelintInternalDebugOutput_EventsToLog = {
   getLastError: true,
 };
 
-class InternalDebugOutput
-  implements PackagelintOutputDefinition<PackagelintInternalDebugOutputOptions> {
-  _prefix = 'Packagelint InternalDebugOutput';
+class InternalDebugReporter
+  implements PackagelintReporterDefinition<PackagelintInternalDebugReporterOptions> {
+  _prefix = 'Packagelint InternalDebugReporter';
   _callback = console.log;
-  _eventsToLog: PackagelintInternalDebugOutput_EventsToLog = defaultEventsToLog;
+  _eventsToLog: PackagelintInternalDebugReporter_EventsToLog = defaultEventsToLog;
 
-  constructor(options: PackagelintInternalDebugOutputOptions) {
+  constructor(options: PackagelintInternalDebugReporterOptions) {
     if (typeof options === 'object') {
       this._eventsToLog = {
         ...defaultEventsToLog,
@@ -45,7 +45,7 @@ class InternalDebugOutput
           ...acc,
           [eventName]: options,
         }),
-        {} as PackagelintInternalDebugOutput_EventsToLog,
+        {} as PackagelintInternalDebugReporter_EventsToLog,
       );
     }
 
@@ -74,11 +74,11 @@ class InternalDebugOutput
     this._logEvent('getLastError', ...args);
   }
 
-  _logEvent(eventName: PackagelintOutputEventName, ...args: Array<any>) {
+  _logEvent(eventName: PackagelintReporterEventName, ...args: Array<any>) {
     if (this._eventsToLog[eventName]) {
       this._callback(`${this._prefix}: ${eventName}`, ...args);
     }
   }
 }
 
-export { InternalDebugOutput };
+export { InternalDebugReporter };

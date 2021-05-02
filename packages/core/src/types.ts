@@ -9,7 +9,7 @@ export type PackagelintErrorLevelCounts = {
   ignore: number;
 };
 export type PackagelintRuleName = string;
-export type PackagelintOutputName = string;
+export type PackagelintReporterName = string;
 
 export type PackagelintUnknownOptions = Record<string, unknown>;
 export type PackagelintUnknownErrorData = Record<string, unknown>;
@@ -22,9 +22,9 @@ export interface PackagelintUserConfig {
   /* The rules and rulesets to run */
   rules: Array<PackagelintRuleConfig | PackagelintRulesetConfig>;
   /* Result reporters */
-  outputs: Record<string, any>;
+  reporters: Record<string, any>;
 
-  // @TODO: aliases, outputAliases
+  // @TODO: aliases, reporterAliases
 }
 
 // Rules
@@ -159,7 +159,6 @@ export interface PackagelintValidationError<ErrorDataType = PackagelintUnknownEr
 
 // Final validation results
 
-// @TODO: Rename this
 export interface PackagelintOutput {
   // Overall results
   numRules: number;
@@ -173,14 +172,14 @@ export interface PackagelintOutput {
   errorResults: Array<PackagelintValidationError>;
 }
 
-// Output reporters
+// Progress/Output/Result reporters
 
-export type PackagelintOutputConstructor<OptionsType = any> = new (
+export type PackagelintReporterConstructor<OptionsType = any> = new (
   options: OptionsType,
-) => PackagelintOutputDefinition<OptionsType>;
+) => PackagelintReporterDefinition<OptionsType>;
 
-export interface PackagelintOutputDefinition<OptionsType = any> {
-  new?(options: OptionsType): PackagelintOutputDefinition<OptionsType>;
+export interface PackagelintReporterDefinition<OptionsType = any> {
+  new?(options: OptionsType): PackagelintReporterDefinition<OptionsType>;
 
   readonly onConfigStart?: (userConfig: PackagelintUserConfig) => Promise<void> | void;
 
