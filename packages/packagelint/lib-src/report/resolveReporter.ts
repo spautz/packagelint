@@ -1,6 +1,6 @@
-import { PackagelintReporterName, PackagelintReporterDefinition } from '@packagelint/core';
+import { PackagelintReporterName, PackagelintReporterConstructor } from '@packagelint/core';
 
-function resolveReporter(name: PackagelintReporterName): PackagelintReporterDefinition {
+function resolveReporter(name: PackagelintReporterName): PackagelintReporterConstructor {
   // @TODO: Implement this properly
   // @TODO: Validation
 

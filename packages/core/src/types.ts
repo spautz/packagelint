@@ -22,7 +22,7 @@ export interface PackagelintUserConfig {
   /* The rules and rulesets to run */
   rules: Array<PackagelintRuleConfig | PackagelintRulesetConfig>;
   /* Result reporters */
-  reporters: Record<string, any>;
+  reporters: Record<PackagelintReporterName, unknown>;
 
   // @TODO: aliases, reporterAliases
 }
@@ -98,6 +98,7 @@ export type PackagelintRulesetConfigObject = {
 export interface PackagelintPreparedConfig {
   failOnErrorLevel: PackagelintErrorLevel;
   rules: Array<PackagelintPreparedRule>;
+  reporters: Array<PackagelintReporter>;
 }
 
 export interface PackagelintPreparedRule<OptionsType = PackagelintUnknownOptions> {
@@ -174,13 +175,16 @@ export interface PackagelintOutput {
 
 // Progress/Output/Result reporters
 
-export type PackagelintReporterConstructor<OptionsType = any> = new (
-  options: OptionsType,
-) => PackagelintReporterDefinition<OptionsType>;
+export type PackagelintReporterEventName =
+  | 'onConfigStart'
+  | 'onConfigReady'
+  | 'onValidationStart'
+  | 'onValidationComplete'
+  | 'onRuleStart'
+  | 'onRuleResult'
+  | 'getLastError';
 
-export interface PackagelintReporterDefinition<OptionsType = any> {
-  new?(options: OptionsType): PackagelintReporterDefinition<OptionsType>;
-
+export interface PackagelintReporter {
   readonly onConfigStart?: (userConfig: PackagelintUserConfig) => Promise<void> | void;
 
   readonly onConfigReady?: (preparedConfig: PackagelintPreparedConfig) => Promise<void> | void;
@@ -195,8 +199,19 @@ export interface PackagelintReporterDefinition<OptionsType = any> {
     ruleInfo: PackagelintPreparedRule,
     ruleResult: PackagelintValidationResult,
     // @TODO
-    aggregatedResults: any,
+    // aggregatedResults: any,
   ) => Promise<void> | void;
 
   readonly getLastError?: () => Error | void;
 }
+
+export interface PackagelintReporterClassConstructor<OptionsType = any> {
+  new (options: OptionsType): PackagelintReporter;
+}
+export type PackagelintReporterConstructorFunction<OptionsType = any> = (
+  options: OptionsType,
+) => PackagelintReporter;
+
+export type PackagelintReporterConstructor<OptionsType = any> =
+  | PackagelintReporterClassConstructor<OptionsType>
+  | PackagelintReporterConstructorFunction<OptionsType>;

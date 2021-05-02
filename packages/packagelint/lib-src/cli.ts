@@ -27,26 +27,21 @@ async function findPackagelintConfigFile(
  * 4. Output results
  */
 async function packagelintCli(
-  argv: Partial<PackagelintCliArgs> = {},
+  _argv: Partial<PackagelintCliArgs> = {},
 ): Promise<[PackagelintExitCode, PackagelintOutput | null]> {
-  const cliArgs = { ...DEFAULT_CLI_ARGS, ...argv };
-  console.log('cli args: ', argv, cliArgs);
+  // const cliArgs = { ...DEFAULT_CLI_ARGS, ...argv };
 
   const packagelintConfigFileName = await findPackagelintConfigFile();
-  console.log('packagelintConfigFileName = ', packagelintConfigFileName);
 
   if (!packagelintConfigFileName) {
     return [FAILURE__NO_CONFIG, null];
   }
 
   const packagelintUserConfig = require(packagelintConfigFileName);
-  console.log('packagelintUserConfig = ', packagelintUserConfig);
 
   const preparedConfig = await prepareConfig(packagelintUserConfig);
-  console.log('preparedConfig = ', preparedConfig);
 
   const validationOutput = await doValidation(preparedConfig);
-  console.log('validationOutput = ', validationOutput);
 
   return [validationOutput.exitCode as PackagelintExitCode, validationOutput];
 }

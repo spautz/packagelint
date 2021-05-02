@@ -1,14 +1,4 @@
-import { PackagelintReporterDefinition } from '../../types';
-
-export type PackagelintReporterEventName =
-  | 'constructor'
-  | 'onConfigStart'
-  | 'onConfigReady'
-  | 'onValidationStart'
-  | 'onValidationComplete'
-  | 'onRuleStart'
-  | 'onRuleResult'
-  | 'getLastError';
+import { PackagelintReporter, PackagelintReporterEventName } from '../../types';
 
 type PackagelintInternalDebugReporter_EventsToLog = Record<PackagelintReporterEventName, boolean>;
 
@@ -17,7 +7,6 @@ export type PackagelintInternalDebugReporterOptions =
   | boolean;
 
 const defaultEventsToLog: PackagelintInternalDebugReporter_EventsToLog = {
-  constructor: true,
   onConfigStart: true,
   onConfigReady: true,
   onValidationStart: true,
@@ -27,8 +16,7 @@ const defaultEventsToLog: PackagelintInternalDebugReporter_EventsToLog = {
   getLastError: true,
 };
 
-class InternalDebugReporter
-  implements PackagelintReporterDefinition<PackagelintInternalDebugReporterOptions> {
+class InternalDebugReporter implements PackagelintReporter {
   _prefix = 'Packagelint InternalDebugReporter';
   _callback = console.log;
   _eventsToLog: PackagelintInternalDebugReporter_EventsToLog = defaultEventsToLog;
@@ -48,33 +36,31 @@ class InternalDebugReporter
         {} as PackagelintInternalDebugReporter_EventsToLog,
       );
     }
-
-    this._logEvent('constructor', options);
   }
 
-  onConfigStart(...args: Array<unknown>) {
+  onConfigStart(...args: Array<unknown>): void {
     this._logEvent('onConfigStart', ...args);
   }
-  onConfigReady(...args: Array<unknown>) {
+  onConfigReady(...args: Array<unknown>): void {
     this._logEvent('onConfigReady', ...args);
   }
-  onValidationStart(...args: Array<unknown>) {
+  onValidationStart(...args: Array<unknown>): void {
     this._logEvent('onValidationStart', ...args);
   }
-  onValidationComplete(...args: Array<unknown>) {
+  onValidationComplete(...args: Array<unknown>): void {
     this._logEvent('onValidationComplete', ...args);
   }
-  onRuleStart(...args: Array<unknown>) {
+  onRuleStart(...args: Array<unknown>): void {
     this._logEvent('onRuleStart', ...args);
   }
-  onRuleResult(...args: Array<unknown>) {
+  onRuleResult(...args: Array<unknown>): void {
     this._logEvent('onRuleResult', ...args);
   }
-  getLastError(...args: Array<unknown>) {
+  getLastError(...args: Array<unknown>): void {
     this._logEvent('getLastError', ...args);
   }
 
-  _logEvent(eventName: PackagelintReporterEventName, ...args: Array<any>) {
+  _logEvent(eventName: PackagelintReporterEventName, ...args: Array<any>): void {
     if (this._eventsToLog[eventName]) {
       this._callback(`${this._prefix}: ${eventName}`, ...args);
     }

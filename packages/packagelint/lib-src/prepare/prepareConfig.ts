@@ -1,4 +1,6 @@
 import { PackagelintUserConfig, PackagelintPreparedConfig } from '@packagelint/core';
+
+import { broadcastEventUsingReporters, prepareReporters } from '../report';
 import { accumulateRules } from './accumulateRules';
 
 const defaultUserConfig: PackagelintUserConfig = {
@@ -21,15 +23,21 @@ function prepareConfig(actualProjectConfig: PackagelintUserConfig): PackagelintP
     ...actualProjectConfig,
   };
 
+  const reporters = prepareReporters(finalUserConfig);
+
   // @TODO: Validate config
-  console.log('finalUserConfig = ', finalUserConfig);
+
+  broadcastEventUsingReporters(reporters, 'onConfigStart', finalUserConfig);
 
   // @TODO: Verbose option
 
   const preparedConfig = {
     ...finalUserConfig,
-    rules: accumulateRules(finalUserConfig.rules),
+    rules: accumulateRules(finalUserConfig),
+    reporters,
   };
+
+  broadcastEventUsingReporters(reporters, 'onConfigReady', preparedConfig);
   return preparedConfig;
 }
 
