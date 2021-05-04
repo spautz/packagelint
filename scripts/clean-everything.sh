@@ -64,6 +64,7 @@ run_command "rm -rf
 run_command "rm -rf
   packages/*/coverage-local
   packages/*/dist
+  packages/*/legacy-types
   packages/*/lib-dist
   packages/*/node_modules
   packages/*/lerna-debug.log*

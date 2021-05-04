@@ -8,7 +8,7 @@ import {
   PackagelintRulesetConfigObject,
   PackagelintRulesetDefinition,
   PackagelintUserConfig,
-} from '@packagelint/core';
+} from '@packagelint/types';
 
 import { resolveRule } from './resolveRule';
 import { ERROR_LEVEL__ERROR } from '../validate/errorLevels';

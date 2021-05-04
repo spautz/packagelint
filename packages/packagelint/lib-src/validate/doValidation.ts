@@ -5,7 +5,7 @@ import {
   PackagelintValidationResult,
   PackagelintValidationError,
   PackagelintReporter,
-} from '@packagelint/core';
+} from '@packagelint/types';
 
 import {
   countErrorTypes,

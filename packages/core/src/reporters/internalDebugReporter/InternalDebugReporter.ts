@@ -1,4 +1,4 @@
-import { PackagelintReporter, PackagelintReporterEventName } from '../../types';
+import { PackagelintReporter, PackagelintReporterEventName } from '@packagelint/types';
 
 type PackagelintInternalDebugReporter_EventsToLog = Record<PackagelintReporterEventName, boolean>;
 
