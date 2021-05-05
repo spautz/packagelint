@@ -2,7 +2,7 @@ import {
   PackagelintValidationResult,
   PackagelintErrorLevel,
   PackagelintErrorLevelCounts,
-} from '@packagelint/core';
+} from '@packagelint/types';
 
 export const ERROR_LEVEL__EXCEPTION = 'exception' as const;
 export const ERROR_LEVEL__ERROR = 'error' as const;
@@ -18,8 +18,8 @@ const ERROR_LEVELS_IN_SEVERITY_ORDER: Array<PackagelintErrorLevel> = [
   ERROR_LEVEL__IGNORE,
 ];
 
-function isValidErrorLevel(errorLevel: PackagelintErrorLevel): boolean {
-  return ERROR_LEVELS_IN_SEVERITY_ORDER.includes(errorLevel);
+function isValidErrorLevel(errorLevel: string): errorLevel is PackagelintErrorLevel {
+  return ERROR_LEVELS_IN_SEVERITY_ORDER.includes(errorLevel as PackagelintErrorLevel);
 }
 
 function countErrorTypes(

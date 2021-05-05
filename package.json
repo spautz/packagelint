@@ -26,7 +26,7 @@
     "clean": "yon run test:clean && rimraf ./node_modules/.cache && yon run packages:clean && yon run test:clean",
     "dev": "yon run format && yon run types && yon run lint",
     "dev:readonly": "yon run format:verify && yon run types && yon run lint",
-    "all": "yon run prepare && yon run dev && yon run test:coverage && yon run examples",
+    "all": "yon run bootstrap && yon run dev && yon run test:coverage && yon run examples",
     "all:readonly": "yon run dev:readonly && yon run test:coverage",
     "____ BATCH COMMANDS FOR PACKAGES ___________________________________": "",
     "packages:prepare": "lerna run prepare",
@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@tsconfig/recommended": "1.0.1",
-    "@types/node": "14.14.41",
+    "@types/node": "14.14.44",
     "cross-env": "7.0.3",
     "eslint-plugin-prettier": "3.4.0",
     "gh-pages": "3.1.0",
@@ -72,14 +72,14 @@
     "lint-staged": "10.5.4",
     "prettier": "2.2.1",
     "rimraf": "3.0.2",
-    "standard-version": "9.2.0",
+    "standard-version": "9.3.0",
     "tsdx": "0.14.1",
     "typescript": "4.2.4",
     "yarn-or-npm": "3.0.1"
   },
   "resolutions": {
-    "**/@typescript-eslint/eslint-plugin": "^4.2.3",
-    "**/@typescript-eslint/parser": "^4.2.3"
+    "**/@typescript-eslint/eslint-plugin": "^4.22.1",
+    "**/@typescript-eslint/parser": "^4.22.1"
   },
   "lint-staged": {
     "**/*.{css,html,js,jsx,json,less,md,scss,ts,tsx}": [

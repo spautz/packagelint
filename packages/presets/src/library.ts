@@ -1,7 +1,10 @@
-import type { PackagelintRulesetDefinition } from '@packagelint/core';
+import type { PackagelintRulesetDefinition } from '@packagelint/types';
 
 const libraryRulesetDefinition: PackagelintRulesetDefinition = {
   name: 'library',
+  docs: {
+    description: 'Standard ruleset for a package that publishes a library',
+  },
   rules: [
     {
       name: 'library-alias1',

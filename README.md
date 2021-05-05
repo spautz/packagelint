@@ -10,6 +10,18 @@ Packagelint runs a series of validation rules -- defined in `.packagelint.js` --
 It's most useful when you have a group of projects that should all follow common standards, like having a `.npmrc`
 file, certain `.npmrc` settings, particular config values for ESLint or Jest, or a certain version of React.
 
+## At a Glance
+
+- `.packagelint.js` sets options and errorLevels for the rules you want to run.
+- You can create multiple copies of a rule by customizing its name: e.g., the `nvmrc` rule can be configured once
+  to require a `.nvmrc` file with NodeJS >= 10, at errorLevel "error"; and again with NodeJS >= 14 at errorLevel "suggestion".
+- Reporters and exit code conditions may be customized to be strict or lenient.
+
+## How it works
+
+Under the hood, it's like a hybrid between ESLint and Jest: rules are configured as if they're for a linter, but
+they're evaluated and reported as if they're automated tests.
+
 ## NOT YET PUBLISHED
 
 This tool is not yet ready for public use. Version `0.1.0` will be the first public release. Full docs will be available

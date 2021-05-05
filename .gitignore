@@ -12,6 +12,7 @@
 /examples/*/dist
 /packages/*/coverage-local
 /packages/*/dist
+/packages/*/legacy-types
 /packages/*/lib-dist
 
 # misc

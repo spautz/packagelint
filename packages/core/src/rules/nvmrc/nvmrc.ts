@@ -1,7 +1,7 @@
 import fs from 'fs';
 import semver from 'semver';
 
-import { PackagelintRuleDefinition, PackagelintValidationContext } from '../../types';
+import { PackagelintRuleDefinition, PackagelintValidationContext } from '@packagelint/types';
 
 const { readFile } = fs.promises;
 
@@ -13,7 +13,7 @@ export type NvmrcRuleOptions = {
 const nvmrcRuleDefinition: PackagelintRuleDefinition<NvmrcRuleOptions> = {
   name: 'nvmrc',
   docs: {
-    description: 'require a .nvmrc file',
+    description: 'Require a .nvmrc file, maybe with a specific version range',
     url: 'https://github.com/spautz/packagelint',
   },
   defaultOptions: {

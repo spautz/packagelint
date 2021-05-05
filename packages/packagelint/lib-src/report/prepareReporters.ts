@@ -1,24 +1,12 @@
 import {
   PackagelintPreparedConfig,
   PackagelintReporter,
-  PackagelintReporterClassConstructor,
-  PackagelintReporterConstructor,
-  PackagelintReporterConstructorFunction,
   PackagelintReporterEventName,
   PackagelintUserConfig,
-} from '@packagelint/core';
-import { resolveReporter } from './resolveReporter';
+} from '@packagelint/types';
 
-function constructClassOrFunction(
-  ReporterClassOrConstructor: PackagelintReporterConstructor,
-  reporterOptions: any,
-): PackagelintReporter {
-  try {
-    return new (ReporterClassOrConstructor as PackagelintReporterClassConstructor)(reporterOptions);
-  } catch (err) {
-    return (ReporterClassOrConstructor as PackagelintReporterConstructorFunction)(reporterOptions);
-  }
-}
+import { resolveReporter } from './resolveReporter';
+import { constructClassOrFunction } from '../util';
 
 function prepareReporters(packagelintConfig: PackagelintUserConfig): Array<PackagelintReporter> {
   return Object.keys(packagelintConfig.reporters).map((reporterName) => {

@@ -1,4 +1,4 @@
-import { PackagelintReporterName, PackagelintReporterConstructor } from '@packagelint/core';
+import { PackagelintReporterName, PackagelintReporterConstructor } from '@packagelint/types';
 
 function resolveReporter(name: PackagelintReporterName): PackagelintReporterConstructor {
   // @TODO: Implement this properly

@@ -1,4 +1,4 @@
-import { PackagelintUserConfig, PackagelintPreparedConfig } from '@packagelint/core';
+import { PackagelintUserConfig, PackagelintPreparedConfig } from '@packagelint/types';
 
 import { broadcastEventUsingReporters, prepareReporters } from '../report';
 import { accumulateRules } from './accumulateRules';

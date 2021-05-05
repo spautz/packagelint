@@ -5,7 +5,7 @@ import {
   PackagelintValidationResult,
   PackagelintValidationError,
   PackagelintReporter,
-} from '@packagelint/core';
+} from '@packagelint/types';
 
 import {
   countErrorTypes,
@@ -24,8 +24,6 @@ async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<
 
   const allResults = await validateRuleList(rules, reporters);
 
-  broadcastEvent(preparedConfig, 'onValidationComplete', allResults);
-
   const errorResults = allResults.filter(
     (validationResult) => !!validationResult,
   ) as Array<PackagelintValidationError>;
@@ -36,7 +34,7 @@ async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<
     ? SUCCESS
     : FAILURE__VALIDATION;
 
-  return {
+  const output = {
     numRules: rules.length,
     numRulesPassed: rules.length - errorResults.length,
     numRulesFailed: errorResults.length,
@@ -44,9 +42,14 @@ async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<
 
     highestErrorLevel,
     errorLevelCounts,
-
+    rules,
+    allResults,
     errorResults: errorResults,
   };
+
+  broadcastEvent(preparedConfig, 'onValidationComplete', output);
+
+  return output;
 }
 
 async function validateRuleList(
@@ -64,7 +67,7 @@ async function validateOneRule(
   preparedRule: PackagelintPreparedRule,
   reporterList: Array<PackagelintReporter>,
 ): Promise<PackagelintValidationResult> {
-  const { ruleName, enabled, errorLevel, options, messages } = preparedRule;
+  const { preparedRuleName, enabled, errorLevel, options, messages } = preparedRule;
   let result = null;
 
   if (enabled) {
@@ -78,7 +81,7 @@ async function validateOneRule(
       if (validationErrorInfo) {
         const [errorName, errorData] = validationErrorInfo;
         result = {
-          ruleName: ruleName,
+          preparedRuleName: preparedRuleName,
           errorLevel,
           errorName,
           errorData: errorData,
@@ -88,7 +91,7 @@ async function validateOneRule(
       }
     } catch (e) {
       result = {
-        ruleName: ruleName,
+        preparedRuleName: preparedRuleName,
         errorLevel: ERROR_LEVEL__EXCEPTION,
         errorName: null,
         errorData: null,
