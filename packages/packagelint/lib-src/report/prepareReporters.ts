@@ -5,8 +5,8 @@ import {
   PackagelintUserConfig,
 } from '@packagelint/types';
 
-import { resolveReporter } from './resolveReporter';
 import { constructClassOrFunction } from '../util';
+import { resolveReporter } from './resolveReporter';
 
 function prepareReporters(packagelintConfig: PackagelintUserConfig): Array<PackagelintReporter> {
   return Object.keys(packagelintConfig.reporters).map((reporterName) => {

@@ -10,7 +10,7 @@ import {
   PackagelintUserConfig,
 } from '@packagelint/types';
 
-import { ERROR_LEVEL__ERROR, isValidErrorLevel } from '../validate/errorLevels';
+import { ERROR_LEVEL__ERROR, isValidErrorLevel } from '../util';
 import { resolveRule } from './resolveRule';
 
 /**

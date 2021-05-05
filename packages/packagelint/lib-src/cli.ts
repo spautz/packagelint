@@ -3,7 +3,8 @@ import findUp from 'find-up';
 import { PackagelintOutput } from '@packagelint/types';
 
 import { prepareConfig } from './prepare';
-import { FAILURE__NO_CONFIG, PackagelintExitCode, doValidation } from './validate';
+import { FAILURE__NO_CONFIG, PackagelintExitCode } from './util';
+import { doValidation } from './validate';
 
 export interface PackagelintCliArgs {
   // @TODO

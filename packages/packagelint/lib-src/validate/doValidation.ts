@@ -8,14 +8,16 @@ import {
 } from '@packagelint/types';
 
 import {
-  countErrorTypes,
   ERROR_LEVEL__EXCEPTION,
+  FAILURE__VALIDATION,
+  SUCCESS,
+  countErrorTypes,
   getHighestErrorLevel,
   isErrorLessSevereThan,
-} from './errorLevels';
-import { SUCCESS, FAILURE__VALIDATION } from './exitCodes';
-import { makeValidationContext } from './validationContext';
+} from '../util';
 import { broadcastEvent, broadcastEventUsingReporters } from '../report';
+
+import { makeValidationContext } from './validationContext';
 
 async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<PackagelintOutput> {
   const { failOnErrorLevel, rules, reporters } = preparedConfig;
