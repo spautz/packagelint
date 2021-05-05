@@ -21,6 +21,7 @@
   "files": [
     "bin/",
     "docs/",
+    "legacy-types/",
     "lib-dist/",
     "lib-src/",
     "LICENSE",
@@ -43,6 +44,7 @@
     "prerelease": "yon run clean",
     "prepublishOnly": "yarn run dev:readonly && yarn run build",
     "pretest": "yon run test:clean",
+    "postbuild": "yon run build:types",
     "____ INTEGRATION ___________________________________________________": "",
     "clean": "yon run build:clean && yon run test:clean && rimraf ./lib-dist ./node_modules/.cache",
     "dev": "yarn run format && yarn run types && yarn run lint",
@@ -52,6 +54,9 @@
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "build": "tsc",
     "build:clean": "rimraf ./lib-dist",
+    "build:types": "yon run build:types:3.x && yon run build:types:4.x",
+    "build:types:3.x": "downlevel-dts ./lib-dist ./legacy-types/ts3.x/lib-dist --to=3.0",
+    "build:types:4.x": "downlevel-dts ./lib-dist ./lib-dist --to=4.0",
     "format": "prettier --write .",
     "format:verify": "prettier --list-different .",
     "lint": "tsdx lint . --max-warnings 0",
@@ -73,6 +78,14 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@types/semver": "7.3.4"
+    "@types/semver": "7.3.5",
+    "downlevel-dts": "0.7.0"
+  },
+  "typesVersions": {
+    "<4": {
+      "*": [
+        "legacy-types/ts3.x/*"
+      ]
+    }
   }
 }
