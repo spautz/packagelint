@@ -54,6 +54,15 @@ The `packagelint` command itself, available as a CLI tool or as an importable AP
 A collection of validation presets: a ready-to-use ruleset that selects and configures some of the core rules for
 common scenarios.
 
+#### [@packagelint/types](./packages/types/)
+
+[![npm version](https://img.shields.io/npm/v/@packagelint/types.svg)](https://www.npmjs.com/package/@packagelint/types)
+[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/types)](https://david-dm.org/spautz/packagelint?path=packages/types)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/@packagelint/types@latest/dist/types.cjs.production.min.js?compression=gzip)](https://bundlephobia.com/result?p=@packagelint/types@latest)
+
+Typings for the configs, rules, reporters, and other components that Packagelint uses.
+
 ## Documentation (incomplete)
 
-- [Overview](./docs/overview.md)
+- [Overview](./docs/README.md)
+- [Config Typings](./docs/configs-and-typings.md)

@@ -1,4 +1,4 @@
-# Rule Configs for Packagelint
+# Config Typings for Packagelint
 
 This article walks through the different config objects that Packagelint consumes while validating rules.
 
