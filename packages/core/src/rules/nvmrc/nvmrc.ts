@@ -13,7 +13,7 @@ export type NvmrcRuleOptions = {
 const nvmrcRuleDefinition: PackagelintRuleDefinition<NvmrcRuleOptions> = {
   name: 'nvmrc',
   docs: {
-    description: 'require a .nvmrc file',
+    description: 'Require a .nvmrc file, maybe with a specific version range',
     url: 'https://github.com/spautz/packagelint',
   },
   defaultOptions: {

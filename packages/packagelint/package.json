@@ -53,7 +53,7 @@
     "all:readonly": "yarn run dev:readonly && yarn run test:coverage",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "build": "tsc",
-    "build:clean": "rimraf ./lib-dist",
+    "build:clean": "rimraf ./lib-dist ./legacy-types",
     "build:types": "yon run build:types:3.x && yon run build:types:4.x",
     "build:types:3.x": "downlevel-dts ./lib-dist ./legacy-types/ts3.x/lib-dist --to=3.0",
     "build:types:4.x": "downlevel-dts ./lib-dist ./lib-dist --to=4.0",

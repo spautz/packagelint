@@ -10,7 +10,7 @@ import {
 function makeValidationContext(
   preparedRule: PackagelintPreparedRule,
 ): PackagelintValidationContext {
-  const { ruleName } = preparedRule;
+  const { preparedRuleName } = preparedRule;
 
   const accumulatedErrorData = {};
 
@@ -20,7 +20,7 @@ function makeValidationContext(
 
   return {
     // General information
-    ruleName,
+    preparedRuleName,
 
     // Helpers so that rules don't have to implement everything themselves
     findFileUp: (_fileGlob: string) => {

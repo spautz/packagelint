@@ -1,17 +1,17 @@
 import {
   PackagelintPreparedRule,
+  PackagelintRuleEntry,
   PackagelintRuleConfig,
-  PackagelintRuleConfigObject,
   PackagelintRuleDefinition,
   PackagelintRuleName,
+  PackagelintRulesetEntry,
   PackagelintRulesetConfig,
-  PackagelintRulesetConfigObject,
   PackagelintRulesetDefinition,
   PackagelintUserConfig,
 } from '@packagelint/types';
 
+import { ERROR_LEVEL__ERROR, isValidErrorLevel } from '../validate/errorLevels';
 import { resolveRule } from './resolveRule';
-import { ERROR_LEVEL__ERROR } from '../validate/errorLevels';
 
 /**
  * Iterates through a list of user-specified rules and rulesets, resolving each and merging options to make a final list
@@ -38,10 +38,10 @@ class RuleAccumulator {
    * @TODO
    */
   accumulateRuleList(
-    ruleList: Array<PackagelintRuleConfig | PackagelintRulesetConfig>,
-    overrides?: Partial<PackagelintRuleConfigObject>,
+    ruleList: Array<PackagelintRuleEntry | PackagelintRulesetEntry>,
+    overrides?: Partial<PackagelintRuleConfig>,
   ): void {
-    ruleList.forEach((ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig) => {
+    ruleList.forEach((ruleInfo: PackagelintRuleEntry | PackagelintRulesetEntry) => {
       this.accumulateRule(ruleInfo, overrides);
     });
   }
@@ -50,8 +50,8 @@ class RuleAccumulator {
    * @TODO
    */
   accumulateRule(
-    ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig,
-    overrides: Partial<PackagelintRuleConfigObject> = {},
+    ruleInfo: PackagelintRuleEntry | PackagelintRulesetEntry,
+    overrides: Partial<PackagelintRuleConfig> = {},
   ): void {
     // Shorthands
     if (typeof ruleInfo === 'string') {
@@ -63,18 +63,30 @@ class RuleAccumulator {
     }
     if (Array.isArray(ruleInfo)) {
       // @TODO: Validation for length
-      const [ruleName, ruleOptions] = ruleInfo;
+      const [preparedRuleName, ruleOptions] = ruleInfo;
       if (typeof ruleOptions === 'boolean') {
         return this._accumulateRuleConfigObject({
           ...overrides,
-          name: ruleName,
+          name: preparedRuleName,
           enabled: ruleOptions,
+        });
+      }
+      if (typeof ruleOptions === 'string') {
+        if (!isValidErrorLevel(ruleOptions)) {
+          throw new Error(`Invalid errorLevel "${ruleOptions}" for rule "${preparedRuleName}"`);
+        }
+
+        return this._accumulateRuleConfigObject({
+          ...overrides,
+          name: preparedRuleName,
+          enabled: true,
+          errorLevel: ruleOptions,
         });
       }
       // @TODO: Validation for object type
       return this._accumulateRuleConfigObject({
         ...overrides,
-        name: ruleName,
+        name: preparedRuleName,
         enabled: true,
         options: ruleOptions,
       });
@@ -92,12 +104,10 @@ class RuleAccumulator {
    * @TODO
    */
   getPreparedRuleList(): Array<PackagelintPreparedRule> {
-    return this._ruleOrder.map((ruleName) => this._ruleInfo[ruleName]);
+    return this._ruleOrder.map((preparedRuleName) => this._ruleInfo[preparedRuleName]);
   }
 
-  _accumulateRuleConfigObject(
-    ruleInfo: PackagelintRuleConfigObject | PackagelintRulesetConfigObject,
-  ): void {
+  _accumulateRuleConfigObject(ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig): void {
     const {
       name,
       enabled,
@@ -106,7 +116,7 @@ class RuleAccumulator {
       options,
       resetOptions,
       messages,
-    } = ruleInfo as PackagelintRuleConfigObject;
+    } = ruleInfo as PackagelintRuleConfig;
 
     if (!this._ruleInfo[name]) {
       // We haven't seen this rule before: it's either a bulk modification, or we need to populate its base state
@@ -120,7 +130,7 @@ class RuleAccumulator {
       if (extendRule && this._ruleInfo[extendRule]) {
         initialRule = {
           ...this._ruleInfo[extendRule],
-          ruleName: name,
+          preparedRuleName: name,
           extendedFrom: extendRule,
         };
       } else {
@@ -135,15 +145,19 @@ class RuleAccumulator {
             );
           }
 
+          const initialErrorLevel = baseRule.defaultErrorLevel || ERROR_LEVEL__ERROR;
+          const initialOptions = baseRule.defaultOptions || {};
+
           initialRule = {
-            ruleName: name,
+            preparedRuleName: name,
             docs: baseRule.docs,
             enabled: false,
             extendedFrom: extendRule || null,
-            errorLevel: baseRule.defaultErrorLevel || ERROR_LEVEL__ERROR,
-            defaultOptions: baseRule.defaultOptions || {},
-            options: baseRule.defaultOptions || {},
-            messages: baseRule.messages || {},
+            defaultErrorLevel: initialErrorLevel,
+            errorLevel: initialErrorLevel,
+            defaultOptions: initialOptions,
+            options: initialOptions,
+            messages: baseRule.messages,
             doValidation: baseRule.doValidation,
           };
         } else if (isRulesetDefinition(baseRule)) {
