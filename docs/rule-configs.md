@@ -6,7 +6,7 @@ This article walks through the different config objects that Packagelint consume
 
 ### User Config
 
-The <code>.packagelint.js</code> file in the root of your package supplies your User Config. This lists the rules and
+The `.packagelint.js` file in the root of your package supplies your User Config. This lists the rules and
 rulesets that will be validated against, along with any options or overrides for them, and any global options for
 Packagelint itself.
 
