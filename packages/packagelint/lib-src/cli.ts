@@ -1,6 +1,6 @@
 import findUp from 'find-up';
 
-import { PackagelintOutput } from '@packagelint/types';
+import { PackagelintOutput } from '@packagelint/core';
 
 import { prepareConfig } from './prepare';
 import { FAILURE__INVALID_CONFIG, FAILURE__NO_CONFIG, PackagelintExitCode } from './util';

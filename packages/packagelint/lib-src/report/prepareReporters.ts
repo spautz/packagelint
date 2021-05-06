@@ -3,7 +3,7 @@ import {
   PackagelintReporter,
   PackagelintReporterEventName,
   PackagelintUserConfig,
-} from '@packagelint/types';
+} from '@packagelint/core';
 
 import { constructClassOrFunction } from '../util';
 import { resolveReporter } from './resolveReporter';

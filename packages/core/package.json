@@ -66,9 +66,7 @@
     "types": "tsc --p tsconfig.json --noEmit"
   },
   "dependencies": {},
-  "devDependencies": {
-    "@packagelint/types": "^0.0.1"
-  },
+  "devDependencies": {},
   "typesVersions": {
     "<4": {
       "*": [

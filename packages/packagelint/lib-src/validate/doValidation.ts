@@ -5,7 +5,7 @@ import {
   PackagelintValidationResult,
   PackagelintValidationError,
   PackagelintReporter,
-} from '@packagelint/types';
+} from '@packagelint/core';
 
 import {
   ERROR_LEVEL__EXCEPTION,

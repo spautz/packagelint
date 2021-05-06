@@ -2,7 +2,7 @@ import {
   PackagelintRuleName,
   PackagelintRuleDefinition,
   PackagelintRulesetDefinition,
-} from '@packagelint/types';
+} from '@packagelint/core';
 
 function resolveRule(
   name: PackagelintRuleName,

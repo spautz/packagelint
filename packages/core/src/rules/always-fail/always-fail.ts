@@ -1,4 +1,4 @@
-import { PackagelintRuleDefinition, PackagelintValidationContext } from '@packagelint/types';
+import { PackagelintRuleDefinition, PackagelintValidationContext } from '../../types';
 
 export type AlwaysFailRuleOptions = {};
 
