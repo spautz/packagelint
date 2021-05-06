@@ -171,21 +171,39 @@ export interface PackagelintRulesetDefinition {
 
 // Result reporters
 
+/**
+ * Reporters *should* return nothing, but if any do return a value then we'll pass it back through
+ */
+export type PackagelintUnknownReporterReturnValue = Promise<void | unknown> | void | unknown;
+
+/**
+ *
+ */
 export interface PackagelintReporter {
-  readonly onConfigStart?: (userConfig: PackagelintUserConfig) => Promise<void> | void;
+  readonly onConfigStart?: (
+    userConfig: PackagelintUserConfig,
+  ) => PackagelintUnknownReporterReturnValue;
 
-  readonly onConfigReady?: (preparedConfig: PackagelintPreparedConfig) => Promise<void> | void;
+  readonly onConfigReady?: (
+    preparedConfig: PackagelintPreparedConfig,
+  ) => PackagelintUnknownReporterReturnValue;
 
-  readonly onValidationStart?: (preparedConfig: PackagelintPreparedConfig) => Promise<void> | void;
+  readonly onValidationStart?: (
+    preparedConfig: PackagelintPreparedConfig,
+  ) => PackagelintUnknownReporterReturnValue;
 
-  readonly onValidationComplete?: (fullResults: PackagelintOutput) => Promise<void> | void;
+  readonly onValidationComplete?: (
+    fullResults: PackagelintOutput,
+  ) => PackagelintUnknownReporterReturnValue;
 
-  readonly onRuleStart?: (ruleInfo: PackagelintPreparedRule) => Promise<void> | void;
+  readonly onRuleStart?: (
+    ruleInfo: PackagelintPreparedRule,
+  ) => PackagelintUnknownReporterReturnValue;
 
   readonly onRuleResult?: (
     ruleInfo: PackagelintPreparedRule,
     ruleResult: PackagelintValidationResult,
-  ) => Promise<void> | void;
+  ) => PackagelintUnknownReporterReturnValue;
 
   readonly getLastError?: () => Error | void;
 }

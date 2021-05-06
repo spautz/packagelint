@@ -67,8 +67,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@packagelint/types": "^0.0.1",
-    "downlevel-dts": "0.7.0"
+    "@packagelint/types": "^0.0.1"
   },
   "typesVersions": {
     "<4": {
