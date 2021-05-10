@@ -66,12 +66,9 @@
     "types": "tsc --p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@packagelint/core": "^0.0.1",
-    "@packagelint/types": "^0.0.1"
+    "@packagelint/core": "^0.0.1"
   },
-  "devDependencies": {
-    "downlevel-dts": "0.7.0"
-  },
+  "devDependencies": {},
   "typesVersions": {
     "<4": {
       "*": [

@@ -2,7 +2,7 @@ import {
   PackagelintValidationResult,
   PackagelintErrorLevel,
   PackagelintErrorLevelCounts,
-} from '@packagelint/types';
+} from '@packagelint/core';
 
 export const ERROR_LEVEL__EXCEPTION = 'exception' as const;
 export const ERROR_LEVEL__ERROR = 'error' as const;

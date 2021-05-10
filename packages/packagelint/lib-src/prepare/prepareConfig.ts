@@ -1,4 +1,4 @@
-import { PackagelintUserConfig, PackagelintPreparedConfig } from '@packagelint/types';
+import { PackagelintUserConfig, PackagelintPreparedConfig } from '@packagelint/core';
 
 import { broadcastEventUsingReporters, prepareReporters } from '../report';
 import { accumulateRules } from './accumulateRules';
@@ -17,7 +17,9 @@ const defaultUserConfig: PackagelintUserConfig = {
  * This is the high-level entry for packagelint's preparation step: it starts with a user-supplied config and finishes
  * with one that's ready for the validation step.
  */
-function prepareConfig(actualProjectConfig: PackagelintUserConfig): PackagelintPreparedConfig {
+async function prepareConfig(
+  actualProjectConfig: PackagelintUserConfig,
+): Promise<PackagelintPreparedConfig> {
   const finalUserConfig = {
     ...defaultUserConfig,
     ...actualProjectConfig,
@@ -27,7 +29,7 @@ function prepareConfig(actualProjectConfig: PackagelintUserConfig): PackagelintP
 
   // @TODO: Validate config
 
-  broadcastEventUsingReporters(reporters, 'onConfigStart', finalUserConfig);
+  await broadcastEventUsingReporters(reporters, 'onConfigStart', finalUserConfig);
 
   // @TODO: Verbose option
 
@@ -37,7 +39,7 @@ function prepareConfig(actualProjectConfig: PackagelintUserConfig): PackagelintP
     reporters,
   };
 
-  broadcastEventUsingReporters(reporters, 'onConfigReady', preparedConfig);
+  await broadcastEventUsingReporters(reporters, 'onConfigReady', preparedConfig);
   return preparedConfig;
 }
 

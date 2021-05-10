@@ -56,4 +56,5 @@ common scenarios.
 
 ## Documentation (incomplete)
 
-- [Overview](./docs/overview.md)
+- [Overview](./docs/README.md)
+- [Config Typings](./docs/configs-and-typings.md)

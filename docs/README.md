@@ -27,8 +27,6 @@ its rules and in its internal implementation.
   base rule for validating `.nvmrc` can become multiple rules with different errorLevels and their own configs.
 - Rules and rulesets are scoped by package: `@packagelint/core:nvmrc` indicates a rule named `nvmrc` which is exported
   from the `@packagelint/core` npm package.
-- Result Reporters are also scoped by package, and follow a class-or-closure pattern that lets you use the reporters
-  from various unit test libraries, including Mocha and Jest.
 
 ## More Docs
 

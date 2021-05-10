@@ -71,15 +71,13 @@
   },
   "dependencies": {
     "@packagelint/core": "^0.0.1",
-    "@packagelint/types": "^0.0.1",
     "find-up": "^5.0.0",
     "semver": "^7.3.5",
     "v8-compile-cache": "^2.3.0",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@types/semver": "7.3.5",
-    "downlevel-dts": "0.7.0"
+    "@types/semver": "7.3.5"
   },
   "typesVersions": {
     "<4": {

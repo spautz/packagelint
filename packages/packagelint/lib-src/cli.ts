@@ -1,9 +1,10 @@
 import findUp from 'find-up';
 
-import { PackagelintOutput } from '@packagelint/types';
+import { PackagelintOutput } from '@packagelint/core';
 
 import { prepareConfig } from './prepare';
-import { FAILURE__NO_CONFIG, PackagelintExitCode, doValidation } from './validate';
+import { FAILURE__INVALID_CONFIG, FAILURE__NO_CONFIG, PackagelintExitCode } from './util';
+import { doValidation } from './validate';
 
 export interface PackagelintCliArgs {
   // @TODO
@@ -22,9 +23,9 @@ async function findPackagelintConfigFile(
 
 /**
  * 1. Read config
- * 2. Prepare list of rules for validation
+ * 2. Process config into a list of rules for validation
  * 3. Perform validation
- * 4. Output results
+ * 4. Report results
  */
 async function packagelintCli(
   _argv: Partial<PackagelintCliArgs> = {},
@@ -37,9 +38,13 @@ async function packagelintCli(
     return [FAILURE__NO_CONFIG, null];
   }
 
-  const packagelintUserConfig = require(packagelintConfigFileName);
+  const rawUserConfig = require(packagelintConfigFileName);
+  if (!rawUserConfig) {
+    return [FAILURE__INVALID_CONFIG, null];
+  }
+  const userConfig = await (typeof rawUserConfig === 'function' ? rawUserConfig() : rawUserConfig);
 
-  const preparedConfig = await prepareConfig(packagelintUserConfig);
+  const preparedConfig = await prepareConfig(userConfig);
 
   const validationOutput = await doValidation(preparedConfig);
 

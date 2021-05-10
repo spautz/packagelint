@@ -5,22 +5,24 @@ import {
   PackagelintValidationResult,
   PackagelintValidationError,
   PackagelintReporter,
-} from '@packagelint/types';
+} from '@packagelint/core';
 
 import {
-  countErrorTypes,
   ERROR_LEVEL__EXCEPTION,
+  FAILURE__VALIDATION,
+  SUCCESS,
+  countErrorTypes,
   getHighestErrorLevel,
   isErrorLessSevereThan,
-} from './errorLevels';
-import { SUCCESS, FAILURE__VALIDATION } from './exitCodes';
-import { makeValidationContext } from './validationContext';
+} from '../util';
 import { broadcastEvent, broadcastEventUsingReporters } from '../report';
+
+import { makeValidationContext } from './validationContext';
 
 async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<PackagelintOutput> {
   const { failOnErrorLevel, rules, reporters } = preparedConfig;
 
-  broadcastEvent(preparedConfig, 'onValidationStart', preparedConfig);
+  await broadcastEvent(preparedConfig, 'onValidationStart', preparedConfig);
 
   const allResults = await validateRuleList(rules, reporters);
 
@@ -47,7 +49,7 @@ async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<
     errorResults: errorResults,
   };
 
-  broadcastEvent(preparedConfig, 'onValidationComplete', output);
+  await broadcastEvent(preparedConfig, 'onValidationComplete', output);
 
   return output;
 }
@@ -71,7 +73,7 @@ async function validateOneRule(
   let result = null;
 
   if (enabled) {
-    broadcastEventUsingReporters(reporterList, 'onRuleStart', preparedRule);
+    await broadcastEventUsingReporters(reporterList, 'onRuleStart', preparedRule);
 
     const context = makeValidationContext(preparedRule);
 
@@ -98,7 +100,7 @@ async function validateOneRule(
         message: e.message,
       };
     }
-    broadcastEventUsingReporters(reporterList, 'onRuleResult', preparedRule, result);
+    await broadcastEventUsingReporters(reporterList, 'onRuleResult', preparedRule, result);
   }
   return result;
 }

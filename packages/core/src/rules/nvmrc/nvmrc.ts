@@ -1,7 +1,7 @@
 import fs from 'fs';
 import semver from 'semver';
 
-import { PackagelintRuleDefinition, PackagelintValidationContext } from '@packagelint/types';
+import { PackagelintRuleDefinition, PackagelintValidationContext } from '../../types';
 
 const { readFile } = fs.promises;
 

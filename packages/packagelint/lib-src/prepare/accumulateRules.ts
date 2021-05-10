@@ -8,9 +8,9 @@ import {
   PackagelintRulesetConfig,
   PackagelintRulesetDefinition,
   PackagelintUserConfig,
-} from '@packagelint/types';
+} from '@packagelint/core';
 
-import { ERROR_LEVEL__ERROR, isValidErrorLevel } from '../validate/errorLevels';
+import { ERROR_LEVEL__ERROR, isValidErrorLevel } from '../util';
 import { resolveRule } from './resolveRule';
 
 /**

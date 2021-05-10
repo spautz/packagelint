@@ -2,7 +2,7 @@ import {
   PackagelintPreparedRule,
   PackagelintUnknownErrorData,
   PackagelintValidationContext,
-} from '@packagelint/types';
+} from '@packagelint/core';
 
 /**
  * Provides information and helper functions to make rules easier to write
