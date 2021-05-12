@@ -1,0 +1,53 @@
+{
+  "name": "@packagelint/packagelint-cli",
+  "version": "0.0.1",
+  "description": "A global",
+  "keywords": [],
+  "license": "MIT",
+  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/core#readme",
+  "bugs": "https://github.com/spautz/packagelint/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spautz/packagelint.git",
+    "directory": "packages/packagelint-cli"
+  },
+  "author": {
+    "name": "Steven Pautz",
+    "url": "http://stevenpautz.com/"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "bin/",
+    "LICENSE",
+    "*.md"
+  ],
+  "engines": {
+    "node": "^10 || >=12"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "packagelint": "./bin/packagelint-cli.js"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "____ LIFECYCLE HOOKS _______________________________________________": "",
+    "prerelease": "yon run clean",
+    "prepublishOnly": "yarn run dev:readonly",
+    "____ INTEGRATION ___________________________________________________": "",
+    "clean": "rimraf ./node_modules/.cache",
+    "dev": "yarn run format && yarn run lint",
+    "dev:readonly": "yarn run format:verify && yarn run lint",
+    "all": "yarn run clean && yarn run dev",
+    "all:readonly": "yarn run dev:readonly",
+    "____ INDIVIDUAL COMMANDS ___________________________________________": "",
+    "format": "prettier --write .",
+    "format:verify": "prettier --list-different .",
+    "lint": "tsdx lint . --max-warnings 0",
+    "release:changelog": "standard-version --skip.commit --skip.tag --release-as "
+  },
+  "dependencies": {
+    "import-local": "^3.0.2"
+  }
+}
