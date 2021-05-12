@@ -74,7 +74,7 @@
     "find-up": "^5.0.0",
     "semver": "^7.3.5",
     "v8-compile-cache": "^2.3.0",
-    "yargs": "^17.0.1"
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "@types/semver": "7.3.5"
