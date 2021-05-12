@@ -6,8 +6,7 @@ require('v8-compile-cache');
 const { FAILURE__UNKNOWN } = require('../lib-dist/api');
 
 const onFatalError = (...args) => {
-  console.log('onFatalError()', ...args);
-  console.error(...args);
+  console.error('Packagelint fatal error: ', ...args);
   process.exitCode = FAILURE__UNKNOWN;
 };
 
@@ -20,6 +19,6 @@ const onFatalError = (...args) => {
     const [exitCode /*, validationOutput */] = await packagelintCli(process.argv);
     process.exitCode = exitCode;
   } catch (e) {
-    onFatalError(e, 'errorFromInsideFn');
+    onFatalError(e.message, e);
   }
 })().catch(onFatalError);
