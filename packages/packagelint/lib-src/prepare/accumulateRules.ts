@@ -108,15 +108,8 @@ class RuleAccumulator {
   }
 
   _accumulateRuleConfigObject(ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig): void {
-    const {
-      name,
-      enabled,
-      extendRule,
-      errorLevel,
-      options,
-      resetOptions,
-      messages,
-    } = ruleInfo as PackagelintRuleConfig;
+    const { name, enabled, extendRule, errorLevel, options, resetOptions, messages } =
+      ruleInfo as PackagelintRuleConfig;
 
     if (!this._ruleInfo[name]) {
       // We haven't seen this rule before: it's either a bulk modification, or we need to populate its base state

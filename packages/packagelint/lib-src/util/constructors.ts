@@ -14,7 +14,7 @@ function constructClassOrFunction<
   ClassConstructorType extends GenericClassConstructor<ArgsType, InstanceType>,
   FunctionConstructorType extends GenericFunctionConstructor<ArgsType, InstanceType>,
   ArgsType extends Array<any> = any,
-  InstanceType = any
+  InstanceType = any,
 >(
   ReporterClassOrConstructor: ClassConstructorType | FunctionConstructorType,
   ...args: ArgsType

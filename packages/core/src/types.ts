@@ -56,7 +56,7 @@ export interface PackagelintUserConfig {
  *  - A full object allows you to customize options, errorLevel, and whatever other settings you wish
  */
 export type PackagelintRuleEntry<
-  OptionsType extends PackagelintAnyRuleOptions = PackagelintUnknownRuleOptions
+  OptionsType extends PackagelintAnyRuleOptions = PackagelintUnknownRuleOptions,
 > =
   | PackagelintRuleName
   | [PackagelintRuleName, boolean]
@@ -65,7 +65,7 @@ export type PackagelintRuleEntry<
   | PackagelintRuleConfig<OptionsType>;
 
 export type PackagelintRuleConfig<
-  OptionsType extends PackagelintAnyRuleOptions = PackagelintUnknownRuleOptions
+  OptionsType extends PackagelintAnyRuleOptions = PackagelintUnknownRuleOptions,
 > = {
   /** The rule's unique identifier. If this matches an existing RuleConfig or a RuleDefinition then it will apply
    * settings to that rule. If it is a new, unrecognized value then `extendRule` must be specified. */
@@ -115,7 +115,7 @@ export type PackagelintRulesetConfig = {
  * The underlying implementation of a rule. This gets merged with a RuleConfig to form a ProcessedRule.
  */
 export interface PackagelintRuleDefinition<
-  OptionsType extends PackagelintAnyRuleOptions = PackagelintUnknownRuleOptions
+  OptionsType extends PackagelintAnyRuleOptions = PackagelintUnknownRuleOptions,
 > {
   /* Unique identifier for the rule */
   name: PackagelintRuleName;
@@ -140,7 +140,7 @@ export interface PackagelintRuleDefinition<
 }
 
 export interface PackagelintPreparedRule<
-  OptionsType extends PackagelintAnyRuleOptions = PackagelintUnknownRuleOptions
+  OptionsType extends PackagelintAnyRuleOptions = PackagelintUnknownRuleOptions,
 > {
   preparedRuleName: PackagelintRuleName;
   docs: PackagelintRuleDefinition<OptionsType>['docs'];
@@ -212,7 +212,7 @@ export interface PackagelintReporter {
  * PackagelintReporter instances may be created from classes
  */
 export interface PackagelintReporterClassConstructor<
-  OptionsType extends PackagelintAnyRuleOptions = any
+  OptionsType extends PackagelintAnyRuleOptions = any,
 > {
   new (options: OptionsType): PackagelintReporter;
 }
@@ -220,7 +220,7 @@ export interface PackagelintReporterClassConstructor<
  * PackagelintReporter instances may be created from functions
  */
 export type PackagelintReporterConstructorFunction<
-  OptionsType extends PackagelintAnyRuleOptions = any
+  OptionsType extends PackagelintAnyRuleOptions = any,
 > = (options: OptionsType) => PackagelintReporter;
 
 /**
@@ -242,7 +242,7 @@ export interface PackagelintPreparedConfig {
 
 export type PackagelintValidationFn<
   OptionsType extends PackagelintAnyRuleOptions = PackagelintUnknownRuleOptions,
-  ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData
+  ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData,
 > = (
   options: OptionsType,
   packageContext: PackagelintValidationContext<ErrorDataType>,
@@ -251,7 +251,7 @@ export type PackagelintValidationFn<
   | Promise<PackagelintValidationFnReturn<ErrorDataType>>;
 
 export type PackagelintValidationContext<
-  ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData
+  ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData,
 > = {
   // General information
   preparedRuleName: string;
@@ -266,15 +266,15 @@ export type PackagelintValidationContext<
 };
 
 export type PackagelintValidationFnReturn<
-  ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData
+  ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData,
 > = [string, ErrorDataType] | null | undefined;
 
 export type PackagelintValidationResult<
-  ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData
+  ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData,
 > = PackagelintValidationError<ErrorDataType> | null;
 
 export interface PackagelintValidationError<
-  ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData
+  ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData,
 > {
   preparedRuleName: PackagelintRuleName;
   errorLevel: PackagelintErrorLevel;

@@ -13,8 +13,9 @@ file, certain `.npmrc` settings, particular config values for ESLint or Jest, or
 ## At a Glance
 
 - `.packagelint.js` sets options and errorLevels for the rules you want to run.
-- You can create multiple copies of a rule by customizing its name: e.g., the `nvmrc` rule can be configured once
-  to require a `.nvmrc` file with NodeJS >= 10, at errorLevel "error"; and again with NodeJS >= 14 at errorLevel "suggestion".
+- You can create multiple copies of a rule by customizing its name. For example: the `@packagelint/core:nvmrc` rule can
+  be configured once to require a `.nvmrc` file with NodeJS >= 10, at errorLevel "error", then again with NodeJS >= 14
+  at errorLevel "suggestion".
 - Reporters and exit code conditions may be customized to be strict or lenient.
 
 ## How it works
@@ -33,15 +34,13 @@ after `0.2.0`.
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/core.svg)](https://www.npmjs.com/package/@packagelint/core)
 [![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/core)](https://david-dm.org/spautz/packagelint?path=packages/core)
-[![gzip size](https://img.badgesize.io/https://unpkg.com/@packagelint/core@latest/dist/core.cjs.production.min.js?compression=gzip)](https://bundlephobia.com/result?p=@packagelint/core@latest)
 
-A collection of validation checks, covering various standards and tools that you might want to check for.
+A collection of validation checks, covering various standards and tools.
 
 #### [@packagelint/packagelint](./packages/packagelint/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/packagelint.svg)](https://www.npmjs.com/package/@packagelint/packagelint)
 [![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/packagelint)](https://david-dm.org/spautz/packagelint?path=packages/packagelint)
-[![gzip size](https://img.badgesize.io/https://unpkg.com/@packagelint/packagelint@latest/dist/packagelint.cjs.production.min.js?compression=gzip)](https://bundlephobia.com/result?p=@packagelint/packagelint@latest)
 
 The `packagelint` command itself, available as a CLI tool or as an importable API.
 
@@ -56,10 +55,8 @@ Run your local Packagelint via a global command
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/presets.svg)](https://www.npmjs.com/package/@packagelint/presets)
 [![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/presets)](https://david-dm.org/spautz/packagelint?path=packages/presets)
-[![gzip size](https://img.badgesize.io/https://unpkg.com/@packagelint/presets@latest/dist/presets.cjs.production.min.js?compression=gzip)](https://bundlephobia.com/result?p=@packagelint/presets@latest)
 
-A collection of validation presets: a ready-to-use ruleset that selects and configures some of the core rules for
-common scenarios.
+A collection of validation presets: ready-to-use rulesets that for common scenarios.
 
 ## Documentation (incomplete)
 

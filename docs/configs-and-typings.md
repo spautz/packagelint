@@ -171,9 +171,8 @@ export interface PackagelintOutput {
 ```
 
 ```typescript
-export type PackagelintValidationResult<
-  ErrorDataType extends PackagelintAnyErrorData
-> = PackagelintValidationError<ErrorDataType> | null;
+export type PackagelintValidationResult<ErrorDataType extends PackagelintAnyErrorData> =
+  PackagelintValidationError<ErrorDataType> | null;
 
 export interface PackagelintValidationError<ErrorDataType extends PackagelintAnyErrorData> {
   preparedRuleName: PackagelintRuleName;
