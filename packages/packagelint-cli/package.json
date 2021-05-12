@@ -1,7 +1,7 @@
 {
   "name": "@packagelint/packagelint-cli",
   "version": "0.0.1",
-  "description": "A global",
+  "description": "Run your local Packagelint via a global command",
   "keywords": [],
   "license": "MIT",
   "homepage": "https://github.com/spautz/packagelint/tree/main/packages/core#readme",

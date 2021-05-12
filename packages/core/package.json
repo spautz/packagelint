@@ -65,8 +65,6 @@
     "test:watchcoverage": "tsdx test --watchAll --coverage",
     "types": "tsc --p tsconfig.json --noEmit"
   },
-  "dependencies": {},
-  "devDependencies": {},
   "typesVersions": {
     "<4": {
       "*": [

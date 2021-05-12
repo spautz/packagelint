@@ -45,6 +45,13 @@ A collection of validation checks, covering various standards and tools that you
 
 The `packagelint` command itself, available as a CLI tool or as an importable API.
 
+#### [@packagelint/packagelint-cli](./packages/packagelint-cli/)
+
+[![npm version](https://img.shields.io/npm/v/@packagelint/packagelint-cli.svg)](https://www.npmjs.com/package/@packagelint/packagelint-cli)
+[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/packagelint-cli)](https://david-dm.org/spautz/packagelint?path=packages/packagelint-cli)
+
+Run your local Packagelint via a global command
+
 #### [@packagelint/presets](./packages/presets/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/presets.svg)](https://www.npmjs.com/package/@packagelint/presets)

@@ -68,7 +68,6 @@
   "dependencies": {
     "@packagelint/core": "^0.0.1"
   },
-  "devDependencies": {},
   "typesVersions": {
     "<4": {
       "*": [
