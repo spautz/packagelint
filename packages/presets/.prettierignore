@@ -19,5 +19,6 @@ build/
 dist/
 coverage/
 coverage-local/
+legacy-types/
 lib-dist/
 node_modules/
