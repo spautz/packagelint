@@ -63,7 +63,7 @@
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as ",
     "test": "yon run test:coverage",
     "test:clean": "rimraf ./coverage-local",
-    "test:coverage": "tsdx test --coverage --passWithNoTests",
+    "test:coverage": "tsdx test --coverage",
     "test:nowatch": "tsdx test",
     "test:watch": "tsdx test --watch",
     "test:watchcoverage": "tsdx test --watchAll --coverage",
@@ -74,7 +74,7 @@
     "find-up": "^5.0.0",
     "semver": "^7.3.5",
     "v8-compile-cache": "^2.3.0",
-    "yargs": "^17.0.1"
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "@types/semver": "7.3.5"

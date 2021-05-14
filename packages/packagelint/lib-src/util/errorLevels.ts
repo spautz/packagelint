@@ -36,6 +36,7 @@ function countErrorTypes(
   const errorLevelCounts = validationResults.reduce(
     (counts, result) => {
       if (result) {
+        counts[result.errorLevel] ||= 0;
         counts[result.errorLevel]++;
       }
       return counts;

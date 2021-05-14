@@ -1,10 +1,13 @@
-import findUp from 'find-up';
-
 import { PackagelintOutput } from '@packagelint/core';
 
-import { prepareConfig } from './prepare';
-import { FAILURE__INVALID_CONFIG, FAILURE__NO_CONFIG, PackagelintExitCode } from './util';
-import { doValidation } from './validate';
+import {
+  FAILURE__INVALID_CONFIG,
+  FAILURE__NO_CONFIG,
+  PackagelintExitCode,
+  doValidation,
+  findPackagelintConfigFile,
+  prepareConfig,
+} from './api';
 
 export interface PackagelintCliArgs {
   // @TODO
@@ -13,13 +16,6 @@ export interface PackagelintCliArgs {
 const DEFAULT_CLI_ARGS: PackagelintCliArgs = {
   // @TODO
 };
-
-async function findPackagelintConfigFile(
-  configFileName: string = '.packagelint.js',
-  pathToSearchFrom: string = process.cwd(),
-): Promise<string | undefined> {
-  return findUp(configFileName, { cwd: pathToSearchFrom });
-}
 
 /**
  * 1. Read config
