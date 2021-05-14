@@ -2,14 +2,7 @@ import { PackagelintUserConfig, PackagelintPreparedConfig } from '@packagelint/c
 
 import { broadcastEventUsingReporters, prepareReporters } from '../report';
 import { accumulateRules } from './accumulateRules';
-
-const defaultUserConfig: PackagelintUserConfig = {
-  failOnErrorLevel: 'error',
-  rules: ['@packagelint/core:always-fail'],
-  reporters: {
-    '@packagelint/core:internalDebugReporter': true,
-  },
-};
+import { defaultUserConfig } from './defaultUserConfig';
 
 /**
  * Expands, flattens, and resolves a User Config into a flat list of validate rules
