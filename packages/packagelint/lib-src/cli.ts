@@ -1,4 +1,4 @@
-import { PackagelintOutput } from '@packagelint/core';
+import { PackagelintOutput, PackagelintUserConfig } from '@packagelint/core';
 
 import {
   FAILURE__INVALID_CONFIG,
@@ -7,6 +7,7 @@ import {
   doValidation,
   findPackagelintConfigFile,
   prepareConfig,
+  resolveImport,
 } from './api';
 
 export interface PackagelintCliArgs {
@@ -34,11 +35,10 @@ async function packagelintCli(
     return [FAILURE__NO_CONFIG, null];
   }
 
-  const rawUserConfig = require(packagelintConfigFileName);
-  if (!rawUserConfig) {
+  const userConfig = await resolveImport<PackagelintUserConfig>(packagelintConfigFileName);
+  if (!userConfig) {
     return [FAILURE__INVALID_CONFIG, null];
   }
-  const userConfig = await (typeof rawUserConfig === 'function' ? rawUserConfig() : rawUserConfig);
 
   const preparedConfig = await prepareConfig(userConfig);
 

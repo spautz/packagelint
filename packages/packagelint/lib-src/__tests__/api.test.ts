@@ -32,6 +32,9 @@ describe('cli', () => {
       'isFailureExitCode',
       'resolveRule',
       'resolveReporter',
+      'constructClassOrFunction',
+      'resolveImport',
+      'resolveImportedValue',
       // @TODO
       'defaultUserConfig',
       'prepareConfig',
@@ -46,7 +49,6 @@ describe('cli', () => {
       'prepareReporters',
       'broadcastEvent',
       'broadcastEventUsingReporters',
-      'constructClassOrFunction',
     ].sort();
 
     expect(allExportNames).toEqual(expectedExports);
