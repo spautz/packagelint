@@ -26,4 +26,22 @@ function constructClassOrFunction<
   }
 }
 
-export { constructClassOrFunction };
+function isFunction(someValue: unknown): someValue is Function {
+  return typeof someValue === 'function';
+}
+
+/**
+ * When importing configs, rules, presets, or reporters, the value may be exported directly, or wrapped in a promise
+ * or function. This standardizes the imported value so that it's always delivered via a promise.
+ */
+async function resolveImportedValue<ExpectedType>(
+  rawValue: ExpectedType | Promise<ExpectedType> | (() => ExpectedType | Promise<ExpectedType>),
+): Promise<ExpectedType> {
+  if (isFunction(rawValue)) {
+    return rawValue();
+  } else {
+    return rawValue;
+  }
+}
+
+export { constructClassOrFunction, resolveImportedValue };

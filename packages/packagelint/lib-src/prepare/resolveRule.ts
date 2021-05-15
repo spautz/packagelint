@@ -1,22 +1,28 @@
 import {
+  PackagelintExportedRules,
   PackagelintRuleName,
   PackagelintRuleDefinition,
   PackagelintRulesetDefinition,
 } from '@packagelint/core';
+import { resolveImportedValue } from '../util';
 
-function resolveRule(
+async function resolveRule(
   name: PackagelintRuleName,
-): PackagelintRuleDefinition | PackagelintRulesetDefinition {
+): Promise<PackagelintRuleDefinition | PackagelintRulesetDefinition> {
   // @TODO: Implement this properly
   // @TODO: Validation
 
   const [packageName, ruleOrRulesetName] = name.split(':');
 
   if (!packageName || !ruleOrRulesetName) {
+    // @FIXME: Need to handle custom rule names: aliases of aliases are currently broken!
     throw new Error(`Rule "${name}" is not a valid rule name`);
   }
 
-  const { packagelintRules } = require(packageName);
+  const packageExports = await resolveImportedValue<PackagelintExportedRules>(require(packageName));
+  const packagelintRules = await resolveImportedValue<PackagelintExportedRules['packagelintRules']>(
+    packageExports.packagelintRules,
+  );
 
   if (!packagelintRules) {
     throw new Error(`Package "${packageName}" does not provide any packagelint rules`);

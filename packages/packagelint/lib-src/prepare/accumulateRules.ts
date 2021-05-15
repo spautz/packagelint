@@ -17,7 +17,9 @@ import { resolveRule } from './resolveRule';
  * Iterates through a list of user-specified rules and rulesets, resolving each and merging options to make a final list
  * of validation-ready rules.
  */
-function accumulateRules(packagelintConfig: PackagelintUserConfig): Array<PackagelintPreparedRule> {
+async function accumulateRules(
+  packagelintConfig: PackagelintUserConfig,
+): Promise<Array<PackagelintPreparedRule>> {
   const accumulator = new RuleAccumulator();
 
   accumulator.accumulateRuleList(packagelintConfig.rules);
@@ -52,7 +54,7 @@ class RuleAccumulator {
   accumulateRule(
     ruleInfo: PackagelintRuleEntry | PackagelintRulesetEntry,
     overrides: Partial<PackagelintRuleConfig> = {},
-  ): void {
+  ): Promise<void> {
     // Shorthands
     if (typeof ruleInfo === 'string') {
       return this._accumulateRuleConfigObject({
@@ -107,7 +109,9 @@ class RuleAccumulator {
     return this._ruleOrder.map((preparedRuleName) => this._ruleInfo[preparedRuleName]);
   }
 
-  _accumulateRuleConfigObject(ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig): void {
+  async _accumulateRuleConfigObject(
+    ruleInfo: PackagelintRuleConfig | PackagelintRulesetConfig,
+  ): Promise<void> {
     const { name, enabled, extendRule, errorLevel, options, resetOptions, messages } =
       ruleInfo as PackagelintRuleConfig;
 
@@ -127,7 +131,7 @@ class RuleAccumulator {
           extendedFrom: extendRule,
         };
       } else {
-        const baseRule = resolveRule(extendRule || name);
+        const baseRule = await resolveRule(extendRule || name);
 
         // @TODO: Split between single rules and rulesets
 

@@ -1,6 +1,13 @@
-import { PackagelintReporterName, PackagelintReporterConstructor } from '@packagelint/core';
+import {
+  PackagelintReporterName,
+  PackagelintReporterConstructor,
+  PackagelintExportedReporters,
+} from '@packagelint/core';
+import { resolveImportedValue } from '../util';
 
-function resolveReporter(name: PackagelintReporterName): PackagelintReporterConstructor {
+async function resolveReporter(
+  name: PackagelintReporterName,
+): Promise<PackagelintReporterConstructor> {
   // @TODO: Implement this properly
   // @TODO: Validation
 
@@ -10,7 +17,12 @@ function resolveReporter(name: PackagelintReporterName): PackagelintReporterCons
     throw new Error(`Reporter "${name}" is not a valid reporter name`);
   }
 
-  const { packagelintReporters } = require(packageName);
+  const packageExports = await resolveImportedValue<PackagelintExportedReporters>(
+    require(packageName),
+  );
+  const packagelintReporters = await resolveImportedValue<
+    PackagelintExportedReporters['packagelintReporters']
+  >(packageExports.packagelintReporters);
 
   if (!packagelintReporters) {
     throw new Error(`Package "${packageName}" does not provide any packagelint reporters`);

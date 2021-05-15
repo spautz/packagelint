@@ -3,7 +3,6 @@ import * as allNamedExports from '../api';
 describe('cli', () => {
   it('exports all known exports', () => {
     const allExportNames = Object.keys(allNamedExports).sort();
-
     const expectedExports = [
       // High-level API
       'findPackagelintConfigFile',
@@ -33,6 +32,8 @@ describe('cli', () => {
       'isFailureExitCode',
       'resolveRule',
       'resolveReporter',
+      'constructClassOrFunction',
+      'resolveImportedValue',
       // @TODO
       'defaultUserConfig',
       'prepareConfig',
@@ -47,8 +48,8 @@ describe('cli', () => {
       'prepareReporters',
       'broadcastEvent',
       'broadcastEventUsingReporters',
-      'constructClassOrFunction',
     ].sort();
+
     expect(allExportNames).toEqual(expectedExports);
   });
 });
