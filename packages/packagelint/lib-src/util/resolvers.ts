@@ -44,12 +44,4 @@ async function resolveImportedValue<ExpectedType>(
   }
 }
 
-/**
- * When importing configs, rules, presets, or reporters, the value may be exported directly, or wrapped in a promise
- * or function. This is syntactic sugar that can be used in place of `resolveImportedValue(require('something'))`
- */
-async function resolveImport<ExpectedType>(moduleName: string): Promise<ExpectedType> {
-  return resolveImportedValue(require(moduleName));
-}
-
-export { constructClassOrFunction, resolveImportedValue, resolveImport };
+export { constructClassOrFunction, resolveImportedValue };

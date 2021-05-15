@@ -4,7 +4,7 @@ import {
   PackagelintRuleDefinition,
   PackagelintRulesetDefinition,
 } from '@packagelint/core';
-import { resolveImport, resolveImportedValue } from '../util';
+import { resolveImportedValue } from '../util';
 
 async function resolveRule(
   name: PackagelintRuleName,
@@ -19,7 +19,7 @@ async function resolveRule(
     throw new Error(`Rule "${name}" is not a valid rule name`);
   }
 
-  const packageExports = await resolveImport<PackagelintExportedRules>(packageName);
+  const packageExports = await resolveImportedValue<PackagelintExportedRules>(require(packageName));
   const packagelintRules = await resolveImportedValue<PackagelintExportedRules['packagelintRules']>(
     packageExports.packagelintRules,
   );

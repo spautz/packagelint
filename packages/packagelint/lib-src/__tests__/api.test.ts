@@ -33,7 +33,6 @@ describe('cli', () => {
       'resolveRule',
       'resolveReporter',
       'constructClassOrFunction',
-      'resolveImport',
       'resolveImportedValue',
       // @TODO
       'defaultUserConfig',

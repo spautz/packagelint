@@ -7,7 +7,7 @@ import {
   doValidation,
   findPackagelintConfigFile,
   prepareConfig,
-  resolveImport,
+  resolveImportedValue,
 } from './api';
 
 export interface PackagelintCliArgs {
@@ -35,7 +35,9 @@ async function packagelintCli(
     return [FAILURE__NO_CONFIG, null];
   }
 
-  const userConfig = await resolveImport<PackagelintUserConfig>(packagelintConfigFileName);
+  const userConfig = await resolveImportedValue<PackagelintUserConfig>(
+    require(packagelintConfigFileName),
+  );
   if (!userConfig) {
     return [FAILURE__INVALID_CONFIG, null];
   }

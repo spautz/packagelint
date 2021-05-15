@@ -3,7 +3,7 @@ import {
   PackagelintReporterConstructor,
   PackagelintExportedReporters,
 } from '@packagelint/core';
-import { resolveImport, resolveImportedValue } from '../util';
+import { resolveImportedValue } from '../util';
 
 async function resolveReporter(
   name: PackagelintReporterName,
@@ -17,7 +17,9 @@ async function resolveReporter(
     throw new Error(`Reporter "${name}" is not a valid reporter name`);
   }
 
-  const packageExports = await resolveImport<PackagelintExportedReporters>(packageName);
+  const packageExports = await resolveImportedValue<PackagelintExportedReporters>(
+    require(packageName),
+  );
   const packagelintReporters = await resolveImportedValue<
     PackagelintExportedReporters['packagelintReporters']
   >(packageExports.packagelintReporters);
