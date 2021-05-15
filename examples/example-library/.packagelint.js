@@ -2,7 +2,7 @@ module.exports = {
   failOnErrorLevel: 'exception',
   rules: [
     // `@packagelint/core` defines the rules, but each rule is disabled by default:
-    // each `@packagelint/presets` ruleset enables a set of those core rules.
+    // this ruleset from `@packagelint/presets` enables a set of those core rules.
     '@packagelint/presets:library',
 
     //   // Update the `nvmrc` rule to require at least Node 14, instead of the default.
