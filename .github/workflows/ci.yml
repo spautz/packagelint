@@ -48,7 +48,7 @@ jobs:
       - name: Check all examples
         run: yarn examples
 
-#      - name: Report test coverage to coveralls.io
-#        uses: coverallsapp/github-action@v1.1.2
-#        with:
-#          github-token: ${{ github.token }}
+      - name: Report test coverage to coveralls.io
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ github.token }}
