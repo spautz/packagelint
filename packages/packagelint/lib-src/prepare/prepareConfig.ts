@@ -18,7 +18,7 @@ async function prepareConfig(
     ...actualProjectConfig,
   };
 
-  const reporters = prepareReporters(finalUserConfig);
+  const reporters = await prepareReporters(finalUserConfig);
 
   // @TODO: Validate config
 
@@ -28,7 +28,7 @@ async function prepareConfig(
 
   const preparedConfig = {
     ...finalUserConfig,
-    rules: accumulateRules(finalUserConfig),
+    rules: await accumulateRules(finalUserConfig),
     reporters,
   };
 

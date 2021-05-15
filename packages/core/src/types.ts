@@ -28,6 +28,17 @@ export type PackagelintUnknownRuleOptions = Record<string, unknown>;
 export type PackagelintUnknownErrorData = Record<string, unknown>;
 export type PackagelintUnknownReporterOptions = unknown;
 
+// Exports for Rules, Rulesets, and Reporters
+
+// type FlexibleExportType<T> = T | Promise<T> | (() => T | Promise<T>);
+
+export type PackagelintExportedRules = {
+  packagelintRules: Record<string, PackagelintRuleDefinition | PackagelintRulesetDefinition>;
+};
+export type PackagelintExportedReporters = {
+  packagelintReporters: Record<string, PackagelintReporterConstructor>;
+};
+
 // UserConfig
 
 /**

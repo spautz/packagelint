@@ -38,6 +38,7 @@
     "examples/*/src",
     "examples/*/tests",
     "examples/*/stories",
+    "packages/*/lib-src",
     "packages/*/src",
     "packages/*/tests",
     "packages/*/stories"

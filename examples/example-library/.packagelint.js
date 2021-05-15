@@ -46,11 +46,12 @@ module.exports = {
         option2: true,
       },
     },
-    {
-      name: 'library-alias2',
-      options: {
-        oneMoreOption: true,
-      },
-    },
+    // {
+    //   name: 'alias-of-an-alias',
+    //   extendRule: 'my-local-alias-2',
+    //   options: {
+    //     oneMoreOption: true,
+    //   },
+    // },
   ],
 };

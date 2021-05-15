@@ -34,7 +34,7 @@ function isFunction(someValue: unknown): someValue is Function {
  * When importing configs, rules, presets, or reporters, the value may be exported directly, or wrapped in a promise
  * or function. This standardizes the imported value so that it's always delivered via a promise.
  */
-async function resolveImportedValue<ExpectedType = unknown>(
+async function resolveImportedValue<ExpectedType>(
   rawValue: ExpectedType | Promise<ExpectedType> | (() => ExpectedType | Promise<ExpectedType>),
 ): Promise<ExpectedType> {
   if (isFunction(rawValue)) {
@@ -48,7 +48,7 @@ async function resolveImportedValue<ExpectedType = unknown>(
  * When importing configs, rules, presets, or reporters, the value may be exported directly, or wrapped in a promise
  * or function. This is syntactic sugar that can be used in place of `resolveImportedValue(require('something'))`
  */
-async function resolveImport<ExpectedType = unknown>(moduleName: string): Promise<ExpectedType> {
+async function resolveImport<ExpectedType>(moduleName: string): Promise<ExpectedType> {
   return resolveImportedValue(require(moduleName));
 }
 

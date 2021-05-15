@@ -8,13 +8,19 @@ import {
 import { constructClassOrFunction } from '../util';
 import { resolveReporter } from './resolveReporter';
 
-function prepareReporters(packagelintConfig: PackagelintUserConfig): Array<PackagelintReporter> {
-  return Object.keys(packagelintConfig.reporters).map((reporterName) => {
-    const reporterConstructor = resolveReporter(reporterName);
+async function prepareReporters(
+  packagelintConfig: PackagelintUserConfig,
+): Promise<Array<PackagelintReporter>> {
+  const allPendingReporters: Array<Promise<PackagelintReporter>> = Object.keys(
+    packagelintConfig.reporters,
+  ).map(async (reporterName): Promise<PackagelintReporter> => {
+    const reporterConstructor = await resolveReporter(reporterName);
     const reporterOptions = packagelintConfig.reporters[reporterName];
 
     return constructClassOrFunction(reporterConstructor, reporterOptions);
   });
+
+  return Promise.all(allPendingReporters);
 }
 
 function broadcastEvent(
