@@ -1,7 +1,10 @@
-# @packagelint/packagelint
+# @packagelint/packagelint-cli
 
-[![npm version](https://img.shields.io/npm/v/@packagelint/packagelint.svg)](https://www.npmjs.com/package/@packagelint/packagelint)
-[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/packagelint)](https://david-dm.org/spautz/packagelint?path=packages/packagelint)
-[![gzip size](https://img.badgesize.io/https://unpkg.com/@packagelint/packagelint@latest/dist/packagelint.cjs.production.min.js?compression=gzip)](https://bundlephobia.com/result?p=@packagelint/packagelint@latest)
+[![npm version](https://img.shields.io/npm/v/@packagelint/packagelint-cli.svg)](https://www.npmjs.com/package/@packagelint/packagelint-cli)
+[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/packagelint-cli)](https://david-dm.org/spautz/packagelint?path=packages/packagelint-cli)
 
-Configure and override rule configs for a linter, in an extension-friendly way
+Run your local Packagelint via a global command
+
+(Docs pending)
+
+For more information or related packages, see the [Packagelint workspace](https://github.com/spautz/packagelint).
