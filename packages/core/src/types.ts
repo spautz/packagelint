@@ -53,6 +53,9 @@ export interface PackagelintUserConfig {
   /** Result reporters and their configs */
   reporters: Record<PackagelintReporterName, PackagelintAnyReporterOptions>;
 
+  /** Internal implementation, for forking or hotfixing. Do not touch unless you're sure of what you're doing. */
+  RuleValidator: PackagelintRuleValidatorConstructor;
+
   // @TODO: aliases, reporterAliases
 }
 
@@ -246,46 +249,46 @@ export interface PackagelintPreparedConfig {
   failOnErrorLevel: PackagelintErrorLevel;
   rules: Array<PackagelintPreparedRule>;
   reporters: Array<PackagelintReporterInstance>;
+  ruleValidatorInstance: PackagelintRuleValidatorInstance;
 }
 
 // Validation Runner: PackagelintRuleValidator
 
 /**
  * Validation is performed via functions within a class or closure, to make it easier for forks to extend or override
- * the internal implementation. All of the functions marked as optional here exist in the DefaultRuleValidator,
- * although they're not strictly required.
+ * separate pieces of the internal implementation. All of the functions marked as optional here exist in the
+ * DefaultRuleValidator, although only `validatePreparedConfig` will be called from outside.
  */
 export interface PackagelintRuleValidatorInstance {
-  readonly processPreparedConfig: (
+  readonly validatePreparedConfig: (
     preparedConfig: PackagelintPreparedConfig,
   ) => Promise<PackagelintOutput>;
 
-  readonly processOneRule: (
-    preparedRule: PackagelintPreparedRule,
-  ) => Promise<PackagelintValidationResult>;
-
-  readonly getRawResults: () => Array<PackagelintValidationResult>;
-
-  readonly getValidationOutput: () => PackagelintOutput;
-
-  // These exist in the default implementation, but are not part of the API contract used by validatePreparedConfig()
+  // These exist in the default implementation, but are not part of the API contract used by validatePreparedConfig().
+  // These all implicitly use the preparedConfig passed into `validatePreparedConfig`, and will not work standalone.
 
   readonly _makeValidationContext?: (
     preparedRule: PackagelintPreparedRule,
   ) => PackagelintValidationContext;
 
-  readonly _validateRuleList?: (
-    ruleList: Array<PackagelintPreparedRule>,
-  ) => Promise<Array<PackagelintValidationResult>>;
+  readonly _validateAllRules?: () => Promise<Array<PackagelintValidationResult>>;
 
-  readonly _beforeRule?: (ruleInfo: PackagelintPreparedRule) => Promise<void | unknown>;
+  readonly _validateOneRule?: (
+    preparedRule: PackagelintPreparedRule,
+  ) => Promise<PackagelintValidationResult>;
 
-  readonly _processValidationResult?: (
+  readonly _beforeRule?: (ruleInfo: PackagelintPreparedRule) => Promise<Array<void | unknown>>;
+
+  readonly _processRuleResult?: (
     preparedRule: PackagelintPreparedRule,
     rawResult: PackagelintValidationFnReturn,
   ) => PackagelintValidationResult;
 
-  readonly _afterRule?: (ruleInfo: PackagelintPreparedRule) => Promise<void | unknown>;
+  readonly _afterRule?: (ruleInfo: PackagelintPreparedRule) => Promise<Array<void | unknown>>;
+
+  readonly _getRawResults?: () => Array<PackagelintValidationResult>;
+
+  readonly _getValidationOutput?: () => PackagelintOutput;
 }
 
 /**

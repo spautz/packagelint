@@ -1,5 +1,5 @@
 // Core functionality
 export * from './prepareReporters';
 
-// Helpers
+// Internals
 export * from './resolveReporter';

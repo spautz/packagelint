@@ -10,7 +10,6 @@ import {
   countErrorTypes,
   getHighestErrorLevel,
   isErrorLessSevereThan,
-  // constructClassOrFunction,
 } from '../util';
 import { broadcastEvent } from '../report';
 
@@ -19,10 +18,9 @@ import { validateRuleList } from './DefaultRuleValidator';
 async function validatePreparedConfig(
   preparedConfig: PackagelintPreparedConfig,
 ): Promise<PackagelintOutput> {
-  const { failOnErrorLevel, rules, reporters } = preparedConfig;
+  const { ruleValidatorInstance, failOnErrorLevel, rules, reporters } = preparedConfig;
 
-  // @TODO: Migrate functionality to class|closure
-  // const ruleValidator = constructClassOrFunction(RuleValidator || DefaultRuleValidator);
+  console.log('ruleValidator instance: ', ruleValidatorInstance);
 
   await broadcastEvent(preparedConfig, 'onValidationStart', preparedConfig);
 

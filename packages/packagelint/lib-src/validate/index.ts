@@ -2,5 +2,5 @@
 export * from './validatePreparedConfig';
 export * from './DefaultRuleValidator';
 
-// Helpers
-export * from './validationHelpers';
+// Internals
+export * from './defaultRuleValidatorHelpers';

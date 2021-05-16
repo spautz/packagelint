@@ -5,6 +5,9 @@ import {
   PackagelintValidationResult,
   PackagelintValidationError,
   PackagelintReporterInstance,
+  PackagelintRuleValidatorInstance,
+  PackagelintValidationContext,
+  PackagelintValidationFnReturn,
 } from '@packagelint/core';
 
 import {
@@ -17,7 +20,52 @@ import {
 } from '../util';
 import { broadcastEvent, broadcastEventUsingReporters } from '../report';
 
-import { makeValidationContext } from './validationHelpers';
+import { makeValidationContext } from './defaultRuleValidatorHelpers';
+
+class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance> {
+  async validatePreparedConfig(
+    _preparedConfig: PackagelintPreparedConfig,
+  ): Promise<PackagelintOutput> {
+    return '@TODO' as any;
+  }
+
+  _makeValidationContext(_preparedRule: PackagelintPreparedRule): PackagelintValidationContext {
+    return '@TODO' as any;
+  }
+
+  async _validateAllRules(): Promise<Array<PackagelintValidationResult>> {
+    return Promise.resolve('@TODO' as any);
+  }
+
+  async _validateOneRule(
+    _preparedRule: PackagelintPreparedRule,
+  ): Promise<PackagelintValidationResult> {
+    return Promise.resolve('@TODO' as any);
+  }
+
+  async _beforeRule(_ruleInfo: PackagelintPreparedRule): Promise<Array<void | unknown>> {
+    return Promise.resolve('@TODO' as any);
+  }
+
+  _processRuleResult(
+    _preparedRule: PackagelintPreparedRule,
+    _rawResult: PackagelintValidationFnReturn,
+  ): PackagelintValidationResult {
+    return '@TODO' as any;
+  }
+
+  async _afterRule(_ruleInfo: PackagelintPreparedRule): Promise<Array<void | unknown>> {
+    return Promise.resolve('@TODO' as any);
+  }
+
+  _getRawResults(): Array<PackagelintValidationResult> {
+    return '@TODO' as any;
+  }
+
+  _getValidationOutput(): PackagelintOutput {
+    return '@TODO' as any;
+  }
+}
 
 async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<PackagelintOutput> {
   const { failOnErrorLevel, rules, reporters } = preparedConfig;
@@ -105,4 +153,4 @@ async function validateOneRule(
   return result;
 }
 
-export { doValidation, validateRuleList, validateOneRule };
+export { DefaultRuleValidator, doValidation, validateRuleList, validateOneRule };

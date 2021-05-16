@@ -2,18 +2,27 @@ import * as allNamedExports from '../api';
 
 describe('cli', () => {
   it('exports all known exports', () => {
-    const allExportNames = Object.keys(allNamedExports).sort();
+    const allExportNames = Object.keys(allNamedExports);
     const expectedExports = [
       // High-level API
       'findPackagelintConfigFile',
+      // Validation
+      'validatePreparedConfig',
+      'DefaultRuleValidator',
+      // Import helpers
+      'resolveRule',
+      'resolveReporter',
+      'constructClassOrFunction',
+      'resolveImportedValue',
       // Constants and utils
+      'defaultUserConfig',
+      'ALL_ERROR_LEVELS',
+      'ALL_ERROR_LEVEL_VALUES',
       'ERROR_LEVEL__EXCEPTION',
       'ERROR_LEVEL__ERROR',
       'ERROR_LEVEL__WARNING',
       'ERROR_LEVEL__SUGGESTION',
       'ERROR_LEVEL__IGNORE',
-      'ALL_ERROR_LEVELS',
-      'ALL_ERROR_LEVEL_VALUES',
       'ERROR_LEVELS_IN_SEVERITY_ORDER',
       'countErrorTypes',
       'getHighestErrorLevel',
@@ -30,27 +39,21 @@ describe('cli', () => {
       'isValidExitCode',
       'isSuccessExitCode',
       'isFailureExitCode',
-      'resolveRule',
-      'resolveReporter',
-      'constructClassOrFunction',
-      'resolveImportedValue',
       // @TODO
-      'defaultUserConfig',
       'prepareConfig',
       'accumulateRules',
       'RuleAccumulator',
       'isRuleDefinition',
       'isRulesetDefinition',
       'doValidation',
-      'validatePreparedConfig',
       'validateRuleList',
       'validateOneRule',
       'makeValidationContext',
       'prepareReporters',
       'broadcastEvent',
       'broadcastEventUsingReporters',
-    ].sort();
+    ];
 
-    expect(allExportNames).toEqual(expectedExports);
+    expect(allExportNames.sort()).toEqual(expectedExports.sort());
   });
 });

@@ -1,8 +1,13 @@
 import { PackagelintUserConfig, PackagelintPreparedConfig } from '@packagelint/core';
 
-import { broadcastEventUsingReporters, prepareReporters } from '../report';
+import {
+  broadcastEventUsingReporters,
+  constructClassOrFunction,
+  prepareReporters,
+} from '../report';
 import { accumulateRules } from './accumulateRules';
 import { defaultUserConfig } from './defaultUserConfig';
+import { DefaultRuleValidator } from '../validate';
 
 /**
  * Expands, flattens, and resolves a User Config into a flat list of validate rules
@@ -17,6 +22,7 @@ async function prepareConfig(
     ...defaultUserConfig,
     ...actualProjectConfig,
   };
+  const { RuleValidator } = finalUserConfig;
 
   const reporters = await prepareReporters(finalUserConfig);
 
@@ -26,10 +32,13 @@ async function prepareConfig(
 
   // @TODO: Verbose option
 
+  const ruleValidatorInstance = constructClassOrFunction(RuleValidator || DefaultRuleValidator);
+
   const preparedConfig = {
     ...finalUserConfig,
     rules: await accumulateRules(finalUserConfig),
     reporters,
+    ruleValidatorInstance,
   };
 
   await broadcastEventUsingReporters(reporters, 'onConfigReady', preparedConfig);
