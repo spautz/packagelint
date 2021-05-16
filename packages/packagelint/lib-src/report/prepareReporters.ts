@@ -1,6 +1,6 @@
 import {
   PackagelintPreparedConfig,
-  PackagelintReporter,
+  PackagelintReporterInstance,
   PackagelintReporterEventName,
   PackagelintUserConfig,
 } from '@packagelint/core';
@@ -10,10 +10,10 @@ import { resolveReporter } from './resolveReporter';
 
 async function prepareReporters(
   packagelintConfig: PackagelintUserConfig,
-): Promise<Array<PackagelintReporter>> {
-  const allPendingReporters: Array<Promise<PackagelintReporter>> = Object.keys(
+): Promise<Array<PackagelintReporterInstance>> {
+  const allPendingReporters: Array<Promise<PackagelintReporterInstance>> = Object.keys(
     packagelintConfig.reporters,
-  ).map(async (reporterName): Promise<PackagelintReporter> => {
+  ).map(async (reporterName): Promise<PackagelintReporterInstance> => {
     const reporterConstructor = await resolveReporter(reporterName);
     const reporterOptions = packagelintConfig.reporters[reporterName];
 
@@ -32,11 +32,11 @@ function broadcastEvent(
 }
 
 function broadcastEventUsingReporters(
-  reporters: Array<PackagelintReporter>,
+  reporters: Array<PackagelintReporterInstance>,
   eventName: PackagelintReporterEventName,
   ...eventArgs: Array<any>
 ): Promise<Array<void | unknown>> {
-  const allReporterResults = reporters.map((reporterInstance: PackagelintReporter) => {
+  const allReporterResults = reporters.map((reporterInstance: PackagelintReporterInstance) => {
     if (reporterInstance[eventName]) {
       // @TODO: More error-checking
       // @ts-ignore

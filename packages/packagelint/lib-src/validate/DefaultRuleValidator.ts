@@ -4,7 +4,7 @@ import {
   PackagelintPreparedConfig,
   PackagelintValidationResult,
   PackagelintValidationError,
-  PackagelintReporter,
+  PackagelintReporterInstance,
 } from '@packagelint/core';
 
 import {
@@ -56,7 +56,7 @@ async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<
 
 async function validateRuleList(
   ruleList: Array<PackagelintPreparedRule>,
-  reporterList: Array<PackagelintReporter>,
+  reporterList: Array<PackagelintReporterInstance>,
 ): Promise<Array<PackagelintValidationResult>> {
   return await Promise.all(
     ruleList.map((preparedRule) => {
@@ -67,7 +67,7 @@ async function validateRuleList(
 
 async function validateOneRule(
   preparedRule: PackagelintPreparedRule,
-  reporterList: Array<PackagelintReporter>,
+  reporterList: Array<PackagelintReporterInstance>,
 ): Promise<PackagelintValidationResult> {
   const { preparedRuleName, enabled, errorLevel, options, messages } = preparedRule;
   let result = null;

@@ -190,7 +190,7 @@ export type PackagelintUnknownReporterReturnValue = Promise<void | unknown> | vo
 /**
  *
  */
-export interface PackagelintReporter {
+export interface PackagelintReporterInstance {
   readonly onConfigStart?: (
     userConfig: PackagelintUserConfig,
   ) => PackagelintUnknownReporterReturnValue;
@@ -220,21 +220,21 @@ export interface PackagelintReporter {
 }
 
 /**
- * PackagelintReporter instances may be created from classes
+ * A PackagelintReporterInstance may be created from classes
  */
 export interface PackagelintReporterClassConstructor<
   OptionsType extends PackagelintAnyRuleOptions = any,
 > {
-  new (options: OptionsType): PackagelintReporter;
+  new (options: OptionsType): PackagelintReporterInstance;
 }
 /**
- * PackagelintReporter instances may be created from functions
+ * A PackagelintReporterInstance may be created from functions
  */
 export type PackagelintReporterConstructorFunction<
   OptionsType extends PackagelintAnyRuleOptions = any,
-> = (options: OptionsType) => PackagelintReporter;
+> = (options: OptionsType) => PackagelintReporterInstance;
 /**
- * PackagelintReporter instances may be created from either classes or functions
+ * A PackagelintReporterInstance may be created from either classes or functions
  */
 export type PackagelintReporterConstructor<OptionsType extends PackagelintAnyRuleOptions = any> =
   | PackagelintReporterClassConstructor<OptionsType>
@@ -245,17 +245,17 @@ export type PackagelintReporterConstructor<OptionsType extends PackagelintAnyRul
 export interface PackagelintPreparedConfig {
   failOnErrorLevel: PackagelintErrorLevel;
   rules: Array<PackagelintPreparedRule>;
-  reporters: Array<PackagelintReporter>;
+  reporters: Array<PackagelintReporterInstance>;
 }
 
-// Validation Runner: RuleValidator
+// Validation Runner: PackagelintRuleValidator
 
 /**
  * Validation is performed via functions within a class or closure, to make it easier for forks to extend or override
  * the internal implementation. All of the functions marked as optional here exist in the DefaultRuleValidator,
  * although they're not strictly required.
  */
-export interface RuleValidatorInstance {
+export interface PackagelintRuleValidatorInstance {
   readonly processPreparedConfig: (
     preparedConfig: PackagelintPreparedConfig,
   ) => Promise<PackagelintOutput>;
@@ -289,21 +289,21 @@ export interface RuleValidatorInstance {
 }
 
 /**
- * RuleValidator instances may be created from classes
+ * A PackagelintRuleValidatorInstance may be created from classes
  */
-export interface RuleValidatorClassConstructor {
-  new (): RuleValidatorInstance;
+export interface PackagelintRuleValidatorClassConstructor {
+  new (): PackagelintRuleValidatorInstance;
 }
 /**
- * RuleValidator instances may be created from functions
+ * A PackagelintRuleValidatorInstance may be created from functions
  */
-export type RuleValidatorConstructorFunction = () => RuleValidatorInstance;
+export type PackagelintRuleValidatorConstructorFunction = () => PackagelintRuleValidatorInstance;
 /**
- * RuleValidator instances may be created from either classes or functions
+ * A PackagelintRuleValidatorInstance may be created from either classes or functions
  */
-export type RuleValidatorConstructor =
-  | RuleValidatorClassConstructor
-  | RuleValidatorConstructorFunction;
+export type PackagelintRuleValidatorConstructor =
+  | PackagelintRuleValidatorClassConstructor
+  | PackagelintRuleValidatorConstructorFunction;
 
 // Validation
 
