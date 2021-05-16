@@ -1,5 +1,5 @@
 // Core functionality
-export * from './validatePreparedConfig';
+export * from './validate';
 export * from './DefaultRuleValidator';
 
 // Internals

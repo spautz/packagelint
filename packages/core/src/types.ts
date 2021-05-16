@@ -211,11 +211,11 @@ export interface PackagelintReporterInstance {
   ) => PackagelintUnknownReporterReturnValue;
 
   readonly onRuleStart?: (
-    ruleInfo: PackagelintPreparedRule,
+    preparedRule: PackagelintPreparedRule,
   ) => PackagelintUnknownReporterReturnValue;
 
   readonly onRuleResult?: (
-    ruleInfo: PackagelintPreparedRule,
+    preparedRule: PackagelintPreparedRule,
     ruleResult: PackagelintValidationResult,
   ) => PackagelintUnknownReporterReturnValue;
 
@@ -277,14 +277,17 @@ export interface PackagelintRuleValidatorInstance {
     preparedRule: PackagelintPreparedRule,
   ) => Promise<PackagelintValidationResult>;
 
-  readonly _beforeRule?: (ruleInfo: PackagelintPreparedRule) => Promise<Array<void | unknown>>;
+  readonly _beforeRule?: (preparedRule: PackagelintPreparedRule) => Promise<Array<void | unknown>>;
 
   readonly _processRuleResult?: (
     preparedRule: PackagelintPreparedRule,
-    rawResult: PackagelintValidationFnReturn,
+    rawResult: PackagelintValidationFnReturn | Error,
   ) => PackagelintValidationResult;
 
-  readonly _afterRule?: (ruleInfo: PackagelintPreparedRule) => Promise<Array<void | unknown>>;
+  readonly _afterRule?: (
+    preparedRule: PackagelintPreparedRule,
+    result: PackagelintValidationResult,
+  ) => Promise<Array<void | unknown>>;
 
   readonly _getRawResults?: () => Array<PackagelintValidationResult>;
 

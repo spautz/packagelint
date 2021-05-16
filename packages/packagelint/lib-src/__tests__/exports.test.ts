@@ -9,9 +9,11 @@ describe('cli', () => {
       // Validation
       'validatePreparedConfig',
       'DefaultRuleValidator',
+      'PackageLintRuleValidator_MissingPreparedConfigError',
       // Import helpers
       'resolveRule',
       'resolveReporter',
+      'isFunction',
       'constructClassOrFunction',
       'resolveImportedValue',
       // Constants and utils
@@ -45,10 +47,6 @@ describe('cli', () => {
       'RuleAccumulator',
       'isRuleDefinition',
       'isRulesetDefinition',
-      'doValidation',
-      'validateRuleList',
-      'validateOneRule',
-      'makeValidationContext',
       'prepareReporters',
       'broadcastEvent',
       'broadcastEventUsingReporters',

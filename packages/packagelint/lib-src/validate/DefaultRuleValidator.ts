@@ -4,10 +4,10 @@ import {
   PackagelintPreparedConfig,
   PackagelintValidationResult,
   PackagelintValidationError,
-  PackagelintReporterInstance,
   PackagelintRuleValidatorInstance,
   PackagelintValidationContext,
   PackagelintValidationFnReturn,
+  PackagelintUnknownErrorData,
 } from '@packagelint/core';
 
 import {
@@ -20,137 +20,202 @@ import {
 } from '../util';
 import { broadcastEvent, broadcastEventUsingReporters } from '../report';
 
-import { makeValidationContext } from './defaultRuleValidatorHelpers';
+class PackageLintRuleValidator_MissingPreparedConfigError extends Error {
+  constructor(functionName: string) {
+    super(`Packagelint internal error: Cannot ${functionName} when no preparedConfig is set`);
+    this.name = 'PackageLintRuleValidator_MissingPreparedConfigError';
+  }
+}
 
 class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance> {
+  _preparedConfig: PackagelintPreparedConfig | null = null;
+  _ruleList: Array<PackagelintPreparedRule> = [];
+  _allResults: Array<PackagelintValidationResult> = [];
+
   async validatePreparedConfig(
-    _preparedConfig: PackagelintPreparedConfig,
+    preparedConfig: PackagelintPreparedConfig,
   ): Promise<PackagelintOutput> {
-    return '@TODO' as any;
+    this._preparedConfig = preparedConfig;
+    this._ruleList = preparedConfig.rules;
+
+    await broadcastEvent(preparedConfig, 'onValidationStart', preparedConfig);
+    this._allResults = await this._validateAllRules();
+
+    const output = this._getValidationOutput();
+    await broadcastEvent(preparedConfig, 'onValidationComplete', output);
+
+    return output;
   }
 
-  _makeValidationContext(_preparedRule: PackagelintPreparedRule): PackagelintValidationContext {
-    return '@TODO' as any;
+  _makeValidationContext(preparedRule: PackagelintPreparedRule): PackagelintValidationContext {
+    if (!this._preparedConfig) {
+      throw new PackageLintRuleValidator_MissingPreparedConfigError('validateAllRules');
+    }
+
+    const { preparedRuleName } = preparedRule;
+
+    const accumulatedErrorData = {};
+
+    function setErrorData(errorData: PackagelintUnknownErrorData): void {
+      Object.assign(accumulatedErrorData, errorData);
+    }
+
+    return {
+      // General information
+      preparedRuleName,
+
+      // Helpers so that rules don't have to implement everything themselves
+      findFileUp: (_fileGlob: string) => {
+        throw new Error('Not implemented');
+      },
+      // Setting errorData and returning errors
+      createErrorToReturn: (
+        errorName: string,
+        extraErrorData?: PackagelintUnknownErrorData,
+      ): [string, PackagelintUnknownErrorData] => {
+        if (extraErrorData) {
+          setErrorData(extraErrorData);
+        }
+        return [errorName, accumulatedErrorData];
+      },
+      setErrorData,
+    };
   }
 
   async _validateAllRules(): Promise<Array<PackagelintValidationResult>> {
-    return Promise.resolve('@TODO' as any);
+    if (!this._preparedConfig) {
+      throw new PackageLintRuleValidator_MissingPreparedConfigError('validateAllRules');
+    }
+
+    return await Promise.all(
+      this._ruleList.map((preparedRule) => {
+        return this._validateOneRule(preparedRule);
+      }),
+    );
   }
 
   async _validateOneRule(
-    _preparedRule: PackagelintPreparedRule,
+    preparedRule: PackagelintPreparedRule,
   ): Promise<PackagelintValidationResult> {
-    return Promise.resolve('@TODO' as any);
+    if (!this._preparedConfig) {
+      throw new PackageLintRuleValidator_MissingPreparedConfigError('validateOneRule');
+    }
+
+    const { enabled, options } = preparedRule;
+
+    if (enabled) {
+      const context = this._makeValidationContext(preparedRule);
+
+      try {
+        const validationErrorInfo = await preparedRule.doValidation(options, context);
+        return this._processRuleResult(preparedRule, validationErrorInfo);
+      } catch (e) {
+        return this._processRuleResult(preparedRule, e);
+      }
+    }
+    return null;
   }
 
-  async _beforeRule(_ruleInfo: PackagelintPreparedRule): Promise<Array<void | unknown>> {
-    return Promise.resolve('@TODO' as any);
+  async _beforeRule(preparedRule: PackagelintPreparedRule): Promise<Array<void | unknown>> {
+    if (!this._preparedConfig) {
+      throw new PackageLintRuleValidator_MissingPreparedConfigError('_beforeRule');
+    }
+
+    const { reporters } = this._preparedConfig;
+
+    return await broadcastEventUsingReporters(reporters, 'onRuleStart', preparedRule);
   }
 
   _processRuleResult(
-    _preparedRule: PackagelintPreparedRule,
-    _rawResult: PackagelintValidationFnReturn,
+    preparedRule: PackagelintPreparedRule,
+    rawResult: PackagelintValidationFnReturn | Error,
   ): PackagelintValidationResult {
-    return '@TODO' as any;
-  }
+    if (!this._preparedConfig) {
+      throw new PackageLintRuleValidator_MissingPreparedConfigError('processRuleResult');
+    }
 
-  async _afterRule(_ruleInfo: PackagelintPreparedRule): Promise<Array<void | unknown>> {
-    return Promise.resolve('@TODO' as any);
-  }
+    const { preparedRuleName, errorLevel, messages } = preparedRule;
 
-  _getRawResults(): Array<PackagelintValidationResult> {
-    return '@TODO' as any;
-  }
-
-  _getValidationOutput(): PackagelintOutput {
-    return '@TODO' as any;
-  }
-}
-
-async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<PackagelintOutput> {
-  const { failOnErrorLevel, rules, reporters } = preparedConfig;
-
-  await broadcastEvent(preparedConfig, 'onValidationStart', preparedConfig);
-
-  const allResults = await validateRuleList(rules, reporters);
-
-  const errorResults = allResults.filter(
-    (validationResult) => !!validationResult,
-  ) as Array<PackagelintValidationError>;
-
-  const errorLevelCounts = countErrorTypes(errorResults);
-  const highestErrorLevel = getHighestErrorLevel(errorLevelCounts);
-  const exitCode = isErrorLessSevereThan(highestErrorLevel, failOnErrorLevel)
-    ? SUCCESS
-    : FAILURE__VALIDATION;
-
-  const output = {
-    numRules: rules.length,
-    numRulesPassed: rules.length - errorResults.length,
-    numRulesFailed: errorResults.length,
-    exitCode,
-
-    highestErrorLevel,
-    errorLevelCounts,
-    rules,
-    allResults,
-    errorResults: errorResults,
-  };
-
-  await broadcastEvent(preparedConfig, 'onValidationComplete', output);
-
-  return output;
-}
-
-async function validateRuleList(
-  ruleList: Array<PackagelintPreparedRule>,
-  reporterList: Array<PackagelintReporterInstance>,
-): Promise<Array<PackagelintValidationResult>> {
-  return await Promise.all(
-    ruleList.map((preparedRule) => {
-      return validateOneRule(preparedRule, reporterList);
-    }),
-  );
-}
-
-async function validateOneRule(
-  preparedRule: PackagelintPreparedRule,
-  reporterList: Array<PackagelintReporterInstance>,
-): Promise<PackagelintValidationResult> {
-  const { preparedRuleName, enabled, errorLevel, options, messages } = preparedRule;
-  let result = null;
-
-  if (enabled) {
-    await broadcastEventUsingReporters(reporterList, 'onRuleStart', preparedRule);
-
-    const context = makeValidationContext(preparedRule);
-
-    try {
-      const validationErrorInfo = await preparedRule.doValidation(options, context);
-
-      if (validationErrorInfo) {
-        const [errorName, errorData] = validationErrorInfo;
-        result = {
-          preparedRuleName: preparedRuleName,
-          errorLevel,
-          errorName,
-          errorData: errorData,
-          // @TODO: Apply errorData to template
-          message: messages[errorName] || errorName,
-        };
-      }
-    } catch (e) {
-      result = {
+    if (rawResult instanceof Error) {
+      const result = {
         preparedRuleName: preparedRuleName,
         errorLevel: ERROR_LEVEL__EXCEPTION,
         errorName: null,
         errorData: null,
-        message: e.message,
+        message: rawResult.message,
       };
+      return result;
+    } else if (rawResult) {
+      const [errorName, errorData] = rawResult;
+
+      const result = {
+        preparedRuleName: preparedRuleName,
+        errorLevel,
+        errorName: errorName,
+        errorData: errorData,
+        // @TODO: Apply errorData to template
+        message: messages[errorName] || errorName,
+      };
+      return result;
     }
-    await broadcastEventUsingReporters(reporterList, 'onRuleResult', preparedRule, result);
+
+    return null;
   }
-  return result;
+
+  async _afterRule(
+    preparedRule: PackagelintPreparedRule,
+    result: PackagelintValidationResult,
+  ): Promise<Array<void | unknown>> {
+    if (!this._preparedConfig) {
+      throw new PackageLintRuleValidator_MissingPreparedConfigError('getRawResults');
+    }
+
+    const { reporters } = this._preparedConfig;
+
+    return await broadcastEventUsingReporters(reporters, 'onRuleResult', preparedRule, result);
+  }
+
+  _getRawResults(): Array<PackagelintValidationResult> {
+    if (!this._preparedConfig) {
+      throw new PackageLintRuleValidator_MissingPreparedConfigError('getRawResults');
+    }
+
+    return this._allResults;
+  }
+
+  _getValidationOutput(): PackagelintOutput {
+    if (!this._preparedConfig) {
+      throw new Error(
+        'Packagelint internal error: Cannot getValidationOutput when no preparedConfig is set',
+      );
+    }
+
+    const { failOnErrorLevel } = this._preparedConfig;
+
+    const errorResults = this._allResults.filter(
+      (validationResult) => !!validationResult,
+    ) as Array<PackagelintValidationError>;
+
+    const errorLevelCounts = countErrorTypes(errorResults);
+    const highestErrorLevel = getHighestErrorLevel(errorLevelCounts);
+    const exitCode = isErrorLessSevereThan(highestErrorLevel, failOnErrorLevel)
+      ? SUCCESS
+      : FAILURE__VALIDATION;
+
+    const output = {
+      numRules: this._ruleList.length,
+      numRulesPassed: this._ruleList.length - errorResults.length,
+      numRulesFailed: errorResults.length,
+      exitCode,
+
+      highestErrorLevel,
+      errorLevelCounts,
+      rules: this._ruleList,
+      allResults: this._allResults,
+      errorResults,
+    };
+    return output;
+  }
 }
 
-export { DefaultRuleValidator, doValidation, validateRuleList, validateOneRule };
+export { DefaultRuleValidator, PackageLintRuleValidator_MissingPreparedConfigError };

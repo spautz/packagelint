@@ -44,4 +44,4 @@ async function resolveImportedValue<ExpectedType>(
   }
 }
 
-export { constructClassOrFunction, resolveImportedValue };
+export { constructClassOrFunction, isFunction, resolveImportedValue };
