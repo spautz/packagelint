@@ -233,7 +233,6 @@ export interface PackagelintReporterClassConstructor<
 export type PackagelintReporterConstructorFunction<
   OptionsType extends PackagelintAnyRuleOptions = any,
 > = (options: OptionsType) => PackagelintReporter;
-
 /**
  * PackagelintReporter instances may be created from either classes or functions
  */
@@ -248,6 +247,63 @@ export interface PackagelintPreparedConfig {
   rules: Array<PackagelintPreparedRule>;
   reporters: Array<PackagelintReporter>;
 }
+
+// Validation Runner: RuleValidator
+
+/**
+ * Validation is performed via functions within a class or closure, to make it easier for forks to extend or override
+ * the internal implementation. All of the functions marked as optional here exist in the DefaultRuleValidator,
+ * although they're not strictly required.
+ */
+export interface RuleValidatorInstance {
+  readonly processPreparedConfig: (
+    preparedConfig: PackagelintPreparedConfig,
+  ) => Promise<PackagelintOutput>;
+
+  readonly processOneRule: (
+    preparedRule: PackagelintPreparedRule,
+  ) => Promise<PackagelintValidationResult>;
+
+  readonly getRawResults: () => Array<PackagelintValidationResult>;
+
+  readonly getValidationOutput: () => PackagelintOutput;
+
+  // These exist in the default implementation, but are not part of the API contract used by validatePreparedConfig()
+
+  readonly _makeValidationContext?: (
+    preparedRule: PackagelintPreparedRule,
+  ) => PackagelintValidationContext;
+
+  readonly _validateRuleList?: (
+    ruleList: Array<PackagelintPreparedRule>,
+  ) => Promise<Array<PackagelintValidationResult>>;
+
+  readonly _beforeRule?: (ruleInfo: PackagelintPreparedRule) => Promise<void | unknown>;
+
+  readonly _processValidationResult?: (
+    preparedRule: PackagelintPreparedRule,
+    rawResult: PackagelintValidationFnReturn,
+  ) => PackagelintValidationResult;
+
+  readonly _afterRule?: (ruleInfo: PackagelintPreparedRule) => Promise<void | unknown>;
+}
+
+/**
+ * RuleValidator instances may be created from classes
+ */
+export interface RuleValidatorClassConstructor {
+  new (): RuleValidatorInstance;
+}
+/**
+ * RuleValidator instances may be created from functions
+ */
+export type RuleValidatorConstructorFunction = () => RuleValidatorInstance;
+/**
+ * RuleValidator instances may be created from either classes or functions
+ */
+export type RuleValidatorConstructor =
+  | RuleValidatorClassConstructor
+  | RuleValidatorConstructorFunction;
 
 // Validation
 

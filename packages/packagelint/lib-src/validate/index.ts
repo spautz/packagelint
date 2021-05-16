@@ -1,5 +1,6 @@
 // Core functionality
-export * from './doValidation';
+export * from './validatePreparedConfig';
+export * from './DefaultRuleValidator';
 
 // Helpers
-export * from './validationContext';
+export * from './validationHelpers';

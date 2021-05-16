@@ -42,6 +42,7 @@ describe('cli', () => {
       'isRuleDefinition',
       'isRulesetDefinition',
       'doValidation',
+      'validatePreparedConfig',
       'validateRuleList',
       'validateOneRule',
       'makeValidationContext',

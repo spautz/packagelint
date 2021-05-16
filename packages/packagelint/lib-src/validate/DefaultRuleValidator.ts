@@ -17,7 +17,7 @@ import {
 } from '../util';
 import { broadcastEvent, broadcastEventUsingReporters } from '../report';
 
-import { makeValidationContext } from './validationContext';
+import { makeValidationContext } from './validationHelpers';
 
 async function doValidation(preparedConfig: PackagelintPreparedConfig): Promise<PackagelintOutput> {
   const { failOnErrorLevel, rules, reporters } = preparedConfig;
