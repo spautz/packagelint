@@ -21,8 +21,10 @@ import {
 import { broadcastEvent, broadcastEventUsingReporters } from '../report';
 
 class PackageLintRuleValidator_MissingPreparedConfigError extends Error {
-  constructor(functionName: string) {
-    super(`Packagelint internal error: Cannot ${functionName} when no preparedConfig is set`);
+  constructor(functionNameOrError: string | Error) {
+    super(
+      `Packagelint internal error: Cannot ${functionNameOrError} when no preparedConfig is set`,
+    );
     this.name = 'PackageLintRuleValidator_MissingPreparedConfigError';
   }
 }
@@ -35,6 +37,10 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
   async validatePreparedConfig(
     preparedConfig: PackagelintPreparedConfig,
   ): Promise<PackagelintOutput> {
+    if (!preparedConfig) {
+      throw new Error('RuleValidator.validatePreparedConfig() must be given a preparedConfig');
+    }
+
     this._preparedConfig = preparedConfig;
     this._ruleList = preparedConfig.rules;
 
@@ -49,7 +55,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
 
   _makeValidationContext(preparedRule: PackagelintPreparedRule): PackagelintValidationContext {
     if (!this._preparedConfig) {
-      throw new PackageLintRuleValidator_MissingPreparedConfigError('validateAllRules');
+      throw new PackageLintRuleValidator_MissingPreparedConfigError('makeValidationContext');
     }
 
     const { preparedRuleName } = preparedRule;
@@ -118,7 +124,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
 
   async _beforeRule(preparedRule: PackagelintPreparedRule): Promise<Array<void | unknown>> {
     if (!this._preparedConfig) {
-      throw new PackageLintRuleValidator_MissingPreparedConfigError('_beforeRule');
+      throw new PackageLintRuleValidator_MissingPreparedConfigError('beforeRule');
     }
 
     const { reporters } = this._preparedConfig;
@@ -167,7 +173,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
     result: PackagelintValidationResult,
   ): Promise<Array<void | unknown>> {
     if (!this._preparedConfig) {
-      throw new PackageLintRuleValidator_MissingPreparedConfigError('getRawResults');
+      throw new PackageLintRuleValidator_MissingPreparedConfigError('afterRule');
     }
 
     const { reporters } = this._preparedConfig;

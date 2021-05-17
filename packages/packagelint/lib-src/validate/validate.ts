@@ -2,7 +2,7 @@ import { PackagelintOutput, PackagelintPreparedConfig } from '@packagelint/core'
 
 import { isFunction } from '../util';
 
-async function validatePreparedConfig(
+function validatePreparedConfig(
   preparedConfig: PackagelintPreparedConfig,
 ): Promise<PackagelintOutput> {
   const { ruleValidatorInstance } = preparedConfig;
@@ -14,10 +14,10 @@ async function validatePreparedConfig(
     !ruleValidatorInstance.validatePreparedConfig ||
     !isFunction(ruleValidatorInstance.validatePreparedConfig)
   ) {
-    throw new Error('Packagelint internal error: Invalid ruleValidatorInstance');
+    throw new Error('Packagelint internal error: Invalid ruleValidatorInstance in preparedConfig');
   }
 
-  const output = await ruleValidatorInstance.validatePreparedConfig(preparedConfig);
+  const output = ruleValidatorInstance.validatePreparedConfig(preparedConfig);
   return output;
 }
 
