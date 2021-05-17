@@ -1,4 +1,4 @@
-import { PackagelintReporter, PackagelintReporterEventName } from '../../types';
+import { PackagelintReporterInstance, PackagelintReporterEventName } from '../../types';
 
 type PackagelintInternalDebugReporter_EventsToLog = Record<PackagelintReporterEventName, boolean>;
 
@@ -16,7 +16,7 @@ const defaultEventsToLog: PackagelintInternalDebugReporter_EventsToLog = {
   getLastError: true,
 };
 
-class InternalDebugReporter implements PackagelintReporter {
+class InternalDebugReporter implements PackagelintReporterInstance {
   _prefix = 'Packagelint InternalDebugReporter';
   _callback = console.log;
   _eventsToLog: PackagelintInternalDebugReporter_EventsToLog = defaultEventsToLog;

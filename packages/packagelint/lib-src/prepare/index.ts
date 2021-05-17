@@ -1,6 +1,6 @@
 // Core functionality
 export * from './prepareConfig';
 
-// Helpers
+// Internals
 export * from './accumulateRules';
 export * from './resolveRule';

@@ -4,7 +4,7 @@ import {
   FAILURE__INVALID_CONFIG,
   FAILURE__NO_CONFIG,
   PackagelintExitCode,
-  doValidation,
+  validatePreparedConfig,
   findPackagelintConfigFile,
   prepareConfig,
   resolveImportedValue,
@@ -44,7 +44,7 @@ async function packagelintCli(
 
   const preparedConfig = await prepareConfig(userConfig);
 
-  const validationOutput = await doValidation(preparedConfig);
+  const validationOutput = await validatePreparedConfig(preparedConfig);
 
   return [validationOutput.exitCode as PackagelintExitCode, validationOutput];
 }

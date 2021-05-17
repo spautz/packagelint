@@ -126,7 +126,7 @@ validations:
 interface PackagelintPreparedConfig {
   failOnErrorLevel: 'exception' | 'error' | 'warn' | 'suggestion' | 'ignore';
   rules: Array<PackagelintPreparedRule>;
-  reporters: Array<PackagelintReporter>;
+  reporters: Array<PackagelintReporterInstance>;
 }
 ```
 

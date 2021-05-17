@@ -77,7 +77,7 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@types/semver": "7.3.5"
+    "@types/semver": "7.3.6"
   },
   "typesVersions": {
     "<4": {

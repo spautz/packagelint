@@ -53,6 +53,9 @@ export interface PackagelintUserConfig {
   /** Result reporters and their configs */
   reporters: Record<PackagelintReporterName, PackagelintAnyReporterOptions>;
 
+  /** Internal implementation, for forking or hotfixing. Do not touch unless you're sure of what you're doing. */
+  RuleValidator: PackagelintRuleValidatorConstructor;
+
   // @TODO: aliases, reporterAliases
 }
 
@@ -190,7 +193,7 @@ export type PackagelintUnknownReporterReturnValue = Promise<void | unknown> | vo
 /**
  *
  */
-export interface PackagelintReporter {
+export interface PackagelintReporterInstance {
   readonly onConfigStart?: (
     userConfig: PackagelintUserConfig,
   ) => PackagelintUnknownReporterReturnValue;
@@ -208,11 +211,11 @@ export interface PackagelintReporter {
   ) => PackagelintUnknownReporterReturnValue;
 
   readonly onRuleStart?: (
-    ruleInfo: PackagelintPreparedRule,
+    preparedRule: PackagelintPreparedRule,
   ) => PackagelintUnknownReporterReturnValue;
 
   readonly onRuleResult?: (
-    ruleInfo: PackagelintPreparedRule,
+    preparedRule: PackagelintPreparedRule,
     ruleResult: PackagelintValidationResult,
   ) => PackagelintUnknownReporterReturnValue;
 
@@ -220,22 +223,21 @@ export interface PackagelintReporter {
 }
 
 /**
- * PackagelintReporter instances may be created from classes
+ * A PackagelintReporterInstance may be created from classes
  */
 export interface PackagelintReporterClassConstructor<
   OptionsType extends PackagelintAnyRuleOptions = any,
 > {
-  new (options: OptionsType): PackagelintReporter;
+  new (options: OptionsType): PackagelintReporterInstance;
 }
 /**
- * PackagelintReporter instances may be created from functions
+ * A PackagelintReporterInstance may be created from functions
  */
 export type PackagelintReporterConstructorFunction<
   OptionsType extends PackagelintAnyRuleOptions = any,
-> = (options: OptionsType) => PackagelintReporter;
-
+> = (options: OptionsType) => PackagelintReporterInstance;
 /**
- * PackagelintReporter instances may be created from either classes or functions
+ * A PackagelintReporterInstance may be created from either classes or functions
  */
 export type PackagelintReporterConstructor<OptionsType extends PackagelintAnyRuleOptions = any> =
   | PackagelintReporterClassConstructor<OptionsType>
@@ -246,8 +248,68 @@ export type PackagelintReporterConstructor<OptionsType extends PackagelintAnyRul
 export interface PackagelintPreparedConfig {
   failOnErrorLevel: PackagelintErrorLevel;
   rules: Array<PackagelintPreparedRule>;
-  reporters: Array<PackagelintReporter>;
+  reporters: Array<PackagelintReporterInstance>;
+  ruleValidatorInstance: PackagelintRuleValidatorInstance;
 }
+
+// Validation Runner: PackagelintRuleValidator
+
+/**
+ * Validation is performed via functions within a class or closure, to make it easier for forks to extend or override
+ * separate pieces of the internal implementation. All of the functions marked as optional here exist in the
+ * DefaultRuleValidator, although only `validatePreparedConfig` will be called from outside.
+ */
+export interface PackagelintRuleValidatorInstance {
+  readonly validatePreparedConfig: (
+    preparedConfig: PackagelintPreparedConfig,
+  ) => Promise<PackagelintOutput>;
+
+  // These exist in the default implementation, but are not part of the API contract used by validatePreparedConfig().
+  // These all implicitly use the preparedConfig passed into `validatePreparedConfig`, and will not work standalone.
+
+  readonly _makeValidationContext?: (
+    preparedRule: PackagelintPreparedRule,
+  ) => PackagelintValidationContext;
+
+  readonly _validateAllRules?: () => Promise<Array<PackagelintValidationResult>>;
+
+  readonly _validateOneRule?: (
+    preparedRule: PackagelintPreparedRule,
+  ) => Promise<PackagelintValidationResult>;
+
+  readonly _beforeRule?: (preparedRule: PackagelintPreparedRule) => Promise<Array<void | unknown>>;
+
+  readonly _processRuleResult?: (
+    preparedRule: PackagelintPreparedRule,
+    rawResult: PackagelintValidationFnReturn | Error,
+  ) => PackagelintValidationResult;
+
+  readonly _afterRule?: (
+    preparedRule: PackagelintPreparedRule,
+    result: PackagelintValidationResult,
+  ) => Promise<Array<void | unknown>>;
+
+  readonly _getRawResults?: () => Array<PackagelintValidationResult>;
+
+  readonly _getValidationOutput?: () => PackagelintOutput;
+}
+
+/**
+ * A PackagelintRuleValidatorInstance may be created from classes
+ */
+export interface PackagelintRuleValidatorClassConstructor {
+  new (): PackagelintRuleValidatorInstance;
+}
+/**
+ * A PackagelintRuleValidatorInstance may be created from functions
+ */
+export type PackagelintRuleValidatorConstructorFunction = () => PackagelintRuleValidatorInstance;
+/**
+ * A PackagelintRuleValidatorInstance may be created from either classes or functions
+ */
+export type PackagelintRuleValidatorConstructor =
+  | PackagelintRuleValidatorClassConstructor
+  | PackagelintRuleValidatorConstructorFunction;
 
 // Validation
 
@@ -282,7 +344,7 @@ export type PackagelintValidationFnReturn<
 
 export type PackagelintValidationResult<
   ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData,
-> = PackagelintValidationError<ErrorDataType> | null;
+> = PackagelintValidationError<ErrorDataType> | null | undefined;
 
 export interface PackagelintValidationError<
   ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData,
@@ -298,7 +360,8 @@ export interface PackagelintValidationError<
 
 export interface PackagelintOutput {
   // Overall results
-  numRules: number;
+  numRulesEnabled: number;
+  numRulesDisabled: number;
   numRulesPassed: number;
   numRulesFailed: number;
   exitCode: number;
