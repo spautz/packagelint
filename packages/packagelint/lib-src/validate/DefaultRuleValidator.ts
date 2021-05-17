@@ -119,7 +119,8 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
         return this._processRuleResult(preparedRule, e);
       }
     }
-    return null;
+    // null indicates a successful run; undefined indicates no run at all
+    return;
   }
 
   async _beforeRule(preparedRule: PackagelintPreparedRule): Promise<Array<void | unknown>> {
@@ -198,7 +199,11 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
 
     const { failOnErrorLevel } = this._preparedConfig;
 
-    const errorResults = this._allResults.filter(
+    const allRuleResults = this._getRawResults();
+    const enabledRuleResults = allRuleResults.filter(
+      (validationResult) => validationResult !== undefined,
+    );
+    const errorResults = enabledRuleResults.filter(
       (validationResult) => !!validationResult,
     ) as Array<PackagelintValidationError>;
 
@@ -209,8 +214,9 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
       : FAILURE__VALIDATION;
 
     const output = {
-      numRules: this._ruleList.length,
-      numRulesPassed: this._ruleList.length - errorResults.length,
+      numRulesEnabled: enabledRuleResults.length,
+      numRulesDisabled: allRuleResults.length - enabledRuleResults.length,
+      numRulesPassed: enabledRuleResults.length - errorResults.length,
       numRulesFailed: errorResults.length,
       exitCode,
 

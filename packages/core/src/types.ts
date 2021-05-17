@@ -344,7 +344,7 @@ export type PackagelintValidationFnReturn<
 
 export type PackagelintValidationResult<
   ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData,
-> = PackagelintValidationError<ErrorDataType> | null;
+> = PackagelintValidationError<ErrorDataType> | null | undefined;
 
 export interface PackagelintValidationError<
   ErrorDataType extends PackagelintAnyErrorData = PackagelintUnknownErrorData,
@@ -360,7 +360,8 @@ export interface PackagelintValidationError<
 
 export interface PackagelintOutput {
   // Overall results
-  numRules: number;
+  numRulesEnabled: number;
+  numRulesDisabled: number;
   numRulesPassed: number;
   numRulesFailed: number;
   exitCode: number;

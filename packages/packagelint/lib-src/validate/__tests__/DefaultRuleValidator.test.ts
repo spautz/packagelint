@@ -1,5 +1,7 @@
 import {
   alwaysFailRuleValidationFn,
+  alwaysPassRuleValidationFn,
+  alwaysThrowRuleValidationFn,
   PackagelintPreparedConfig,
   PackagelintPreparedRule,
   PackagelintRuleValidatorInstance,
@@ -12,15 +14,17 @@ import {
 } from '../DefaultRuleValidator';
 import { FAILURE__VALIDATION } from '../../util';
 
-describe('DefaultRuleValidator', () => {
+describe('DefaultRuleValidator basics', () => {
   let ruleValidator: PackagelintRuleValidatorInstance;
   let samplePreparedConfig: PackagelintPreparedConfig;
   let samplePassingRuleValidationFn: PackagelintValidationFn;
   let sampleFailingRuleValidationFn: PackagelintValidationFn;
   let sampleThrowingRuleValidationFn: PackagelintValidationFn;
+  let sampleDisabledRuleValidationFn: PackagelintValidationFn;
   let samplePassingRule: PackagelintPreparedRule;
   let sampleFailingRule: PackagelintPreparedRule;
   let sampleThrowingRule: PackagelintPreparedRule;
+  let sampleDisabledRule: PackagelintPreparedRule;
 
   beforeEach(() => {
     ruleValidator = new DefaultRuleValidator();
@@ -31,7 +35,7 @@ describe('DefaultRuleValidator', () => {
       ruleValidatorInstance: ruleValidator,
     };
 
-    samplePassingRuleValidationFn = jest.fn();
+    samplePassingRuleValidationFn = jest.fn(alwaysPassRuleValidationFn);
     samplePassingRule = {
       preparedRuleName: '@packageconfig/unit-tests:sample-pass',
       docs: { description: 'Sample passing rule' },
@@ -45,7 +49,7 @@ describe('DefaultRuleValidator', () => {
       doValidation: samplePassingRuleValidationFn,
     };
 
-    sampleFailingRuleValidationFn = jest.fn().mockImplementation(alwaysFailRuleValidationFn);
+    sampleFailingRuleValidationFn = jest.fn(alwaysFailRuleValidationFn);
     sampleFailingRule = {
       ...samplePassingRule,
       preparedRuleName: '@packageconfig/unit-tests:sample-fail',
@@ -53,14 +57,21 @@ describe('DefaultRuleValidator', () => {
       doValidation: sampleFailingRuleValidationFn,
     };
 
-    sampleThrowingRuleValidationFn = jest.fn().mockImplementation(() => {
-      throw new Error('Oh no!');
-    });
+    sampleThrowingRuleValidationFn = jest.fn(alwaysThrowRuleValidationFn);
     sampleThrowingRule = {
-      ...samplePassingRule,
+      ...sampleFailingRule,
       preparedRuleName: '@packageconfig/unit-tests:sample-throw',
       docs: { description: 'Sample throwing rule' },
       doValidation: sampleThrowingRuleValidationFn,
+    };
+
+    sampleDisabledRuleValidationFn = jest.fn(alwaysThrowRuleValidationFn);
+    sampleDisabledRule = {
+      ...sampleThrowingRule,
+      preparedRuleName: '@packageconfig/unit-tests:sample-disabled',
+      docs: { description: 'Sample disabled rule' },
+      doValidation: sampleDisabledRuleValidationFn,
+      enabled: false,
     };
   });
 
@@ -138,7 +149,8 @@ describe('DefaultRuleValidator', () => {
       errorResults: [],
       exitCode: 0,
       highestErrorLevel: 'ignore',
-      numRules: 0,
+      numRulesEnabled: 0,
+      numRulesDisabled: 0,
       numRulesFailed: 0,
       numRulesPassed: 0,
       rules: [],
@@ -153,6 +165,7 @@ describe('DefaultRuleValidator', () => {
 
     expect(samplePassingRuleValidationFn).toBeCalled();
     expect(samplePassingRuleValidationFn).toBeCalledTimes(1);
+
     expect(result).toEqual({
       allResults: [null],
       errorLevelCounts: {
@@ -165,7 +178,8 @@ describe('DefaultRuleValidator', () => {
       errorResults: [],
       exitCode: 0,
       highestErrorLevel: 'ignore',
-      numRules: 1,
+      numRulesEnabled: 1,
+      numRulesDisabled: 0,
       numRulesFailed: 0,
       numRulesPassed: 1,
       rules: [samplePassingRule],
@@ -199,7 +213,8 @@ describe('DefaultRuleValidator', () => {
       errorResults: [expectedFailureResult],
       exitCode: FAILURE__VALIDATION,
       highestErrorLevel: 'error',
-      numRules: 1,
+      numRulesEnabled: 1,
+      numRulesDisabled: 0,
       numRulesFailed: 1,
       numRulesPassed: 0,
       rules: [sampleFailingRule],
@@ -215,7 +230,7 @@ describe('DefaultRuleValidator', () => {
       errorData: null,
       errorLevel: 'exception',
       errorName: null,
-      message: 'Oh no!',
+      message: 'This rule will always throw an error',
       preparedRuleName: '@packageconfig/unit-tests:sample-throw',
     };
 
@@ -233,10 +248,86 @@ describe('DefaultRuleValidator', () => {
       errorResults: [expectedThrownResult],
       exitCode: FAILURE__VALIDATION,
       highestErrorLevel: 'exception',
-      numRules: 1,
+      numRulesEnabled: 1,
+      numRulesDisabled: 0,
       numRulesFailed: 1,
       numRulesPassed: 0,
       rules: [sampleThrowingRule],
+    });
+  });
+
+  it('does not run disabled rules', async () => {
+    const result = await ruleValidator.validatePreparedConfig({
+      ...samplePreparedConfig,
+      rules: [sampleDisabledRule],
+    });
+
+    expect(sampleDisabledRuleValidationFn).not.toBeCalled();
+    expect(result).toEqual({
+      allResults: [undefined],
+      errorLevelCounts: {
+        exception: 0,
+        error: 0,
+        warning: 0,
+        suggestion: 0,
+        ignore: 0,
+      },
+      errorResults: [],
+      exitCode: 0,
+      highestErrorLevel: 'ignore',
+      numRulesEnabled: 0,
+      numRulesDisabled: 1,
+      numRulesFailed: 0,
+      numRulesPassed: 0,
+      rules: [sampleDisabledRule],
+    });
+  });
+
+  // Tests above this point cover basic functionality.
+  // Tests below this point cover full scenarios.
+
+  it('runs multiple rules', async () => {
+    const result = await ruleValidator.validatePreparedConfig({
+      ...samplePreparedConfig,
+      rules: [sampleDisabledRule, sampleFailingRule, samplePassingRule, sampleThrowingRule],
+    });
+    const expectedFailureResult = {
+      errorData: {},
+      errorLevel: 'error',
+      errorName: 'alwaysFail',
+      message: 'alwaysFail',
+      preparedRuleName: '@packageconfig/unit-tests:sample-fail',
+    };
+    const expectedThrownResult = {
+      errorData: null,
+      errorLevel: 'exception',
+      errorName: null,
+      message: 'This rule will always throw an error',
+      preparedRuleName: '@packageconfig/unit-tests:sample-throw',
+    };
+
+    expect(sampleDisabledRuleValidationFn).not.toBeCalled();
+    expect(sampleFailingRuleValidationFn).toBeCalled();
+    expect(samplePassingRuleValidationFn).toBeCalled();
+    expect(sampleThrowingRuleValidationFn).toBeCalled();
+
+    expect(result).toEqual({
+      allResults: [undefined, expectedFailureResult, null, expectedThrownResult],
+      errorLevelCounts: {
+        exception: 1,
+        error: 1,
+        warning: 0,
+        suggestion: 0,
+        ignore: 0,
+      },
+      errorResults: [expectedFailureResult, expectedThrownResult],
+      exitCode: FAILURE__VALIDATION,
+      highestErrorLevel: 'exception',
+      numRulesEnabled: 3,
+      numRulesDisabled: 1,
+      numRulesFailed: 2,
+      numRulesPassed: 1,
+      rules: [sampleDisabledRule, sampleFailingRule, samplePassingRule, sampleThrowingRule],
     });
   });
 });
