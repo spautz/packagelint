@@ -19,10 +19,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      # This step may need to be uncommented when running locally through act or actions-runner/Runner.Client
+#      - name: Use Yarn
+#        run: npm install -g yarn
+
+      # This step may need to be commented out when running locally through act or actions-runner/Runner.Client
       - name: Get Yarn cache directory
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
+      # This step may need to be commented out when running locally through act or actions-runner/Runner.Client
       - name: Use Yarn cache
         uses: actions/cache@v2
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
@@ -48,6 +54,7 @@ jobs:
       - name: Check all examples
         run: yarn examples
 
+      # This step may need to be commented out when running locally through act or actions-runner/Runner.Client
       - name: Report test coverage to coveralls.io
         uses: coverallsapp/github-action@v1.1.2
         with:
