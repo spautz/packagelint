@@ -22,7 +22,7 @@ async function accumulateRules(
 ): Promise<Array<PackagelintPreparedRule>> {
   const accumulator = new RuleAccumulator();
 
-  accumulator.accumulateRuleList(packagelintConfig.rules);
+  await accumulator.accumulateRuleList(packagelintConfig.rules);
 
   return accumulator.getPreparedRuleList();
 }
@@ -42,10 +42,13 @@ class RuleAccumulator {
   accumulateRuleList(
     ruleList: Array<PackagelintRuleEntry | PackagelintRulesetEntry>,
     overrides?: Partial<PackagelintRuleConfig>,
-  ): void {
-    ruleList.forEach((ruleInfo: PackagelintRuleEntry | PackagelintRulesetEntry) => {
-      this.accumulateRule(ruleInfo, overrides);
-    });
+  ): Promise<void> {
+    const allPendingRules = ruleList.map(
+      (ruleInfo: PackagelintRuleEntry | PackagelintRulesetEntry) => {
+        return this.accumulateRule(ruleInfo, overrides);
+      },
+    );
+    return Promise.all(allPendingRules).then();
   }
 
   /**
