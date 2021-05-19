@@ -6,19 +6,27 @@ set -e
 # This script runs from the project root
 cd "$(dirname "$0")/.."
 
-source scripts/helpers.sh
+source ./scripts/helpers/helpers.sh
 
-###################################################################################################
-# Setup: Node should already have been set up in the environment init
 
-run_command "./scripts/check-environment.sh"
-run_command "yarn install --ignore-scripts --prefer-offline"
+if command_exists act; then
+  # act =  https://github.com/nektos/act
+  act
 
-###################################################################################################
-# All functionality is available via package.json scripts
+  # @TODO: Detect actions-runner/Runner.Client
+  # https://github.com/ChristopherHX/runner.server
 
-run_command "yarn clean"
-run_command "yarn bootstrap"
-run_command "yarn all:readonly"
-run_command "yarn packages:build"
-run_command "yarn examples"
+else
+  echo "Act not found: running commands locally..."
+
+  # This is a manually-synced copy of what's in .github/worksflows/ci.yml
+
+  run_command "./scripts/check-environment.sh"
+  run_command "yarn install --ignore-scripts --prefer-offline"
+  run_command "yarn clean"
+  run_command "yarn bootstrap"
+  run_command "yarn all:readonly"
+  run_command "yarn packages:build"
+  run_command "yarn examples"
+
+fi

@@ -28,7 +28,7 @@
   },
   "preferGlobal": true,
   "bin": {
-    "packagelint": "./bin/packagelint-cli.js"
+    "packagelint-cli": "./bin/packagelint-cli.js"
   },
   "sideEffects": false,
   "scripts": {
@@ -48,6 +48,6 @@
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as "
   },
   "dependencies": {
-    "import-local": "^3.0.2"
+    "find-up": "^5.0.0"
   }
 }

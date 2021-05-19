@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 /* eslint-env node */
 
-const importLocal = require('import-local');
+const findUp = require('find-up');
+const path = require('path');
 
-if (!importLocal(__filename)) {
-  console.error('Could not find local Packagelint. Please install it as a devDependency.');
-  process.exitCode = 1;
-}
+(async () => {
+  const localPackagelintModule = await findUp('node_modules/@packagelint/packagelint', {
+    type: 'directory',
+  });
+
+  require(path.join(localPackagelintModule, 'bin/packagelint.js'));
+})();
