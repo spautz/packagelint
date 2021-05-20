@@ -6,6 +6,7 @@ import {
   prepareReporters,
 } from '../report';
 import { accumulateRules } from './accumulateRules';
+import { DefaultRulePreparer } from './DefaultRulePreparer';
 import { defaultUserConfig } from './defaultUserConfig';
 import { DefaultRuleValidator } from '../validate';
 
@@ -22,7 +23,7 @@ async function prepareConfig(
     ...defaultUserConfig,
     ...actualProjectConfig,
   };
-  const { RuleValidator } = finalUserConfig;
+  const { RulePreparer, RuleValidator } = finalUserConfig;
 
   const reporters = await prepareReporters(finalUserConfig);
 
@@ -32,12 +33,14 @@ async function prepareConfig(
 
   // @TODO: Verbose option
 
+  const rulePreparerInstance = constructClassOrFunction(RulePreparer || DefaultRulePreparer);
   const ruleValidatorInstance = constructClassOrFunction(RuleValidator || DefaultRuleValidator);
 
   const preparedConfig = {
     ...finalUserConfig,
     rules: await accumulateRules(finalUserConfig),
     reporters,
+    rulePreparerInstance,
     ruleValidatorInstance,
   };
 

@@ -4,6 +4,7 @@ import {
   alwaysThrowRuleValidationFn,
   PackagelintPreparedConfig,
   PackagelintPreparedRule,
+  PackagelintRulePreparerInstance,
   PackagelintRuleValidatorInstance,
   PackagelintValidationFn,
 } from '@packagelint/core';
@@ -32,6 +33,7 @@ describe('DefaultRuleValidator basics', () => {
       failOnErrorLevel: 'error',
       rules: [],
       reporters: [],
+      rulePreparerInstance: {} as PackagelintRulePreparerInstance,
       ruleValidatorInstance: ruleValidator,
     };
 

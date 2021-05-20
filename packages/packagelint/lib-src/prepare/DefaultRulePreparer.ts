@@ -1,0 +1,3 @@
+class DefaultRulePreparer {}
+
+export { DefaultRulePreparer };

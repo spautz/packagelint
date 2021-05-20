@@ -8,6 +8,7 @@ describe('cli', () => {
       'findPackagelintConfigFile',
       // Validation
       'validatePreparedConfig',
+      'DefaultRulePreparer',
       'DefaultRuleValidator',
       'PackageLintRuleValidator_MissingPreparedConfigError',
       // Import helpers
