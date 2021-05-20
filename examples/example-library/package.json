@@ -1,7 +1,7 @@
 {
   "name": "@packagelint/example-library",
   "private": true,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A demo configuration of packagelint for a library",
   "license": "MIT",
   "homepage": "https://github.com/spautz/packagelint/tree/main/examples/demo-library#readme",
@@ -22,7 +22,7 @@
     "packagelint": "packagelint"
   },
   "devDependencies": {
-    "@packagelint/packagelint": "^0.0.3",
-    "@packagelint/presets": "^0.0.3"
+    "@packagelint/packagelint": "^0.0.4",
+    "@packagelint/presets": "^0.0.4"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@packagelint/core",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Default set of rule definitions for Packagelint",
   "keywords": [],
   "license": "MIT",
