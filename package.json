@@ -1,7 +1,7 @@
 {
   "name": "@packagelint/workspace",
   "private": true,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Some personal dev scripts, configs, and tooling",
   "license": "MIT",
   "homepage": "https://github.com/spautz/packagelint#readme",
