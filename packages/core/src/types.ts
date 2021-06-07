@@ -268,6 +268,7 @@ export interface PackagelintRulePreparerInstance {
   // These exist in the default implementation, but are not part of the API contract used by validatePreparedConfig().
   // These all implicitly use the preparedConfig passed into `validatePreparedConfig`, and will not work standalone.
 
+  // @TODO: Maybe promote this to a required/supported helper, to allow async buildup of rules when using API?
   readonly _processRuleEntry?: (
     ruleEntry: PackagelintRuleEntry | PackagelintRulesetEntry,
   ) => Promise<PackagelintPreparedRule | Array<PackagelintPreparedRule>>;
@@ -327,6 +328,7 @@ export interface PackagelintRuleValidatorInstance {
 
   readonly _validateAllRules?: () => Promise<Array<PackagelintValidationResult>>;
 
+  // @TODO: Maybe promote this to a required/supported helper, to allow async buildup of rules when using API?
   readonly _validateOneRule?: (
     preparedRule: PackagelintPreparedRule,
   ) => Promise<PackagelintValidationResult>;

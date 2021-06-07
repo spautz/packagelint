@@ -4,7 +4,7 @@ Packagelint is a linter for the files that live _around_ your code. It's meant t
 like ESLint.
 
 Packagelint runs a series of validation rules -- defined in `.packagelint.js` -- against your project directory.
-It's most useful when you have a group of projects that should all follow common standards, like having a `.npmrc`
+It's most useful when you have a group of projects that should all follow common standards, like having a `.nvmrc`
 file, certain `.npmrc` settings, particular config values for ESLint or Jest, or a certain version of React.
 
 ## At a Glance

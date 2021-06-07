@@ -7,7 +7,7 @@ import {
 } from '../report';
 import { accumulateRules } from './accumulateRules';
 import { DefaultRulePreparer } from './DefaultRulePreparer';
-import { defaultUserConfig } from './defaultUserConfig';
+import { defaultUserConfig } from '../defaultUserConfig';
 import { DefaultRuleValidator } from '../validate';
 
 /**

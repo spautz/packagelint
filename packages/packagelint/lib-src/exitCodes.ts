@@ -1,25 +1,25 @@
+export type PackagelintExitCode = typeof ALL_EXIT_CODE_VALUES[number];
+
 const SUCCESS = 0 as const;
 const FAILURE__UNKNOWN = -1 as const;
-const FAILURE__NO_CONFIG = 1 as const;
-const FAILURE__INVALID_CONFIG = 2 as const;
-const FAILURE__VALIDATION = 3 as const;
-
-export type PackagelintExitCode = typeof ALL_EXIT_CODE_VALUES[number];
+const FAILURE__VALIDATION = 1 as const;
+const FAILURE__NO_CONFIG = 2 as const;
+const FAILURE__INVALID_CONFIG = 3 as const;
 
 const ALL_EXIT_CODES = {
   SUCCESS,
   FAILURE__UNKNOWN,
+  FAILURE__VALIDATION,
   FAILURE__NO_CONFIG,
   FAILURE__INVALID_CONFIG,
-  FAILURE__VALIDATION,
 };
 
 const ALL_EXIT_CODE_VALUES = [
   SUCCESS,
   FAILURE__UNKNOWN,
+  FAILURE__VALIDATION,
   FAILURE__NO_CONFIG,
   FAILURE__INVALID_CONFIG,
-  FAILURE__VALIDATION,
 ];
 
 function isValidExitCode(exitCode: number): boolean {
@@ -37,9 +37,9 @@ function isFailureExitCode(exitCode: number): boolean {
 export {
   SUCCESS,
   FAILURE__UNKNOWN,
+  FAILURE__VALIDATION,
   FAILURE__NO_CONFIG,
   FAILURE__INVALID_CONFIG,
-  FAILURE__VALIDATION,
   ALL_EXIT_CODES,
   ALL_EXIT_CODE_VALUES,
   isValidExitCode,

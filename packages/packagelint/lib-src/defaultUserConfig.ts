@@ -1,7 +1,7 @@
 import { PackagelintUserConfig } from '@packagelint/core';
 
-import { DefaultRulePreparer } from './DefaultRulePreparer';
-import { DefaultRuleValidator } from '../validate';
+import { DefaultRulePreparer } from './prepare/DefaultRulePreparer';
+import { DefaultRuleValidator } from './validate';
 
 const defaultUserConfig: PackagelintUserConfig = {
   failOnErrorLevel: 'error',

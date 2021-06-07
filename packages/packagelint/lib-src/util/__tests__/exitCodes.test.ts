@@ -6,7 +6,7 @@ import {
   isValidExitCode,
   isSuccessExitCode,
   isFailureExitCode,
-} from '../exitCodes';
+} from '../../exitCodes';
 
 describe('util/exitCodes', () => {
   it('exports all values', () => {
