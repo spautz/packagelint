@@ -10,7 +10,12 @@ import {
   PackagelintUserConfig,
 } from '@packagelint/core';
 
-import { ERROR_LEVEL__ERROR, isValidErrorLevel } from '../util';
+import {
+  ERROR_LEVEL__ERROR,
+  PackageLintRuleValidator_RuleConfigError,
+  PackageLintRuleValidator_UserConfigError,
+  isValidErrorLevel,
+} from '../util';
 import { resolveRule } from './resolveRule';
 
 /**
@@ -78,7 +83,9 @@ class RuleAccumulator {
       }
       if (typeof ruleOptions === 'string') {
         if (!isValidErrorLevel(ruleOptions)) {
-          throw new Error(`Invalid errorLevel "${ruleOptions}" for rule "${preparedRuleName}"`);
+          throw new PackageLintRuleValidator_UserConfigError(
+            `Invalid errorLevel "${ruleOptions}" for rule "${preparedRuleName}"`,
+          );
         }
 
         return this._accumulateRuleConfigObject({
@@ -140,7 +147,7 @@ class RuleAccumulator {
 
         if (isRuleDefinition(baseRule)) {
           if (name === baseRule.name && baseRule.isAbstract) {
-            throw new Error(
+            throw new PackageLintRuleValidator_RuleConfigError(
               `Rule "${name}" is abstract: make a new rule (extendRule) instead of using it directly`,
             );
           }

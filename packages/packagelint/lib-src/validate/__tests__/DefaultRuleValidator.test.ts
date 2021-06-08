@@ -118,7 +118,7 @@ describe('DefaultRuleValidator basics', () => {
         // @ts-expect-error
         ruleValidator[fnName]();
       }).toThrowError(
-        `Packagelint internal error: Cannot ${fnNameWithoutUnderscore} when no preparedConfig is set`,
+        `Packagelint internal validate error: Cannot ${fnNameWithoutUnderscore} when no preparedConfig is set`,
       );
     });
   });

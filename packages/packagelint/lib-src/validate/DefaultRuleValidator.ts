@@ -14,17 +14,11 @@ import { FAILURE__VALIDATION, SUCCESS } from '../exitCodes';
 import { broadcastEvent, broadcastEventUsingReporters } from '../report';
 import {
   ERROR_LEVEL__EXCEPTION,
+  PackageLintRuleValidator_InternalValidateError,
   countErrorTypes,
   getHighestErrorLevel,
   isErrorLessSevereThan,
 } from '../util';
-
-class PackageLintRuleValidator_InternalValidateError extends Error {
-  constructor(errorMessage: string | Error) {
-    super(`Packagelint internal error: ${errorMessage}`);
-    this.name = 'PackageLintRuleValidator_InternalValidateError';
-  }
-}
 
 class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance> {
   _preparedConfig: PackagelintPreparedConfig | null = null;
@@ -206,7 +200,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
   _getValidationOutput(): PackagelintOutput {
     if (!this._preparedConfig) {
       throw new PackageLintRuleValidator_InternalValidateError(
-        'Packagelint internal error: Cannot getValidationOutput when no preparedConfig is set',
+        'Cannot getValidationOutput when no preparedConfig is set',
       );
     }
 

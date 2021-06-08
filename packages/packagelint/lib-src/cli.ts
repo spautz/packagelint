@@ -1,18 +1,18 @@
 import { PackagelintOutput, PackagelintUserConfig } from '@packagelint/core';
 
 import {
-  FAILURE__INVALID_CONFIG,
   FAILURE__NO_CONFIG,
+  FAILURE__INVALID_CONFIG,
+  FAILURE__UNKNOWN,
+  FAILURE__INVALID_PREPARE,
+  FAILURE__INVALID_VALIDATION,
   PackagelintExitCode,
-  validatePreparedConfig,
+  PackageLintRuleValidator_InternalPrepareError,
+  PackageLintRuleValidator_InternalValidateError,
   findPackagelintConfigFile,
   prepareConfig,
   resolveImportedValue,
-  FAILURE__UNKNOWN,
-  PackageLintRuleValidator_InternalPrepareError,
-  PackageLintRuleValidator_InternalValidateError,
-  FAILURE__INVALID_PREPARE,
-  FAILURE__INVALID_VALIDATION,
+  validatePreparedConfig,
 } from './api';
 
 export interface PackagelintCliArgs {

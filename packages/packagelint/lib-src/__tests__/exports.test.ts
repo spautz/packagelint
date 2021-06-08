@@ -23,6 +23,10 @@ describe('cli', () => {
       'resolveImportedValue',
       // Constants and utils
       'defaultUserConfig',
+      'PackageLintRuleValidator_ExternalModuleError',
+      'PackageLintRuleValidator_ReporterConfigError',
+      'PackageLintRuleValidator_RuleConfigError',
+      'PackageLintRuleValidator_UserConfigError',
       'ALL_ERROR_LEVELS',
       'ALL_ERROR_LEVEL_VALUES',
       'ERROR_LEVEL__EXCEPTION',
