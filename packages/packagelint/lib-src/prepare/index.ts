@@ -1,5 +1,5 @@
 // Core functionality
-export * from './prepareConfig';
+export * from './prepare';
 export * from './DefaultRulePreparer';
 
 // Internals

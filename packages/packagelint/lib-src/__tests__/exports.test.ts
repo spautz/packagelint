@@ -6,11 +6,15 @@ describe('cli', () => {
     const expectedExports = [
       // High-level API
       'findPackagelintConfigFile',
+      // Preparation
+      'prepareConfig',
+      'prepareConfigRules',
+      'DefaultRulePreparer',
+      'PackageLintRuleValidator_InternalValidateError',
       // Validation
       'validatePreparedConfig',
-      'DefaultRulePreparer',
       'DefaultRuleValidator',
-      'PackageLintRuleValidator_MissingPreparedConfigError',
+      'PackageLintRuleValidator_InternalPrepareError',
       // Import helpers
       'resolveRule',
       'resolveReporter',
@@ -33,17 +37,18 @@ describe('cli', () => {
       'isErrorMoreSevereThan',
       'isValidErrorLevel',
       'SUCCESS',
-      'FAILURE__INVALID_CONFIG',
-      'FAILURE__NO_CONFIG',
       'FAILURE__UNKNOWN',
       'FAILURE__VALIDATION',
+      'FAILURE__NO_CONFIG',
+      'FAILURE__INVALID_CONFIG',
+      'FAILURE__INVALID_PREPARE',
+      'FAILURE__INVALID_VALIDATION',
       'ALL_EXIT_CODES',
       'ALL_EXIT_CODE_VALUES',
       'isValidExitCode',
       'isSuccessExitCode',
       'isFailureExitCode',
       // @TODO
-      'prepareConfig',
       'accumulateRules',
       'RuleAccumulator',
       'isRuleDefinition',

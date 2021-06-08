@@ -8,6 +8,11 @@ import {
   findPackagelintConfigFile,
   prepareConfig,
   resolveImportedValue,
+  FAILURE__UNKNOWN,
+  PackageLintRuleValidator_InternalPrepareError,
+  PackageLintRuleValidator_InternalValidateError,
+  FAILURE__INVALID_PREPARE,
+  FAILURE__INVALID_VALIDATION,
 } from './api';
 
 export interface PackagelintCliArgs {
@@ -29,24 +34,35 @@ async function packagelintCli(
 ): Promise<[PackagelintExitCode, PackagelintOutput | null]> {
   // const cliArgs = { ...DEFAULT_CLI_ARGS, ...argv };
 
-  const packagelintConfigFileName = await findPackagelintConfigFile();
+  try {
+    const packagelintConfigFileName = await findPackagelintConfigFile();
 
-  if (!packagelintConfigFileName) {
-    return [FAILURE__NO_CONFIG, null];
+    if (!packagelintConfigFileName) {
+      return [FAILURE__NO_CONFIG, null];
+    }
+
+    const userConfig = await resolveImportedValue<PackagelintUserConfig>(
+      require(packagelintConfigFileName),
+    );
+    if (!userConfig) {
+      return [FAILURE__INVALID_CONFIG, null];
+    }
+
+    const preparedConfig = await prepareConfig(userConfig);
+    const validationOutput = await validatePreparedConfig(preparedConfig);
+
+    console.warn('RETURN exitCode: ', validationOutput);
+    return [validationOutput.exitCode as PackagelintExitCode, validationOutput];
+  } catch (e) {
+    let exitCode: PackagelintExitCode = FAILURE__UNKNOWN;
+    if (e instanceof PackageLintRuleValidator_InternalPrepareError) {
+      exitCode = FAILURE__INVALID_PREPARE;
+    } else if (e instanceof PackageLintRuleValidator_InternalValidateError) {
+      exitCode = FAILURE__INVALID_VALIDATION;
+    }
+
+    return [exitCode, e];
   }
-
-  const userConfig = await resolveImportedValue<PackagelintUserConfig>(
-    require(packagelintConfigFileName),
-  );
-  if (!userConfig) {
-    return [FAILURE__INVALID_CONFIG, null];
-  }
-
-  const preparedConfig = await prepareConfig(userConfig);
-
-  const validationOutput = await validatePreparedConfig(preparedConfig);
-
-  return [validationOutput.exitCode as PackagelintExitCode, validationOutput];
 }
 
 export { DEFAULT_CLI_ARGS, packagelintCli, findPackagelintConfigFile };

@@ -4,6 +4,8 @@ export * from './prepare';
 export * from './validate';
 export * from './report';
 
+export * from './defaultUserConfig';
+export * from './exitCodes';
 export * from './util';
 
 async function findPackagelintConfigFile(

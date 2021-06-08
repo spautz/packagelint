@@ -11,9 +11,9 @@ import {
 
 import {
   DefaultRuleValidator,
-  PackageLintRuleValidator_MissingPreparedConfigError,
+  PackageLintRuleValidator_InternalValidateError,
 } from '../DefaultRuleValidator';
-import { FAILURE__VALIDATION } from '../../util';
+import { FAILURE__VALIDATION } from '../../exitCodes';
 
 describe('DefaultRuleValidator basics', () => {
   let ruleValidator: PackagelintRuleValidatorInstance;
@@ -129,9 +129,7 @@ describe('DefaultRuleValidator basics', () => {
       const result = ruleValidator[fnName]();
 
       expect(result).toBeInstanceOf(Promise);
-      return expect(result).rejects.toBeInstanceOf(
-        PackageLintRuleValidator_MissingPreparedConfigError,
-      );
+      return expect(result).rejects.toBeInstanceOf(PackageLintRuleValidator_InternalValidateError);
     });
   });
 
