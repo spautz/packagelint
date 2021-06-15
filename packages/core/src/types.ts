@@ -135,6 +135,8 @@ export interface PackagelintRuleDefinition<
 > {
   /* Unique identifier for the rule */
   name: PackagelintRuleName;
+  /** @TODO */
+  entityType?: string;
   /* Human-readable information about the rule */
   docs: {
     description: string;
@@ -175,6 +177,8 @@ export interface PackagelintPreparedRule<
 export interface PackagelintRulesetDefinition {
   /* Unique identifier for the ruleset */
   name: PackagelintRuleName;
+  /** @TODO */
+  entityType?: string;
   /* Human-readable information about the rule */
   docs: {
     description: string;
@@ -196,6 +200,9 @@ export type PackagelintUnknownReporterReturnValue = Promise<void | unknown> | vo
  *
  */
 export interface PackagelintReporterInstance {
+  /** @TODO */
+  entityType?: string;
+
   readonly onConfigStart?: (
     userConfig: PackagelintUserConfig,
   ) => PackagelintUnknownReporterReturnValue;

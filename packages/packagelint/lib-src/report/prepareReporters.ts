@@ -26,7 +26,7 @@ async function prepareReporters(
 function broadcastEvent(
   preparedConfig: PackagelintPreparedConfig,
   eventName: PackagelintReporterEventName,
-  ...eventArgs: Array<any>
+  ...eventArgs: Array<unknown>
 ): Promise<Array<void | unknown>> {
   return broadcastEventUsingReporters(preparedConfig.reporters, eventName, ...eventArgs);
 }
@@ -34,7 +34,7 @@ function broadcastEvent(
 function broadcastEventUsingReporters(
   reporters: Array<PackagelintReporterInstance>,
   eventName: PackagelintReporterEventName,
-  ...eventArgs: Array<any>
+  ...eventArgs: Array<unknown>
 ): Promise<Array<void | unknown>> {
   const allReporterResults = reporters.map((reporterInstance: PackagelintReporterInstance) => {
     if (reporterInstance[eventName]) {

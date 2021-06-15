@@ -4,4 +4,4 @@ export * from './DefaultRulePreparer';
 
 // Internals
 export * from './accumulateRules';
-export * from './resolveRule';
+export * from './resolveRuleOrRuleset';

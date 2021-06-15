@@ -16,7 +16,7 @@ describe('cli', () => {
       'DefaultRuleValidator',
       'PackageLintRuleValidator_InternalPrepareError',
       // Import helpers
-      'resolveRule',
+      'resolveRuleOrRuleset',
       'resolveReporter',
       'isFunction',
       'constructClassOrFunction',

@@ -28,15 +28,15 @@ const ALL_EXIT_CODE_VALUES = [
   FAILURE__INVALID_VALIDATION,
 ];
 
-function isValidExitCode(exitCode: number): boolean {
+function isValidExitCode(exitCode: unknown): boolean {
   return ALL_EXIT_CODE_VALUES.includes(exitCode as PackagelintExitCode);
 }
 
-function isSuccessExitCode(exitCode: number): boolean {
+function isSuccessExitCode(exitCode: unknown): boolean {
   return exitCode === SUCCESS;
 }
 
-function isFailureExitCode(exitCode: number): boolean {
+function isFailureExitCode(exitCode: unknown): boolean {
   return isValidExitCode(exitCode) && !isSuccessExitCode(exitCode);
 }
 

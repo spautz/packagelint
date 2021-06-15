@@ -10,7 +10,7 @@ import {
   resolveImportedValue,
 } from '../util';
 
-async function resolveRule(
+async function resolveRuleOrRuleset(
   name: PackagelintRuleName,
 ): Promise<PackagelintRuleDefinition | PackagelintRulesetDefinition> {
   // @TODO: Implement this properly
@@ -47,4 +47,4 @@ async function resolveRule(
   return packagelintRules[ruleOrRulesetName];
 }
 
-export { resolveRule };
+export { resolveRuleOrRuleset };

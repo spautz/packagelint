@@ -16,7 +16,7 @@ import {
   PackageLintRuleValidator_UserConfigError,
   isValidErrorLevel,
 } from '../util';
-import { resolveRule } from './resolveRule';
+import { resolveRuleOrRuleset } from './resolveRuleOrRuleset';
 
 /**
  * Iterates through a list of user-specified rules and rulesets, resolving each and merging options to make a final list
@@ -141,7 +141,7 @@ class RuleAccumulator {
           extendedFrom: extendRule,
         };
       } else {
-        const baseRule = await resolveRule(extendRule || name);
+        const baseRule = await resolveRuleOrRuleset(extendRule || name);
 
         // @TODO: Split between single rules and rulesets
 
@@ -209,14 +209,16 @@ class RuleAccumulator {
   }
 }
 
-function isRuleDefinition(ruleInfo: any): ruleInfo is PackagelintRuleDefinition {
+function isRuleDefinition(ruleInfo: unknown): ruleInfo is PackagelintRuleDefinition {
   // @TODO: Proper validation
-  return !!ruleInfo.doValidation;
+  // @ts-ignore
+  return !!ruleInfo?.doValidation;
 }
 
-function isRulesetDefinition(ruleInfo: any): ruleInfo is PackagelintRulesetDefinition {
+function isRulesetDefinition(ruleInfo: unknown): ruleInfo is PackagelintRulesetDefinition {
   // @TODO: Proper validation
-  return !!ruleInfo.rules;
+  // @ts-ignore
+  return !!ruleInfo?.rules;
 }
 
 export { accumulateRules, RuleAccumulator, isRuleDefinition, isRulesetDefinition };

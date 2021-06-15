@@ -6,7 +6,7 @@ import {
   isValidExitCode,
   isSuccessExitCode,
   isFailureExitCode,
-} from '../../exitCodes';
+} from '../exitCodes';
 
 describe('util/exitCodes', () => {
   it('exports all values', () => {
@@ -47,18 +47,15 @@ describe('util/exitCodes', () => {
     });
   });
 
-  it('detects invalid exit code values', () => {
+  it('rejects invalid exit code values', () => {
     expect(isValidExitCode(12345)).toBe(false);
     expect(isSuccessExitCode(12345)).toBe(false);
     expect(isFailureExitCode(12345)).toBe(false);
   });
 
-  it('detects invalid exit code types', () => {
-    // @ts-expect-error
+  it('rejects invalid exit code types', () => {
     expect(isValidExitCode('hello')).toBe(false);
-    // @ts-expect-error
     expect(isSuccessExitCode([])).toBe(false);
-    // @ts-expect-error
     expect(isFailureExitCode(null)).toBe(false);
   });
 });
