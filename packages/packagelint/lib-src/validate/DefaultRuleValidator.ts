@@ -14,7 +14,7 @@ import { FAILURE__VALIDATION, SUCCESS } from '../exitCodes';
 import { broadcastEvent, broadcastEventUsingReporters } from '../report';
 import {
   ERROR_LEVEL__EXCEPTION,
-  PackageLintRuleValidator_InternalValidateError,
+  PackageLintInternalError,
   countErrorTypes,
   getHighestErrorLevel,
   isErrorLessSevereThan,
@@ -29,7 +29,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
     preparedConfig: PackagelintPreparedConfig,
   ): Promise<PackagelintOutput> {
     if (!preparedConfig) {
-      throw new PackageLintRuleValidator_InternalValidateError(
+      throw new PackageLintInternalError(
         'RuleValidator.validatePreparedConfig() must be given a preparedConfig',
       );
     }
@@ -48,7 +48,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
 
   _makeValidationContext(preparedRule: PackagelintPreparedRule): PackagelintValidationContext {
     if (!this._preparedConfig) {
-      throw new PackageLintRuleValidator_InternalValidateError(
+      throw new PackageLintInternalError(
         'Cannot makeValidationContext when no preparedConfig is set',
       );
     }
@@ -85,9 +85,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
 
   async _validateAllRules(): Promise<Array<PackagelintValidationResult>> {
     if (!this._preparedConfig) {
-      throw new PackageLintRuleValidator_InternalValidateError(
-        'Cannot validateAllRules when no preparedConfig is set',
-      );
+      throw new PackageLintInternalError('Cannot validateAllRules when no preparedConfig is set');
     }
 
     return await Promise.all(
@@ -101,9 +99,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
     preparedRule: PackagelintPreparedRule,
   ): Promise<PackagelintValidationResult> {
     if (!this._preparedConfig) {
-      throw new PackageLintRuleValidator_InternalValidateError(
-        'Cannot validateOneRule when no preparedConfig is set',
-      );
+      throw new PackageLintInternalError('Cannot validateOneRule when no preparedConfig is set');
     }
 
     const { enabled, options } = preparedRule;
@@ -124,9 +120,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
 
   async _beforeRule(preparedRule: PackagelintPreparedRule): Promise<Array<void | unknown>> {
     if (!this._preparedConfig) {
-      throw new PackageLintRuleValidator_InternalValidateError(
-        'Cannot beforeRule when no preparedConfig is set',
-      );
+      throw new PackageLintInternalError('Cannot beforeRule when no preparedConfig is set');
     }
 
     const { reporters } = this._preparedConfig;
@@ -139,9 +133,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
     rawResult: PackagelintValidationFnReturn | Error,
   ): PackagelintValidationResult {
     if (!this._preparedConfig) {
-      throw new PackageLintRuleValidator_InternalValidateError(
-        'Cannot processRuleResult when no preparedConfig is set',
-      );
+      throw new PackageLintInternalError('Cannot processRuleResult when no preparedConfig is set');
     }
 
     const { preparedRuleName, errorLevel, messages } = preparedRule;
@@ -177,9 +169,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
     result: PackagelintValidationResult,
   ): Promise<Array<void | unknown>> {
     if (!this._preparedConfig) {
-      throw new PackageLintRuleValidator_InternalValidateError(
-        'Cannot afterRule when no preparedConfig is set',
-      );
+      throw new PackageLintInternalError('Cannot afterRule when no preparedConfig is set');
     }
 
     const { reporters } = this._preparedConfig;
@@ -189,9 +179,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
 
   _getRawResults(): Array<PackagelintValidationResult> {
     if (!this._preparedConfig) {
-      throw new PackageLintRuleValidator_InternalValidateError(
-        'Cannot getRawResults when no preparedConfig is set',
-      );
+      throw new PackageLintInternalError('Cannot getRawResults when no preparedConfig is set');
     }
 
     return this._allResults;
@@ -199,7 +187,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
 
   _getValidationOutput(): PackagelintOutput {
     if (!this._preparedConfig) {
-      throw new PackageLintRuleValidator_InternalValidateError(
+      throw new PackageLintInternalError(
         'Cannot getValidationOutput when no preparedConfig is set',
       );
     }
@@ -237,4 +225,4 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
   }
 }
 
-export { DefaultRuleValidator, PackageLintRuleValidator_InternalValidateError };
+export { DefaultRuleValidator, PackageLintInternalError };

@@ -12,9 +12,10 @@ import {
 
 import {
   ERROR_LEVEL__ERROR,
-  PackageLintRuleValidator_RuleConfigError,
-  PackageLintRuleValidator_UserConfigError,
+  PackageLintRuleDefinitionError,
+  PackageLintUserConfigError,
   isValidErrorLevel,
+  PackageLintInternalError,
 } from '../util';
 import { resolveRuleOrRuleset } from './resolveRuleOrRuleset';
 
@@ -83,7 +84,7 @@ class RuleAccumulator {
       }
       if (typeof ruleOptions === 'string') {
         if (!isValidErrorLevel(ruleOptions)) {
-          throw new PackageLintRuleValidator_UserConfigError(
+          throw new PackageLintUserConfigError(
             `Invalid errorLevel "${ruleOptions}" for rule "${preparedRuleName}"`,
           );
         }
@@ -147,7 +148,7 @@ class RuleAccumulator {
 
         if (isRuleDefinition(baseRule)) {
           if (name === baseRule.name && baseRule.isAbstract) {
-            throw new PackageLintRuleValidator_RuleConfigError(
+            throw new PackageLintRuleDefinitionError(
               `Rule "${name}" is abstract: make a new rule (extendRule) instead of using it directly`,
             );
           }
@@ -171,7 +172,7 @@ class RuleAccumulator {
           // @TODO: Apply ruleset-wide options like errorLevel
           return this.accumulateRuleList(baseRule.rules, {});
         } else {
-          throw new Error(`Unrecognized config for rule "${name}"`);
+          throw new PackageLintRuleDefinitionError(`Unrecognized config for rule "${name}"`);
         }
       }
 
@@ -180,7 +181,7 @@ class RuleAccumulator {
         this._ruleOrder.push(name);
       }
     } else if (extendRule) {
-      throw new Error('Not implemented: edge cases with extendRule');
+      throw new PackageLintInternalError('Not implemented: edge cases with extendRule');
       // @TODO: Handle edge cases with extendRule:
       //  - Different entries declaring different extendRules
       //  - A real rule matching the user-selected name, within the same package

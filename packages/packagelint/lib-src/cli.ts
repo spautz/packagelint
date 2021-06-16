@@ -1,14 +1,18 @@
 import { PackagelintOutput, PackagelintUserConfig } from '@packagelint/core';
 
 import {
+  FAILURE__UNKNOWN,
+  FAILURE__INTERNAL,
   FAILURE__NO_CONFIG,
   FAILURE__INVALID_CONFIG,
-  FAILURE__UNKNOWN,
-  FAILURE__INVALID_PREPARE,
-  FAILURE__INVALID_VALIDATION,
+  FAILURE__INVALID_REPORTER,
+  FAILURE__INVALID_RULE,
   PackagelintExitCode,
-  PackageLintRuleValidator_InternalPrepareError,
-  PackageLintRuleValidator_InternalValidateError,
+  PackageLintUserConfigError,
+  PackageLintImportError,
+  PackageLintReporterError,
+  PackageLintRuleDefinitionError,
+  PackageLintInternalError,
   findPackagelintConfigFile,
   prepareConfig,
   resolveImportedValue,
@@ -55,10 +59,14 @@ async function packagelintCli(
     return [validationOutput.exitCode as PackagelintExitCode, validationOutput];
   } catch (e) {
     let exitCode: PackagelintExitCode = FAILURE__UNKNOWN;
-    if (e instanceof PackageLintRuleValidator_InternalPrepareError) {
-      exitCode = FAILURE__INVALID_PREPARE;
-    } else if (e instanceof PackageLintRuleValidator_InternalValidateError) {
-      exitCode = FAILURE__INVALID_VALIDATION;
+    if (e instanceof PackageLintUserConfigError || e instanceof PackageLintImportError) {
+      exitCode = FAILURE__INVALID_CONFIG;
+    } else if (e instanceof PackageLintReporterError) {
+      exitCode = FAILURE__INVALID_REPORTER;
+    } else if (e instanceof PackageLintRuleDefinitionError) {
+      exitCode = FAILURE__INVALID_RULE;
+    } else if (e instanceof PackageLintInternalError) {
+      exitCode = FAILURE__INTERNAL;
     }
 
     return [exitCode, e];

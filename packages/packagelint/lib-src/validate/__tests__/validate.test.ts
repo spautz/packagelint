@@ -11,9 +11,7 @@ describe('validate/validatePreparedConfig', () => {
   it('throws immediately if there is no ruleValidatorInstance', () => {
     expect(() => {
       return validatePreparedConfig({} as PackagelintPreparedConfig);
-    }).toThrowError(
-      'Packagelint internal validate error: Missing ruleValidatorInstance in preparedConfig',
-    );
+    }).toThrowError('Packagelint internal error: Missing ruleValidatorInstance in preparedConfig');
   });
 
   it('throws immediately if there is a invalid ruleValidatorInstance', () => {
@@ -25,9 +23,7 @@ describe('validate/validatePreparedConfig', () => {
         rulePreparerInstance: {} as PackagelintRulePreparerInstance,
         ruleValidatorInstance: {} as PackagelintRuleValidatorInstance,
       });
-    }).toThrowError(
-      'Packagelint internal validate error: Invalid ruleValidatorInstance in preparedConfig',
-    );
+    }).toThrowError('Packagelint internal error: Invalid ruleValidatorInstance in preparedConfig');
   });
 
   it('throws immediately if there is an invalid ruleValidatorInstance.validatePreparedConfig', () => {
@@ -41,9 +37,7 @@ describe('validate/validatePreparedConfig', () => {
           validatePreparedConfig: 'absent',
         } as any,
       });
-    }).toThrowError(
-      'Packagelint internal validate error: Invalid ruleValidatorInstance in preparedConfig',
-    );
+    }).toThrowError('Packagelint internal error: Invalid ruleValidatorInstance in preparedConfig');
   });
 
   it('uses ruleValidatorInstance', async () => {

@@ -11,7 +11,7 @@ import {
   PackagelintRulesetEntry,
   PackagelintUserConfig,
 } from '@packagelint/core';
-import { PackageLintRuleValidator_InternalPrepareError } from '../util';
+import { PackageLintInternalError } from '../util';
 
 class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
   _userConfig: PackagelintUserConfig | null = null;
@@ -20,7 +20,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
 
   async prepareUserConfig(userConfig: PackagelintUserConfig): Promise<PackagelintPreparedConfig> {
     if (!userConfig) {
-      throw new PackageLintRuleValidator_InternalPrepareError(
+      throw new PackageLintInternalError(
         'RuleValidator.prepareUserConfig() must be given a userConfig',
       );
     }
@@ -38,9 +38,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
 
   async _prepareAllRules(): Promise<Array<PackagelintRuleName>> {
     if (!this._userConfig) {
-      throw new PackageLintRuleValidator_InternalPrepareError(
-        'Cannot prepareAllRules when no userConfig is set',
-      );
+      throw new PackageLintInternalError('Cannot prepareAllRules when no userConfig is set');
     }
 
     return await Promise.all(
@@ -79,9 +77,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
 
   _getPreparedConfig(): PackagelintPreparedConfig {
     if (!this._userConfig) {
-      throw new PackageLintRuleValidator_InternalPrepareError(
-        'Cannot getPreparedConfig when no userConfig is set',
-      );
+      throw new PackageLintInternalError('Cannot getPreparedConfig when no userConfig is set');
     }
 
     return {

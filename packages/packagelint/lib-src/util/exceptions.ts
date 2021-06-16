@@ -1,53 +1,59 @@
-// These errors are used to adjust the exit code, and to help validation. There are no functional
-// changes other than the name.
+// These errors are used to help validation, and sometimes to adjust the exit code. There are no functional changes.
 
-class PackageLintRuleValidator_UserConfigError extends Error {
+/**
+ * Used when the incoming config is invalid
+ */
+class PackageLintUserConfigError extends Error {
   constructor(errorMessage: string | Error) {
     super(`Packagelint user config error: ${errorMessage}`);
-    this.name = 'PackageLintRuleValidator_UserConfigError';
+    this.name = 'PackageLintUserConfigError';
   }
 }
 
-class PackageLintRuleValidator_ExternalModuleError extends Error {
+/**
+ * Used when the module containing a rule, ruleset, or reporter is missing or invalid
+ */
+class PackageLintImportError extends Error {
   constructor(errorMessage: string | Error) {
-    super(`Packagelint reporter config error: ${errorMessage}`);
-    this.name = 'PackageLintRuleValidator_ReporterConfigError';
+    super(`Packagelint import error: ${errorMessage}`);
+    this.name = 'PackageLintImportError';
   }
 }
 
-class PackageLintRuleValidator_ReporterConfigError extends Error {
+/**
+ * Used when a reporter is invalid or incomplete
+ */
+class PackageLintReporterError extends Error {
   constructor(errorMessage: string | Error) {
-    super(`Packagelint reporter config error: ${errorMessage}`);
-    this.name = 'PackageLintRuleValidator_ReporterConfigError';
+    super(`Packagelint reporter error: ${errorMessage}`);
+    this.name = 'PackageLintReporterError';
   }
 }
 
-class PackageLintRuleValidator_RuleConfigError extends Error {
+/**
+ * Used when a rule or ruleset is invalid or incomplete
+ */
+class PackageLintRuleDefinitionError extends Error {
   constructor(errorMessage: string | Error) {
-    super(`Packagelint reporter config error: ${errorMessage}`);
-    this.name = 'PackageLintRuleValidator_ReporterConfigError';
+    super(`Packagelint rule config error: ${errorMessage}`);
+    this.name = 'PackageLintRuleDefinitionError';
   }
 }
 
-class PackageLintRuleValidator_InternalPrepareError extends Error {
+/**
+ * Used when Packagelint hits an error within itself. This should never happen.
+ */
+class PackageLintInternalError extends Error {
   constructor(errorMessage: string | Error) {
-    super(`Packagelint internal prepare error: ${errorMessage}`);
-    this.name = 'PackageLintRuleValidator_InternalPrepareError';
-  }
-}
-
-class PackageLintRuleValidator_InternalValidateError extends Error {
-  constructor(errorMessage: string | Error) {
-    super(`Packagelint internal validate error: ${errorMessage}`);
-    this.name = 'PackageLintRuleValidator_InternalValidateError';
+    super(`Packagelint internal error: ${errorMessage}`);
+    this.name = 'PackageLintInternalError';
   }
 }
 
 export {
-  PackageLintRuleValidator_UserConfigError,
-  PackageLintRuleValidator_ExternalModuleError,
-  PackageLintRuleValidator_ReporterConfigError,
-  PackageLintRuleValidator_RuleConfigError,
-  PackageLintRuleValidator_InternalPrepareError,
-  PackageLintRuleValidator_InternalValidateError,
+  PackageLintUserConfigError,
+  PackageLintImportError,
+  PackageLintReporterError,
+  PackageLintRuleDefinitionError,
+  PackageLintInternalError,
 };

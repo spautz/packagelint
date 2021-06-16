@@ -9,10 +9,7 @@ import {
   PackagelintValidationFn,
 } from '@packagelint/core';
 
-import {
-  DefaultRuleValidator,
-  PackageLintRuleValidator_InternalValidateError,
-} from '../DefaultRuleValidator';
+import { DefaultRuleValidator, PackageLintInternalError } from '../DefaultRuleValidator';
 import { FAILURE__VALIDATION } from '../../exitCodes';
 
 describe('DefaultRuleValidator basics', () => {
@@ -118,7 +115,7 @@ describe('DefaultRuleValidator basics', () => {
         // @ts-expect-error
         ruleValidator[fnName]();
       }).toThrowError(
-        `Packagelint internal validate error: Cannot ${fnNameWithoutUnderscore} when no preparedConfig is set`,
+        `Packagelint internal error: Cannot ${fnNameWithoutUnderscore} when no preparedConfig is set`,
       );
     });
   });
@@ -129,7 +126,7 @@ describe('DefaultRuleValidator basics', () => {
       const result = ruleValidator[fnName]();
 
       expect(result).toBeInstanceOf(Promise);
-      return expect(result).rejects.toBeInstanceOf(PackageLintRuleValidator_InternalValidateError);
+      return expect(result).rejects.toBeInstanceOf(PackageLintInternalError);
     });
   });
 
