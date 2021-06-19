@@ -1,15 +1,15 @@
 {
-  "name": "@packagelint/presets",
+  "name": "@packagelint/types",
   "version": "0.0.4",
-  "description": "Default set of rules for Packagelint",
+  "description": "Types, utilities, and validators for Packagelint entities",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/presets#readme",
+  "homepage": "https://github.com/spautz/packagelint/tree/main/packages/types#readme",
   "bugs": "https://github.com/spautz/packagelint/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/spautz/packagelint.git",
-    "directory": "packages/presets"
+    "directory": "packages/types"
   },
   "author": {
     "name": "Steven Pautz",
@@ -28,8 +28,8 @@
   ],
   "source": "src/index.ts",
   "main": "dist/index.js",
-  "module": "dist/presets.esm.js",
-  "jsnext:main": "dist/presets.esm.js",
+  "module": "dist/types.esm.js",
+  "jsnext:main": "dist/types.esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
@@ -57,15 +57,11 @@
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as ",
     "test": "yon run test:coverage",
     "test:clean": "rimraf ./coverage-local",
-    "test:coverage": "yon run test:clean && tsdx test --coverage --passWithNoTests",
+    "test:coverage": "yon run test:clean && tsdx test --coverage",
     "test:nowatch": "yon run test:clean && tsdx test",
     "test:watch": "yon run test:clean && tsdx test --watch",
     "test:watchcoverage": "yon run test:clean && tsdx test --watchAll --coverage",
     "types": "tsc --p tsconfig.json --noEmit"
-  },
-  "dependencies": {
-    "@packagelint/core": "^0.0.4",
-    "@packagelint/types": "^0.0.4"
   },
   "typesVersions": {
     "<4": {

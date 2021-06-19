@@ -1,10 +1,13 @@
 import {
+  PackagelintException_Import,
+  PackagelintException_UserConfig,
   PackagelintExportedRules,
-  PackagelintRuleName,
   PackagelintRuleDefinition,
+  PackagelintRuleName,
   PackagelintRulesetDefinition,
-} from '@packagelint/core';
-import { PackageLintImportError, PackageLintUserConfigError, resolveImportedValue } from '../util';
+} from '@packagelint/types';
+
+import { resolveImportedValue } from '../util';
 
 async function resolveRuleOrRuleset(
   name: PackagelintRuleName,
@@ -16,7 +19,7 @@ async function resolveRuleOrRuleset(
 
   if (!packageName || !ruleOrRulesetName) {
     // @FIXME: Need to handle custom rule names: aliases of aliases are currently broken!
-    throw new PackageLintUserConfigError(`Rule "${name}" is not a valid rule name`);
+    throw new PackagelintException_UserConfig(`Rule "${name}" is not a valid rule name`);
   }
 
   const packageExports = await resolveImportedValue<PackagelintExportedRules>(require(packageName));
@@ -25,17 +28,17 @@ async function resolveRuleOrRuleset(
   );
 
   if (!packagelintRules) {
-    throw new PackageLintImportError(
+    throw new PackagelintException_Import(
       `Package "${packageName}" does not provide any packagelint rules`,
     );
   }
   if (typeof packagelintRules !== 'object') {
-    throw new PackageLintImportError(
+    throw new PackagelintException_Import(
       `Package "${packageName}" does not provide any valid packagelint rules`,
     );
   }
   if (!Object.prototype.hasOwnProperty.call(packagelintRules, ruleOrRulesetName)) {
-    throw new PackageLintImportError(
+    throw new PackagelintException_Import(
       `Package "${packageName}" does not provide rule "${ruleOrRulesetName}"`,
     );
   }

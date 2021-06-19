@@ -1,4 +1,4 @@
-import type { PackagelintRulesetDefinition } from '@packagelint/core';
+import type { PackagelintRulesetDefinition } from '@packagelint/types';
 
 const libraryRulesetDefinition: PackagelintRulesetDefinition = {
   name: 'library',

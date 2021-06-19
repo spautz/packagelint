@@ -1,20 +1,16 @@
-import { PackagelintRuleDefinition, PackagelintReporterConstructor } from './types';
+import { PackagelintReporterConstructor, PackagelintRuleDefinition } from '@packagelint/types';
 
-import { alwaysFailRuleDefinition } from './rules/always-fail/always-fail';
-import { alwaysPassRuleDefinition } from './rules/always-pass/always-pass';
-import { alwaysThrowRuleDefinition } from './rules/always-throw/always-throw';
-import { nvmrcRuleDefinition } from './rules/nvmrc/nvmrc';
+import { InternalDebugReporter } from './reporters';
+import {
+  alwaysFailRuleDefinition,
+  alwaysPassRuleDefinition,
+  alwaysThrowRuleDefinition,
+  nvmrcRuleDefinition,
+} from './rules';
 
-import { InternalDebugReporter } from './reporters/internalDebugReporter/InternalDebugReporter';
-
-export * from './types';
-
-export * from './rules/always-fail/always-fail';
-export * from './rules/always-pass/always-pass';
-export * from './rules/always-throw/always-throw';
-export * from './rules/nvmrc/nvmrc';
-
-export * from './reporters/internalDebugReporter/InternalDebugReporter';
+const packagelintReporters: Record<string, PackagelintReporterConstructor<any>> = {
+  internalDebugReporter: InternalDebugReporter,
+};
 
 const packagelintRules: Record<string, PackagelintRuleDefinition<any>> = {
   'always-fail': alwaysFailRuleDefinition,
@@ -23,8 +19,9 @@ const packagelintRules: Record<string, PackagelintRuleDefinition<any>> = {
   nvmrc: nvmrcRuleDefinition,
 };
 
-const packagelintReporters: Record<string, PackagelintReporterConstructor<any>> = {
-  internalDebugReporter: InternalDebugReporter,
-};
+// Reporters and rules must each be found under the appropriate keys
+export { packagelintReporters, packagelintRules };
 
-export { packagelintRules, packagelintReporters };
+// In addition to the main exports above, all the internal pieces are made available
+export * from './reporters';
+export * from './rules';

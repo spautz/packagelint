@@ -1,6 +1,10 @@
-import { PackagelintOutput, PackagelintPreparedConfig } from '@packagelint/core';
+import {
+  PackagelintException_Internal,
+  PackagelintOutput,
+  PackagelintPreparedConfig,
+} from '@packagelint/types';
 
-import { PackageLintInternalError, isFunction } from '../util';
+import { isFunction } from '../util';
 
 function validatePreparedConfig(
   preparedConfig: PackagelintPreparedConfig,
@@ -8,13 +12,13 @@ function validatePreparedConfig(
   const { ruleValidatorInstance } = preparedConfig;
 
   if (!ruleValidatorInstance) {
-    throw new PackageLintInternalError('Missing ruleValidatorInstance in preparedConfig');
+    throw new PackagelintException_Internal('Missing ruleValidatorInstance in preparedConfig');
   }
   if (
     !ruleValidatorInstance.validatePreparedConfig ||
     !isFunction(ruleValidatorInstance.validatePreparedConfig)
   ) {
-    throw new PackageLintInternalError('Invalid ruleValidatorInstance in preparedConfig');
+    throw new PackagelintException_Internal('Invalid ruleValidatorInstance in preparedConfig');
   }
 
   const output = ruleValidatorInstance.validatePreparedConfig(preparedConfig);

@@ -1,4 +1,8 @@
 import {
+  ERROR_LEVEL__ERROR,
+  PackagelintException_Internal,
+  PackagelintException_RuleDefinition,
+  PackagelintException_UserConfig,
   PackagelintPreparedConfig,
   PackagelintPreparedRule,
   PackagelintRuleConfig,
@@ -10,16 +14,10 @@ import {
   PackagelintRulesetDefinition,
   PackagelintRulesetEntry,
   PackagelintUserConfig,
-} from '@packagelint/core';
-import {
-  ERROR_LEVEL__ERROR,
   isValidErrorLevel,
-  isRuleDefinition,
-  isRulesetDefinition,
-  PackageLintInternalError,
-  PackageLintRuleDefinitionError,
-  PackageLintUserConfigError,
-} from '../util';
+} from '@packagelint/types';
+
+import { isRuleDefinition, isRulesetDefinition } from '../util';
 import { resolveRuleOrRuleset } from './resolveRuleOrRuleset';
 
 class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
@@ -29,7 +27,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
 
   async prepareUserConfig(userConfig: PackagelintUserConfig): Promise<PackagelintPreparedConfig> {
     if (!userConfig) {
-      throw new PackageLintInternalError(
+      throw new PackagelintException_Internal(
         'RuleValidator.prepareUserConfig() must be given a userConfig',
       );
     }
@@ -39,7 +37,6 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
     await this._prepareAllRules();
 
     const preparedConfig = this._getPreparedConfig();
-    console.log('preparedConfig = ', preparedConfig);
     return preparedConfig;
   }
 
@@ -48,7 +45,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
 
   async _prepareAllRules(): Promise<Array<PackagelintRuleName>> {
     if (!this._userConfig) {
-      throw new PackageLintInternalError('Cannot prepareAllRules when no userConfig is set');
+      throw new PackagelintException_Internal('Cannot prepareAllRules when no userConfig is set');
     }
 
     const allPendingRules = this._userConfig.rules.map((ruleEntry) => {
@@ -89,7 +86,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
 
         if (isRuleDefinition(baseRule)) {
           if (name === baseRule.name && baseRule.isAbstract) {
-            throw new PackageLintRuleDefinitionError(
+            throw new PackagelintException_RuleDefinition(
               `Rule "${name}" is abstract: make a new rule (extendRule) instead of using it directly`,
             );
           }
@@ -130,7 +127,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
           }, []);
           return flattedRuledInRuleset;
         } else {
-          throw new PackageLintRuleDefinitionError(`Unrecognized config for rule "${name}"`);
+          throw new PackagelintException_RuleDefinition(`Unrecognized config for rule "${name}"`);
         }
       }
 
@@ -139,7 +136,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
         this._ruleOrder.push(name);
       }
     } else if (extendRule) {
-      throw new PackageLintInternalError('Not implemented: edge cases with extendRule');
+      throw new PackagelintException_Internal('Not implemented: edge cases with extendRule');
       // @TODO: Handle edge cases with extendRule:
       //  - Different entries declaring different extendRules
       //  - A real rule matching the user-selected name, within the same package
@@ -188,7 +185,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
       }
       if (typeof ruleOptions === 'string') {
         if (!isValidErrorLevel(ruleOptions)) {
-          throw new PackageLintUserConfigError(
+          throw new PackagelintException_UserConfig(
             `Invalid errorLevel "${ruleOptions}" for rule "${preparedRuleName}"`,
           );
         }
@@ -237,7 +234,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
 
   _getPreparedConfig(): PackagelintPreparedConfig {
     if (!this._userConfig) {
-      throw new PackageLintInternalError('Cannot getPreparedConfig when no userConfig is set');
+      throw new PackagelintException_Internal('Cannot getPreparedConfig when no userConfig is set');
     }
 
     return {

@@ -1,4 +1,4 @@
-import { PackagelintUserConfig } from '@packagelint/core';
+import { PackagelintUserConfig } from '@packagelint/types';
 
 import { DefaultRulePreparer } from './prepare/DefaultRulePreparer';
 import { DefaultRuleValidator } from './validate';

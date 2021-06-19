@@ -1,11 +1,11 @@
 import {
-  ALL_EXIT_CODES,
   ALL_EXIT_CODE_VALUES,
+  ALL_EXIT_CODES,
   SUCCESS,
   FAILURE__VALIDATION,
-  isValidExitCode,
-  isSuccessExitCode,
   isFailureExitCode,
+  isSuccessExitCode,
+  isValidExitCode,
 } from '../exitCodes';
 
 describe('util/exitCodes', () => {
