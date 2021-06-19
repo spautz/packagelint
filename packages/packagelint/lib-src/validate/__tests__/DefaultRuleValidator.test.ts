@@ -4,15 +4,13 @@ import {
   alwaysThrowRuleValidationFn,
   PackagelintPreparedConfig,
   PackagelintPreparedRule,
+  PackagelintRulePreparerInstance,
   PackagelintRuleValidatorInstance,
   PackagelintValidationFn,
 } from '@packagelint/core';
 
-import {
-  DefaultRuleValidator,
-  PackageLintRuleValidator_MissingPreparedConfigError,
-} from '../DefaultRuleValidator';
-import { FAILURE__VALIDATION } from '../../util';
+import { DefaultRuleValidator, PackageLintInternalError } from '../DefaultRuleValidator';
+import { FAILURE__VALIDATION } from '../../exitCodes';
 
 describe('DefaultRuleValidator basics', () => {
   let ruleValidator: PackagelintRuleValidatorInstance;
@@ -32,6 +30,7 @@ describe('DefaultRuleValidator basics', () => {
       failOnErrorLevel: 'error',
       rules: [],
       reporters: [],
+      rulePreparerInstance: {} as PackagelintRulePreparerInstance,
       ruleValidatorInstance: ruleValidator,
     };
 
@@ -127,9 +126,7 @@ describe('DefaultRuleValidator basics', () => {
       const result = ruleValidator[fnName]();
 
       expect(result).toBeInstanceOf(Promise);
-      return expect(result).rejects.toBeInstanceOf(
-        PackageLintRuleValidator_MissingPreparedConfigError,
-      );
+      return expect(result).rejects.toBeInstanceOf(PackageLintInternalError);
     });
   });
 

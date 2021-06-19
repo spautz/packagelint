@@ -31,16 +31,13 @@ describe('util/errorLevels', () => {
       });
     });
 
-    it('detects invalid error Level values', () => {
+    it('rejects invalid error Level values', () => {
       expect(isValidErrorLevel('hello')).toBe(false);
     });
 
-    it('detects invalid error Level types', () => {
-      // @ts-expect-error
+    it('rejects invalid error Level types', () => {
       expect(isValidErrorLevel(12345)).toBe(false);
-      // @ts-expect-error
       expect(isValidErrorLevel([])).toBe(false);
-      // @ts-expect-error
       expect(isValidErrorLevel(null)).toBe(false);
     });
   });

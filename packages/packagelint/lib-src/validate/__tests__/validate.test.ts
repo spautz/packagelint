@@ -1,4 +1,8 @@
-import { PackagelintPreparedConfig, PackagelintRuleValidatorInstance } from '@packagelint/core';
+import {
+  PackagelintPreparedConfig,
+  PackagelintRulePreparerInstance,
+  PackagelintRuleValidatorInstance,
+} from '@packagelint/core';
 
 import { ERROR_LEVEL__ERROR } from '../../util';
 import { validatePreparedConfig } from '../validate';
@@ -16,6 +20,7 @@ describe('validate/validatePreparedConfig', () => {
         failOnErrorLevel: 'error',
         rules: [],
         reporters: [],
+        rulePreparerInstance: {} as PackagelintRulePreparerInstance,
         ruleValidatorInstance: {} as PackagelintRuleValidatorInstance,
       });
     }).toThrowError('Packagelint internal error: Invalid ruleValidatorInstance in preparedConfig');
@@ -27,6 +32,7 @@ describe('validate/validatePreparedConfig', () => {
         failOnErrorLevel: 'error',
         rules: [],
         reporters: [],
+        rulePreparerInstance: {} as PackagelintRulePreparerInstance,
         ruleValidatorInstance: {
           validatePreparedConfig: 'absent',
         } as any,
@@ -47,6 +53,7 @@ describe('validate/validatePreparedConfig', () => {
       failOnErrorLevel: ERROR_LEVEL__ERROR,
       rules: [],
       reporters: [],
+      rulePreparerInstance: {} as PackagelintRulePreparerInstance,
       ruleValidatorInstance: new MyCustomValidator(),
     };
 

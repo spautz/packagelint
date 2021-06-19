@@ -26,7 +26,7 @@ const ERROR_LEVELS_IN_SEVERITY_ORDER: Array<PackagelintErrorLevel> = [
   ERROR_LEVEL__IGNORE,
 ];
 
-function isValidErrorLevel(errorLevel: string): errorLevel is PackagelintErrorLevel {
+function isValidErrorLevel(errorLevel: unknown): errorLevel is PackagelintErrorLevel {
   return ERROR_LEVELS_IN_SEVERITY_ORDER.includes(errorLevel as PackagelintErrorLevel);
 }
 

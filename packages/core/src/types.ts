@@ -54,6 +54,8 @@ export interface PackagelintUserConfig {
   reporters: Record<PackagelintReporterName, PackagelintAnyReporterOptions>;
 
   /** Internal implementation, for forking or hotfixing. Do not touch unless you're sure of what you're doing. */
+  RulePreparer: PackagelintRulePreparerConstructor;
+  /** Internal implementation, for forking or hotfixing. Do not touch unless you're sure of what you're doing. */
   RuleValidator: PackagelintRuleValidatorConstructor;
 
   // @TODO: aliases, reporterAliases
@@ -133,6 +135,8 @@ export interface PackagelintRuleDefinition<
 > {
   /* Unique identifier for the rule */
   name: PackagelintRuleName;
+  /** @TODO */
+  entityType?: string;
   /* Human-readable information about the rule */
   docs: {
     description: string;
@@ -173,6 +177,8 @@ export interface PackagelintPreparedRule<
 export interface PackagelintRulesetDefinition {
   /* Unique identifier for the ruleset */
   name: PackagelintRuleName;
+  /** @TODO */
+  entityType?: string;
   /* Human-readable information about the rule */
   docs: {
     description: string;
@@ -194,6 +200,9 @@ export type PackagelintUnknownReporterReturnValue = Promise<void | unknown> | vo
  *
  */
 export interface PackagelintReporterInstance {
+  /** @TODO */
+  entityType?: string;
+
   readonly onConfigStart?: (
     userConfig: PackagelintUserConfig,
   ) => PackagelintUnknownReporterReturnValue;
@@ -249,8 +258,63 @@ export interface PackagelintPreparedConfig {
   failOnErrorLevel: PackagelintErrorLevel;
   rules: Array<PackagelintPreparedRule>;
   reporters: Array<PackagelintReporterInstance>;
+  rulePreparerInstance: PackagelintRulePreparerInstance;
   ruleValidatorInstance: PackagelintRuleValidatorInstance;
 }
+
+/**
+ * Config+rule preparation is performed via functions within a class or closure, to make it easier for forks to extend
+ * or override separate pieces of the internal implementation. All of the functions marked as optional here exist in
+ * the DefaultRulePreparer, although only `prepareUserConfig` will be called from outside.
+ */
+export interface PackagelintRulePreparerInstance {
+  readonly prepareUserConfig: (
+    userConfig: PackagelintUserConfig,
+  ) => Promise<PackagelintPreparedConfig>;
+
+  // These exist in the default implementation, but are not part of the API contract used by validatePreparedConfig().
+  // These all implicitly use the preparedConfig passed into `validatePreparedConfig`, and will not work standalone.
+
+  // @TODO: Maybe promote this to a required/supported helper, to allow async buildup of rules when using API?
+  readonly _processRuleEntry?: (
+    ruleEntry: PackagelintRuleEntry | PackagelintRulesetEntry,
+  ) => Promise<PackagelintPreparedRule | Array<PackagelintPreparedRule>>;
+
+  readonly _importRule?: (
+    name: PackagelintRuleName,
+  ) => Promise<PackagelintRuleDefinition | PackagelintRulesetDefinition>;
+
+  // @TODO
+  // readonly _processRuleConfig?: (
+  //   ruleConfig: PackagelintRuleConfig,
+  // ) => Promise<PackagelintPreparedRule>;
+
+  // @TODO
+  // readonly _processRulesetConfig?: (
+  //   rulesetConfig: PackagelintRulesetConfig,
+  // ) => Promise<Array<PackagelintPreparedRule>>;
+
+  readonly _getPreparedRuleList?: () => Array<PackagelintPreparedRule>;
+
+  readonly _getPreparedConfig?: () => PackagelintPreparedConfig;
+}
+
+/**
+ * A PackagelintRulePreparerInstance may be created from classes
+ */
+export interface PackagelintRulePreparerClassConstructor {
+  new (): PackagelintRulePreparerInstance;
+}
+/**
+ * A PackagelintRulePreparerInstance may be created from functions
+ */
+export type PackagelintRulePreparerConstructorFunction = () => PackagelintRulePreparerInstance;
+/**
+ * A PackagelintRulePreparerInstance may be created from either classes or functions
+ */
+export type PackagelintRulePreparerConstructor =
+  | PackagelintRulePreparerClassConstructor
+  | PackagelintRulePreparerConstructorFunction;
 
 // Validation Runner: PackagelintRuleValidator
 
@@ -273,6 +337,7 @@ export interface PackagelintRuleValidatorInstance {
 
   readonly _validateAllRules?: () => Promise<Array<PackagelintValidationResult>>;
 
+  // @TODO: Maybe promote this to a required/supported helper, to allow async buildup of rules when using API?
   readonly _validateOneRule?: (
     preparedRule: PackagelintPreparedRule,
   ) => Promise<PackagelintValidationResult>;

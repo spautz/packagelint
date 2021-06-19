@@ -1,6 +1,7 @@
 import { PackagelintUserConfig } from '@packagelint/core';
 
-import { DefaultRuleValidator } from '../validate';
+import { DefaultRulePreparer } from './prepare/DefaultRulePreparer';
+import { DefaultRuleValidator } from './validate';
 
 const defaultUserConfig: PackagelintUserConfig = {
   failOnErrorLevel: 'error',
@@ -8,6 +9,7 @@ const defaultUserConfig: PackagelintUserConfig = {
   reporters: {
     '@packagelint/core:internalDebugReporter': true,
   },
+  RulePreparer: DefaultRulePreparer,
   RuleValidator: DefaultRuleValidator,
 };
 
