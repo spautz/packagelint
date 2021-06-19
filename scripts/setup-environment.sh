@@ -31,6 +31,7 @@ fi
 
 run_command "./scripts/check-environment.sh"
 run_command "yarn install --frozen-lockfile --prefer-offline --network-timeout=60000"
+run_command "yarn clean"
 
 ###################################################################################################
 

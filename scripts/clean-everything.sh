@@ -22,13 +22,18 @@ fi
 ##################################################################################################
 # Clear caches
 
-run_npm_command jest --clearCache
-
-run_command npm cache clean --force
+if [ -d "./node_modules/" ]; then
+  run_command yarn clean
+  run_npm_command jest --clearCache
+else
+  run_npm_command jest --clearCache --config={}
+fi
 
 if command_exists yarn; then
   run_command yarn cache clean
 fi
+
+run_command npm cache clean --force
 
 if command_exists watchman; then
   run_command watchman watch-del-all
@@ -41,40 +46,23 @@ run_command "rm -rf
 ##################################################################################################
 # Remove generated files
 
-run_command "rm -rf
-  .yarn
-  build/
-  coverage/
-  dist/
-  node_modules/
-  storybook-static/
-  lerna-debug.log*
-  npm-debug.log*
-  yarn-debug.log*
-  yarn-error.log*
-  "
-
-run_command "rm -rf
-  examples/*/build
-  examples/*/coverage-local
-  examples/*/node_modules
-  examples/*/lerna-debug.log*
-  examples/*/npm-debug.log*
-  examples/*/yarn-debug.log*
-  examples/*/yarn-error.log*
-  "
-
-run_command "rm -rf
-  packages/*/coverage-local
-  packages/*/dist
-  packages/*/legacy-types
-  packages/*/lib-dist
-  packages/*/node_modules
-  packages/*/lerna-debug.log*
-  packages/*/npm-debug.log*
-  packages/*/yarn-debug.log*
-  packages/*/yarn-error.log*
-  "
+for DIRECTORY in '.' 'examples/*' 'packages/*' ; do
+  run_command "rm -rf
+    $DIRECTORY/.yarn
+    $DIRECTORY/build/
+    $DIRECTORY/coverage/
+    $DIRECTORY/coverage-local/
+    $DIRECTORY/dist/
+    $DIRECTORY/legacy-types/
+    $DIRECTORY/lib-dist/
+    $DIRECTORY/node_modules/
+    $DIRECTORY/storybook-static/
+    $DIRECTORY/lerna-debug.log*
+    $DIRECTORY/npm-debug.log*
+    $DIRECTORY/yarn-debug.log*
+    $DIRECTORY/yarn-error.log*
+    "
+done
 
 REMAINING_FILES=$(git clean -xdn)
 if [[ $REMAINING_FILES ]]; then
