@@ -1,17 +1,15 @@
 import {
-  PackagelintPreparedRule,
-  PackagelintOutput,
-  PackagelintPreparedConfig,
-  PackagelintValidationResult,
-  PackagelintValidationError,
-  PackagelintRuleValidatorInstance,
-  PackagelintValidationContext,
-  PackagelintValidationFnReturn,
-  PackagelintUnknownErrorData,
-} from '@packagelint/core';
-import {
   ERROR_LEVEL__EXCEPTION,
   PackagelintInternalException,
+  PackagelintOutput,
+  PackagelintPreparedConfig,
+  PackagelintPreparedRule,
+  PackagelintRuleValidatorInstance,
+  PackagelintUnknownErrorData,
+  PackagelintValidationContext,
+  PackagelintValidationError,
+  PackagelintValidationFnReturn,
+  PackagelintValidationResult,
   getHighestErrorLevel,
   isErrorLessSevereThan,
 } from '@packagelint/types';

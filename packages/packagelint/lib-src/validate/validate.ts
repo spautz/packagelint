@@ -1,5 +1,8 @@
-import { PackagelintOutput, PackagelintPreparedConfig } from '@packagelint/core';
-import { PackagelintInternalException } from '@packagelint/types';
+import {
+  PackagelintInternalException,
+  PackagelintOutput,
+  PackagelintPreparedConfig,
+} from '@packagelint/types';
 
 import { isFunction } from '../util';
 

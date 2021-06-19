@@ -2,13 +2,15 @@ import {
   alwaysFailRuleValidationFn,
   alwaysPassRuleValidationFn,
   alwaysThrowRuleValidationFn,
+} from '@packagelint/core';
+import {
   PackagelintPreparedConfig,
   PackagelintPreparedRule,
   PackagelintRulePreparerInstance,
   PackagelintRuleValidatorInstance,
   PackagelintValidationFn,
-} from '@packagelint/core';
-import { PackagelintInternalException } from '@packagelint/types';
+  PackagelintInternalException,
+} from '@packagelint/types';
 
 import { DefaultRuleValidator } from '../DefaultRuleValidator';
 import { FAILURE__VALIDATION } from '../../exitCodes';

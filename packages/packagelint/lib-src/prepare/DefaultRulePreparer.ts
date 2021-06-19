@@ -10,8 +10,6 @@ import {
   PackagelintRulesetDefinition,
   PackagelintRulesetEntry,
   PackagelintUserConfig,
-} from '@packagelint/core';
-import {
   ERROR_LEVEL__ERROR,
   PackagelintInternalException,
   PackagelintRuleDefinitionException,

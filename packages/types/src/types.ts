@@ -1,6 +1,6 @@
 // General Utility Types
 
-import { PackagelintErrorLevel, PackagelintErrorLevelCounts } from '@packagelint/types';
+import { PackagelintErrorLevel, PackagelintErrorLevelCounts } from './error-levels';
 
 export type PackagelintReporterEventName =
   | 'onConfigStart'

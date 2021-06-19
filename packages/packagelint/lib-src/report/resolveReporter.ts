@@ -1,9 +1,10 @@
 import {
-  PackagelintReporterName,
-  PackagelintReporterConstructor,
   PackagelintExportedReporters,
-} from '@packagelint/core';
-import { PackagelintImportException, PackagelintUserConfigException } from '@packagelint/types';
+  PackagelintImportException,
+  PackagelintReporterConstructor,
+  PackagelintReporterName,
+  PackagelintUserConfigException,
+} from '@packagelint/types';
 
 import { resolveImportedValue } from '../util';
 

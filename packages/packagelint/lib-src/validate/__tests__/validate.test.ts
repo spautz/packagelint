@@ -2,8 +2,8 @@ import {
   PackagelintPreparedConfig,
   PackagelintRulePreparerInstance,
   PackagelintRuleValidatorInstance,
-} from '@packagelint/core';
-import { ERROR_LEVEL__ERROR } from '@packagelint/types';
+  ERROR_LEVEL__ERROR,
+} from '@packagelint/types';
 
 import { validatePreparedConfig } from '../validate';
 

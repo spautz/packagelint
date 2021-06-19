@@ -1,9 +1,10 @@
-import { PackagelintOutput, PackagelintUserConfig } from '@packagelint/core';
 import {
   PackagelintImportException,
   PackagelintInternalException,
+  PackagelintOutput,
   PackagelintReporterException,
   PackagelintRuleDefinitionException,
+  PackagelintUserConfig,
   PackagelintUserConfigException,
 } from '@packagelint/types';
 

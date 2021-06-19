@@ -1,9 +1,9 @@
 import {
-  PackagelintUserConfig,
+  PackagelintInternalException,
   PackagelintPreparedConfig,
   PackagelintRulePreparerInstance,
-} from '@packagelint/core';
-import { PackagelintInternalException } from '@packagelint/types';
+  PackagelintUserConfig,
+} from '@packagelint/types';
 
 import {
   broadcastEventUsingReporters,

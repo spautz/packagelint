@@ -1,9 +1,9 @@
 import {
+  PackagelintErrorLevelCounts,
   PackagelintRuleDefinition,
   PackagelintRulesetDefinition,
   PackagelintValidationResult,
-} from '@packagelint/core';
-import { PackagelintErrorLevelCounts } from '@packagelint/types';
+} from '@packagelint/types';
 
 export * from './resolvers';
 

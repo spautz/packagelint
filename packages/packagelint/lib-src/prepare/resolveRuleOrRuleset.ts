@@ -1,10 +1,11 @@
 import {
   PackagelintExportedRules,
-  PackagelintRuleName,
+  PackagelintImportException,
   PackagelintRuleDefinition,
+  PackagelintRuleName,
   PackagelintRulesetDefinition,
-} from '@packagelint/core';
-import { PackagelintImportException, PackagelintUserConfigException } from '@packagelint/types';
+  PackagelintUserConfigException,
+} from '@packagelint/types';
 
 import { resolveImportedValue } from '../util';
 
