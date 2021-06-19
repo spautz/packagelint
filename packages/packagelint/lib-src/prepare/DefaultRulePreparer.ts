@@ -11,7 +11,16 @@ import {
   PackagelintRulesetEntry,
   PackagelintUserConfig,
 } from '@packagelint/core';
-import { PackageLintInternalError } from '../util';
+import {
+  ERROR_LEVEL__ERROR,
+  isValidErrorLevel,
+  isRuleDefinition,
+  isRulesetDefinition,
+  PackageLintInternalError,
+  PackageLintRuleDefinitionError,
+  PackageLintUserConfigError,
+} from '../util';
+import { resolveRuleOrRuleset } from './resolveRuleOrRuleset';
 
 class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
   _userConfig: PackagelintUserConfig | null = null;
@@ -30,6 +39,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
     await this._prepareAllRules();
 
     const preparedConfig = this._getPreparedConfig();
+    console.log('preparedConfig = ', preparedConfig);
     return preparedConfig;
   }
 
@@ -41,35 +51,185 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
       throw new PackageLintInternalError('Cannot prepareAllRules when no userConfig is set');
     }
 
-    return await Promise.all(
-      this._userConfig.rules.map((ruleEntry) => {
-        return this._processRuleEntry(ruleEntry);
-      }),
-    ).then(() => this._ruleOrder);
+    const allPendingRules = this._userConfig.rules.map((ruleEntry) => {
+      return this._processRuleEntry(ruleEntry);
+    });
+    return await Promise.all(allPendingRules).then(() => this._ruleOrder);
   }
 
-  // @TODO: Maybe promote this to a required/supported helper, to allow async buildup of rules when using API?
   async _processRuleEntry(
-    _ruleEntry: PackagelintRuleEntry | PackagelintRulesetEntry,
+    ruleEntry: PackagelintRuleEntry | PackagelintRulesetEntry,
   ): Promise<PackagelintPreparedRule | Array<PackagelintPreparedRule>> {
-    throw new Error('@TODO');
+    const ruleEntryObject = this._expandRuleEntryIntoConfig(ruleEntry);
+
+    // @TODO: Proper splitting of rule result types
+    // @ts-ignore
+    const { name, enabled, extendRule, errorLevel, options, resetOptions, messages } =
+      ruleEntryObject;
+
+    if (!this._ruleInfo[name]) {
+      // We haven't seen this rule before: it's either a bulk modification, or we need to populate its base state
+      // before we apply the options/enabled/etc from above
+      let initialRule: PackagelintPreparedRule | null = null;
+
+      // @TODO: rulesets
+      // @TODO: self-implemented rules
+      // @TODO: wildcards
+
+      if (extendRule && this._ruleInfo[extendRule]) {
+        initialRule = {
+          ...this._ruleInfo[extendRule],
+          preparedRuleName: name,
+          extendedFrom: extendRule,
+        };
+      } else {
+        const baseRule = await resolveRuleOrRuleset(extendRule || name);
+
+        // @TODO: Split between single rules and rulesets
+
+        if (isRuleDefinition(baseRule)) {
+          if (name === baseRule.name && baseRule.isAbstract) {
+            throw new PackageLintRuleDefinitionError(
+              `Rule "${name}" is abstract: make a new rule (extendRule) instead of using it directly`,
+            );
+          }
+
+          const initialErrorLevel = baseRule.defaultErrorLevel || ERROR_LEVEL__ERROR;
+          const initialOptions = baseRule.defaultOptions || {};
+
+          initialRule = {
+            preparedRuleName: name,
+            docs: baseRule.docs,
+            enabled: false,
+            extendedFrom: extendRule || null,
+            defaultErrorLevel: initialErrorLevel,
+            errorLevel: initialErrorLevel,
+            defaultOptions: initialOptions,
+            options: initialOptions,
+            messages: baseRule.messages,
+            doValidation: baseRule.doValidation,
+          };
+        } else if (isRulesetDefinition(baseRule)) {
+          // @TODO: Apply ruleset-wide options like errorLevel
+          const allPendingRulesInRuleset: Array<
+            Promise<PackagelintPreparedRule | Array<PackagelintPreparedRule>>
+          > = baseRule.rules.map((ruleEntry) => {
+            return this._processRuleEntry(ruleEntry);
+          });
+          const allRulesInRuleset = await Promise.all(allPendingRulesInRuleset);
+          // Flatten
+          const flattedRuledInRuleset: Array<PackagelintPreparedRule> = allRulesInRuleset.reduce<
+            Array<PackagelintPreparedRule>
+          >((acc, preparedRuleOrList) => {
+            if (Array.isArray(preparedRuleOrList)) {
+              acc.push(...preparedRuleOrList);
+            } else {
+              acc.push(preparedRuleOrList);
+            }
+            return acc;
+          }, []);
+          return flattedRuledInRuleset;
+        } else {
+          throw new PackageLintRuleDefinitionError(`Unrecognized config for rule "${name}"`);
+        }
+      }
+
+      if (initialRule) {
+        this._ruleInfo[name] = initialRule;
+        this._ruleOrder.push(name);
+      }
+    } else if (extendRule) {
+      throw new PackageLintInternalError('Not implemented: edge cases with extendRule');
+      // @TODO: Handle edge cases with extendRule:
+      //  - Different entries declaring different extendRules
+      //  - A real rule matching the user-selected name, within the same package
+      //  - Late resolution, in case an early rule extends a user-selected rule name
+    }
+
+    // Now apply the incoming config
+    // We mutate because we created this config ourselves
+    const existingConfig = this._ruleInfo[name];
+
+    if (enabled != null) {
+      existingConfig.enabled = enabled;
+    }
+    if (errorLevel != null) {
+      existingConfig.errorLevel = errorLevel;
+    }
+    if (resetOptions) {
+      existingConfig.options = { ...existingConfig.defaultOptions };
+    }
+    if (options) {
+      existingConfig.options = { ...existingConfig.options, ...options };
+    }
+    if (messages) {
+      existingConfig.messages = { ...existingConfig.messages, ...messages };
+    }
+    return existingConfig;
+  }
+
+  _expandRuleEntryIntoConfig(
+    ruleEntry: PackagelintRuleEntry | PackagelintRulesetEntry,
+  ): PackagelintRuleConfig | PackagelintRulesetConfig {
+    if (typeof ruleEntry === 'string') {
+      return {
+        name: ruleEntry,
+        enabled: true,
+      };
+    }
+    if (Array.isArray(ruleEntry)) {
+      // @TODO: Validation for length
+      const [preparedRuleName, ruleOptions] = ruleEntry;
+      if (typeof ruleOptions === 'boolean') {
+        return {
+          name: preparedRuleName,
+          enabled: ruleOptions,
+        };
+      }
+      if (typeof ruleOptions === 'string') {
+        if (!isValidErrorLevel(ruleOptions)) {
+          throw new PackageLintUserConfigError(
+            `Invalid errorLevel "${ruleOptions}" for rule "${preparedRuleName}"`,
+          );
+        }
+        return {
+          name: preparedRuleName,
+          enabled: true,
+          errorLevel: ruleOptions,
+        };
+      }
+      // @TODO: Validation for object type
+      return {
+        name: preparedRuleName,
+        enabled: true,
+        options: ruleOptions,
+      };
+    }
+
+    // @TODO: Validation for object type
+    return {
+      enabled: true,
+      ...ruleEntry,
+    };
   }
 
   async _importRule(
-    _name: PackagelintRuleName,
+    name: PackagelintRuleName,
   ): Promise<PackagelintRuleDefinition | PackagelintRulesetDefinition> {
-    throw new Error('@TODO');
+    return resolveRuleOrRuleset(name);
   }
 
-  async _processRuleConfig(_ruleConfig: PackagelintRuleConfig): Promise<PackagelintPreparedRule> {
-    throw new Error('@TODO');
-  }
+  // @TODO
+  // async _processRuleConfig(ruleConfig: PackagelintRuleConfig): Promise<PackagelintPreparedRule> {
+  //   throw new Error('@TODO');
+  // }
 
-  async _processRulesetConfig(
-    _rulesetConfig: PackagelintRulesetConfig,
-  ): Promise<Array<PackagelintPreparedRule>> {
-    throw new Error('@TODO');
-  }
+  // @TODO
+  // async _processRulesetConfig(
+  //   rulesetConfig: PackagelintRulesetConfig,
+  // ): Promise<Array<PackagelintPreparedRule>> {
+  //   throw new Error('@TODO');
+  // }
 
   _getPreparedRuleList(): Array<PackagelintPreparedRule> {
     return this._ruleOrder.map((preparedRuleName) => this._ruleInfo[preparedRuleName]);

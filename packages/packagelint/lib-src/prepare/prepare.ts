@@ -45,7 +45,7 @@ async function prepareConfig(
   preparedConfig.rulePreparerInstance = rulePreparerInstance;
   preparedConfig.ruleValidatorInstance = ruleValidatorInstance;
 
-  if (!preparedConfig || !preparedConfig.rules || !Array.isArray(preparedConfig)) {
+  if (!preparedConfig || !preparedConfig.rules || !Array.isArray(preparedConfig.rules)) {
     throw new PackageLintInternalError('Invalid result from prepareConfigRules');
   }
 

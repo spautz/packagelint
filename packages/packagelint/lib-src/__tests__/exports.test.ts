@@ -53,8 +53,6 @@ describe('cli', () => {
       'isSuccessExitCode',
       'isFailureExitCode',
       // @TODO
-      'accumulateRules',
-      'RuleAccumulator',
       'isRuleDefinition',
       'isRulesetDefinition',
       'prepareReporters',

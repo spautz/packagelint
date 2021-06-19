@@ -284,13 +284,15 @@ export interface PackagelintRulePreparerInstance {
     name: PackagelintRuleName,
   ) => Promise<PackagelintRuleDefinition | PackagelintRulesetDefinition>;
 
-  readonly _processRuleConfig?: (
-    ruleConfig: PackagelintRuleConfig,
-  ) => Promise<PackagelintPreparedRule>;
+  // @TODO
+  // readonly _processRuleConfig?: (
+  //   ruleConfig: PackagelintRuleConfig,
+  // ) => Promise<PackagelintPreparedRule>;
 
-  readonly _processRulesetConfig?: (
-    rulesetConfig: PackagelintRulesetConfig,
-  ) => Promise<Array<PackagelintPreparedRule>>;
+  // @TODO
+  // readonly _processRulesetConfig?: (
+  //   rulesetConfig: PackagelintRulesetConfig,
+  // ) => Promise<Array<PackagelintPreparedRule>>;
 
   readonly _getPreparedRuleList?: () => Array<PackagelintPreparedRule>;
 
