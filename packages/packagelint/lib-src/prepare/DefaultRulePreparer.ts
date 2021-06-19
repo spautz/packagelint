@@ -12,17 +12,14 @@ import {
   PackagelintUserConfig,
 } from '@packagelint/core';
 import {
+  ERROR_LEVEL__ERROR,
   PackagelintInternalException,
   PackagelintRuleDefinitionException,
   PackagelintUserConfigException,
+  isValidErrorLevel,
 } from '@packagelint/types';
 
-import {
-  ERROR_LEVEL__ERROR,
-  isValidErrorLevel,
-  isRuleDefinition,
-  isRulesetDefinition,
-} from '../util';
+import { isRuleDefinition, isRulesetDefinition } from '../util';
 import { resolveRuleOrRuleset } from './resolveRuleOrRuleset';
 
 class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {

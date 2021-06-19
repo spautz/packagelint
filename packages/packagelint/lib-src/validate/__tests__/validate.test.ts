@@ -3,8 +3,8 @@ import {
   PackagelintRulePreparerInstance,
   PackagelintRuleValidatorInstance,
 } from '@packagelint/core';
+import { ERROR_LEVEL__ERROR } from '@packagelint/types';
 
-import { ERROR_LEVEL__ERROR } from '../../util';
 import { validatePreparedConfig } from '../validate';
 
 describe('validate/validatePreparedConfig', () => {

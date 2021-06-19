@@ -9,16 +9,16 @@ import {
   PackagelintValidationFnReturn,
   PackagelintUnknownErrorData,
 } from '@packagelint/core';
-import { PackagelintInternalException } from '@packagelint/types';
+import {
+  ERROR_LEVEL__EXCEPTION,
+  PackagelintInternalException,
+  getHighestErrorLevel,
+  isErrorLessSevereThan,
+} from '@packagelint/types';
 
 import { FAILURE__VALIDATION, SUCCESS } from '../exitCodes';
 import { broadcastEvent, broadcastEventUsingReporters } from '../report';
-import {
-  ERROR_LEVEL__EXCEPTION,
-  countErrorTypes,
-  getHighestErrorLevel,
-  isErrorLessSevereThan,
-} from '../util';
+import { countErrorTypes } from '../util';
 
 class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance> {
   _preparedConfig: PackagelintPreparedConfig | null = null;

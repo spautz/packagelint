@@ -1,6 +1,10 @@
-import { PackagelintRuleDefinition, PackagelintRulesetDefinition } from '@packagelint/core';
+import {
+  PackagelintRuleDefinition,
+  PackagelintRulesetDefinition,
+  PackagelintValidationResult,
+} from '@packagelint/core';
+import { PackagelintErrorLevelCounts } from '@packagelint/types';
 
-export * from './errorLevels';
 export * from './resolvers';
 
 export function isRuleDefinition(ruleInfo: unknown): ruleInfo is PackagelintRuleDefinition {
@@ -13,4 +17,27 @@ export function isRulesetDefinition(ruleInfo: unknown): ruleInfo is PackagelintR
   // @TODO: Proper validation
   // @ts-ignore
   return !!ruleInfo?.rules;
+}
+
+export function countErrorTypes(
+  validationResults: Array<PackagelintValidationResult>,
+): PackagelintErrorLevelCounts {
+  const errorLevelCounts = validationResults.reduce(
+    (counts, result) => {
+      if (result) {
+        counts[result.errorLevel] ||= 0;
+        counts[result.errorLevel]++;
+      }
+      return counts;
+    },
+    {
+      exception: 0,
+      error: 0,
+      warning: 0,
+      suggestion: 0,
+      ignore: 0,
+    },
+  );
+
+  return errorLevelCounts;
 }

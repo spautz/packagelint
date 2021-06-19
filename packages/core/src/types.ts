@@ -1,13 +1,6 @@
 // General Utility Types
 
-export type PackagelintErrorLevel = 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore';
-export type PackagelintErrorLevelCounts = {
-  exception: number;
-  error: number;
-  warning: number;
-  suggestion: number;
-  ignore: number;
-};
+import { PackagelintErrorLevel, PackagelintErrorLevelCounts } from '@packagelint/types';
 
 export type PackagelintReporterEventName =
   | 'onConfigStart'
