@@ -66,7 +66,8 @@
     "types": "tsc --p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@packagelint/core": "^0.0.4"
+    "@packagelint/core": "^0.0.4",
+    "@packagelint/types": "^0.0.4"
   },
   "typesVersions": {
     "<4": {

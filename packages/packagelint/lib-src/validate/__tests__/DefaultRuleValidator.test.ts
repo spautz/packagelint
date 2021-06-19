@@ -8,8 +8,9 @@ import {
   PackagelintRuleValidatorInstance,
   PackagelintValidationFn,
 } from '@packagelint/core';
+import { PackagelintInternalError } from '@packagelint/types';
 
-import { DefaultRuleValidator, PackageLintInternalError } from '../DefaultRuleValidator';
+import { DefaultRuleValidator } from '../DefaultRuleValidator';
 import { FAILURE__VALIDATION } from '../../exitCodes';
 
 describe('DefaultRuleValidator basics', () => {
@@ -126,7 +127,7 @@ describe('DefaultRuleValidator basics', () => {
       const result = ruleValidator[fnName]();
 
       expect(result).toBeInstanceOf(Promise);
-      return expect(result).rejects.toBeInstanceOf(PackageLintInternalError);
+      return expect(result).rejects.toBeInstanceOf(PackagelintInternalError);
     });
   });
 

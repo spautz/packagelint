@@ -71,6 +71,7 @@
   },
   "dependencies": {
     "@packagelint/core": "^0.0.4",
+    "@packagelint/types": "^0.0.4",
     "find-up": "^5.0.0",
     "semver": "^7.3.5",
     "v8-compile-cache": "^2.3.0",

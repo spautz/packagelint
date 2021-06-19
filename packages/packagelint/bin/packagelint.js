@@ -18,11 +18,11 @@ const onFatalError = (...args) => {
   try {
     const [exitCode, validationOutput] = await packagelintCli(process.argv);
 
-    console.log('packageLintCli() ', exitCode, validationOutput);
+    console.log('packagelintCli() ', exitCode, validationOutput);
 
     process.exitCode = exitCode;
   } catch (e) {
-    console.log('packageLintCli.exception: ', e);
+    console.log('packagelintCli.exception: ', e);
     onFatalError(e.message, e);
   }
 })().catch(onFatalError);

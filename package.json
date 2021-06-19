@@ -20,8 +20,7 @@
   },
   "scripts": {
     "____ LIFECYCLE HOOKS _______________________________________________": "",
-    "prepare": "husky install && yon run packages:prepare",
-    "pretest": "yon run test:clean",
+    "prepare": "yon run packages:prepare && husky install",
     "____ INTEGRATION ___________________________________________________": "",
     "clean": "rimraf ./node_modules/.cache && yon run test:clean && yon run packages:clean",
     "dev": "yon run format && yon run types && yon run lint",
@@ -51,11 +50,11 @@
     "release:postpublish": "standard-version --commit-all --sign --skip.changelog --release-as ",
     "test": "yon run test:coverage",
     "test:clean": "rimraf ./coverage",
-    "test:coverage": "tsdx test --coverage",
-    "test:nowatch": "tsdx test",
-    "test:watch": "tsdx test --watch",
-    "test:watchcoverage": "tsdx test --watchAll --coverage",
-    "types": "tsc --p tsconfig.json --noEmit"
+    "test:coverage": "yon run test:clean && tsdx test --coverage",
+    "test:nowatch": "yon run test:clean && tsdx test",
+    "test:watch": "yon run test:clean && tsdx test --watch",
+    "test:watchcoverage": "yon run test:clean && tsdx test --watchAll --coverage",
+    "types": "tsc --noEmit --p tsconfig.json"
   },
   "dependencies": {},
   "devDependencies": {

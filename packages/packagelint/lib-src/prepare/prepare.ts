@@ -3,6 +3,7 @@ import {
   PackagelintPreparedConfig,
   PackagelintRulePreparerInstance,
 } from '@packagelint/core';
+import { PackagelintInternalError } from '@packagelint/types';
 
 import {
   broadcastEventUsingReporters,
@@ -12,7 +13,7 @@ import {
 import { defaultUserConfig } from '../defaultUserConfig';
 import { DefaultRulePreparer } from './DefaultRulePreparer';
 import { DefaultRuleValidator } from '../validate';
-import { PackageLintInternalError, isFunction } from '../util';
+import { isFunction } from '../util';
 
 /**
  * Expands, flattens, and resolves a User Config into a flat list of validate rules
@@ -46,7 +47,7 @@ async function prepareConfig(
   preparedConfig.ruleValidatorInstance = ruleValidatorInstance;
 
   if (!preparedConfig || !preparedConfig.rules || !Array.isArray(preparedConfig.rules)) {
-    throw new PackageLintInternalError('Invalid result from prepareConfigRules');
+    throw new PackagelintInternalError('Invalid result from prepareConfigRules');
   }
 
   await broadcastEventUsingReporters(reporters, 'onConfigReady', preparedConfig);
@@ -58,13 +59,13 @@ function prepareConfigRules(
   rulePreparerInstance: PackagelintRulePreparerInstance,
 ): Promise<PackagelintPreparedConfig> {
   if (!rulePreparerInstance) {
-    throw new PackageLintInternalError('Missing rulePreparerInstance');
+    throw new PackagelintInternalError('Missing rulePreparerInstance');
   }
   if (
     !rulePreparerInstance.prepareUserConfig ||
     !isFunction(rulePreparerInstance.prepareUserConfig)
   ) {
-    throw new PackageLintInternalError('Invalid rulePreparerInstance');
+    throw new PackagelintInternalError('Invalid rulePreparerInstance');
   }
 
   const preparedConfig = rulePreparerInstance.prepareUserConfig(userConfig);
