@@ -8,7 +8,7 @@ import {
   PackagelintRuleValidatorInstance,
   PackagelintValidationFn,
 } from '@packagelint/core';
-import { PackagelintInternalError } from '@packagelint/types';
+import { PackagelintInternalException } from '@packagelint/types';
 
 import { DefaultRuleValidator } from '../DefaultRuleValidator';
 import { FAILURE__VALIDATION } from '../../exitCodes';
@@ -127,7 +127,7 @@ describe('DefaultRuleValidator basics', () => {
       const result = ruleValidator[fnName]();
 
       expect(result).toBeInstanceOf(Promise);
-      return expect(result).rejects.toBeInstanceOf(PackagelintInternalError);
+      return expect(result).rejects.toBeInstanceOf(PackagelintInternalException);
     });
   });
 

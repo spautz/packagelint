@@ -3,7 +3,7 @@ import {
   PackagelintPreparedConfig,
   PackagelintRulePreparerInstance,
 } from '@packagelint/core';
-import { PackagelintInternalError } from '@packagelint/types';
+import { PackagelintInternalException } from '@packagelint/types';
 
 import {
   broadcastEventUsingReporters,
@@ -47,7 +47,7 @@ async function prepareConfig(
   preparedConfig.ruleValidatorInstance = ruleValidatorInstance;
 
   if (!preparedConfig || !preparedConfig.rules || !Array.isArray(preparedConfig.rules)) {
-    throw new PackagelintInternalError('Invalid result from prepareConfigRules');
+    throw new PackagelintInternalException('Invalid result from prepareConfigRules');
   }
 
   await broadcastEventUsingReporters(reporters, 'onConfigReady', preparedConfig);
@@ -59,13 +59,13 @@ function prepareConfigRules(
   rulePreparerInstance: PackagelintRulePreparerInstance,
 ): Promise<PackagelintPreparedConfig> {
   if (!rulePreparerInstance) {
-    throw new PackagelintInternalError('Missing rulePreparerInstance');
+    throw new PackagelintInternalException('Missing rulePreparerInstance');
   }
   if (
     !rulePreparerInstance.prepareUserConfig ||
     !isFunction(rulePreparerInstance.prepareUserConfig)
   ) {
-    throw new PackagelintInternalError('Invalid rulePreparerInstance');
+    throw new PackagelintInternalException('Invalid rulePreparerInstance');
   }
 
   const preparedConfig = rulePreparerInstance.prepareUserConfig(userConfig);

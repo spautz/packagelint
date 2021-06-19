@@ -5,11 +5,11 @@ describe('cli', () => {
     const allExportNames = Object.keys(allNamedExports);
     const expectedExports = [
       // Errors
-      'PackagelintUserConfigError',
-      'PackagelintImportError',
-      'PackagelintReporterError',
-      'PackagelintRuleDefinitionError',
-      'PackagelintInternalError',
+      'PackagelintUserConfigException',
+      'PackagelintImportException',
+      'PackagelintReporterException',
+      'PackagelintRuleDefinitionException',
+      'PackagelintInternalException',
     ];
 
     expect(allExportNames.sort()).toEqual(expectedExports.sort());

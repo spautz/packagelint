@@ -3,7 +3,7 @@ import {
   PackagelintReporterConstructor,
   PackagelintExportedReporters,
 } from '@packagelint/core';
-import { PackagelintImportError, PackagelintUserConfigError } from '@packagelint/types';
+import { PackagelintImportException, PackagelintUserConfigException } from '@packagelint/types';
 
 import { resolveImportedValue } from '../util';
 
@@ -16,7 +16,7 @@ async function resolveReporter(
   const [packageName, reporterName] = name.split(':');
 
   if (!packageName || !reporterName) {
-    throw new PackagelintUserConfigError(`Reporter "${name}" is not a valid reporter name`);
+    throw new PackagelintUserConfigException(`Reporter "${name}" is not a valid reporter name`);
   }
 
   const packageExports = await resolveImportedValue<PackagelintExportedReporters>(
@@ -27,17 +27,17 @@ async function resolveReporter(
   >(packageExports.packagelintReporters);
 
   if (!packagelintReporters) {
-    throw new PackagelintImportError(
+    throw new PackagelintImportException(
       `Package "${packageName}" does not provide any packagelint reporters`,
     );
   }
   if (typeof packagelintReporters !== 'object') {
-    throw new PackagelintImportError(
+    throw new PackagelintImportException(
       `Package "${packageName}" does not provide any valid packagelint reporters`,
     );
   }
   if (!Object.prototype.hasOwnProperty.call(packagelintReporters, reporterName)) {
-    throw new PackagelintImportError(
+    throw new PackagelintImportException(
       `Package "${packageName}" does not provide reporter "${reporterName}"`,
     );
   }

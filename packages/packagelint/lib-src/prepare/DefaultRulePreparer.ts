@@ -12,9 +12,9 @@ import {
   PackagelintUserConfig,
 } from '@packagelint/core';
 import {
-  PackagelintInternalError,
-  PackagelintRuleDefinitionError,
-  PackagelintUserConfigError,
+  PackagelintInternalException,
+  PackagelintRuleDefinitionException,
+  PackagelintUserConfigException,
 } from '@packagelint/types';
 
 import {
@@ -32,7 +32,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
 
   async prepareUserConfig(userConfig: PackagelintUserConfig): Promise<PackagelintPreparedConfig> {
     if (!userConfig) {
-      throw new PackagelintInternalError(
+      throw new PackagelintInternalException(
         'RuleValidator.prepareUserConfig() must be given a userConfig',
       );
     }
@@ -50,7 +50,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
 
   async _prepareAllRules(): Promise<Array<PackagelintRuleName>> {
     if (!this._userConfig) {
-      throw new PackagelintInternalError('Cannot prepareAllRules when no userConfig is set');
+      throw new PackagelintInternalException('Cannot prepareAllRules when no userConfig is set');
     }
 
     const allPendingRules = this._userConfig.rules.map((ruleEntry) => {
@@ -91,7 +91,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
 
         if (isRuleDefinition(baseRule)) {
           if (name === baseRule.name && baseRule.isAbstract) {
-            throw new PackagelintRuleDefinitionError(
+            throw new PackagelintRuleDefinitionException(
               `Rule "${name}" is abstract: make a new rule (extendRule) instead of using it directly`,
             );
           }
@@ -132,7 +132,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
           }, []);
           return flattedRuledInRuleset;
         } else {
-          throw new PackagelintRuleDefinitionError(`Unrecognized config for rule "${name}"`);
+          throw new PackagelintRuleDefinitionException(`Unrecognized config for rule "${name}"`);
         }
       }
 
@@ -141,7 +141,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
         this._ruleOrder.push(name);
       }
     } else if (extendRule) {
-      throw new PackagelintInternalError('Not implemented: edge cases with extendRule');
+      throw new PackagelintInternalException('Not implemented: edge cases with extendRule');
       // @TODO: Handle edge cases with extendRule:
       //  - Different entries declaring different extendRules
       //  - A real rule matching the user-selected name, within the same package
@@ -190,7 +190,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
       }
       if (typeof ruleOptions === 'string') {
         if (!isValidErrorLevel(ruleOptions)) {
-          throw new PackagelintUserConfigError(
+          throw new PackagelintUserConfigException(
             `Invalid errorLevel "${ruleOptions}" for rule "${preparedRuleName}"`,
           );
         }
@@ -239,7 +239,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
 
   _getPreparedConfig(): PackagelintPreparedConfig {
     if (!this._userConfig) {
-      throw new PackagelintInternalError('Cannot getPreparedConfig when no userConfig is set');
+      throw new PackagelintInternalException('Cannot getPreparedConfig when no userConfig is set');
     }
 
     return {

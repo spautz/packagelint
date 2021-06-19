@@ -3,57 +3,57 @@
 /**
  * Used when the incoming config is invalid
  */
-class PackagelintUserConfigError extends Error {
+class PackagelintUserConfigException extends Error {
   constructor(errorMessage: string) {
     super(`Packagelint user config error: ${errorMessage}`);
-    this.name = 'PackagelintUserConfigError';
+    this.name = 'PackagelintUserConfigException';
   }
 }
 
 /**
  * Used when the module containing a rule, ruleset, or reporter is missing or invalid
  */
-class PackagelintImportError extends Error {
+class PackagelintImportException extends Error {
   constructor(errorMessage: string) {
     super(`Packagelint import error: ${errorMessage}`);
-    this.name = 'PackagelintImportError';
+    this.name = 'PackagelintImportException';
   }
 }
 
 /**
  * Used when a reporter is invalid or incomplete
  */
-class PackagelintReporterError extends Error {
+class PackagelintReporterException extends Error {
   constructor(errorMessage: string) {
     super(`Packagelint reporter error: ${errorMessage}`);
-    this.name = 'PackagelintReporterError';
+    this.name = 'PackagelintReporterException';
   }
 }
 
 /**
  * Used when a rule or ruleset is invalid or incomplete
  */
-class PackagelintRuleDefinitionError extends Error {
+class PackagelintRuleDefinitionException extends Error {
   constructor(errorMessage: string) {
     super(`Packagelint rule config error: ${errorMessage}`);
-    this.name = 'PackagelintRuleDefinitionError';
+    this.name = 'PackagelintRuleDefinitionException';
   }
 }
 
 /**
  * Used when Packagelint hits an error within itself. This should never happen.
  */
-class PackagelintInternalError extends Error {
+class PackagelintInternalException extends Error {
   constructor(errorMessage: string) {
     super(`Packagelint internal error: ${errorMessage}`);
-    this.name = 'PackagelintInternalError';
+    this.name = 'PackagelintInternalException';
   }
 }
 
 export {
-  PackagelintUserConfigError,
-  PackagelintImportError,
-  PackagelintReporterError,
-  PackagelintRuleDefinitionError,
-  PackagelintInternalError,
+  PackagelintUserConfigException,
+  PackagelintImportException,
+  PackagelintReporterException,
+  PackagelintRuleDefinitionException,
+  PackagelintInternalException,
 };
