@@ -1,12 +1,12 @@
 import {
+  ALL_ERROR_LEVEL_VALUES,
+  ALL_ERROR_LEVELS,
   ERROR_LEVEL__ERROR,
   ERROR_LEVEL__SUGGESTION,
-  ALL_ERROR_LEVELS,
-  ALL_ERROR_LEVEL_VALUES,
   ERROR_LEVELS_IN_SEVERITY_ORDER,
-  isValidErrorLevel,
   isErrorLessSevereThan,
   isErrorMoreSevereThan,
+  isValidErrorLevel,
 } from '..';
 
 describe('errorLevels', () => {

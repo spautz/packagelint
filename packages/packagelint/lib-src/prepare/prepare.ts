@@ -1,5 +1,5 @@
 import {
-  PackagelintInternalException,
+  PackagelintException_Internal,
   PackagelintPreparedConfig,
   PackagelintRulePreparerInstance,
   PackagelintUserConfig,
@@ -47,7 +47,7 @@ async function prepareConfig(
   preparedConfig.ruleValidatorInstance = ruleValidatorInstance;
 
   if (!preparedConfig || !preparedConfig.rules || !Array.isArray(preparedConfig.rules)) {
-    throw new PackagelintInternalException('Invalid result from prepareConfigRules');
+    throw new PackagelintException_Internal('Invalid result from prepareConfigRules');
   }
 
   await broadcastEventUsingReporters(reporters, 'onConfigReady', preparedConfig);
@@ -59,13 +59,13 @@ function prepareConfigRules(
   rulePreparerInstance: PackagelintRulePreparerInstance,
 ): Promise<PackagelintPreparedConfig> {
   if (!rulePreparerInstance) {
-    throw new PackagelintInternalException('Missing rulePreparerInstance');
+    throw new PackagelintException_Internal('Missing rulePreparerInstance');
   }
   if (
     !rulePreparerInstance.prepareUserConfig ||
     !isFunction(rulePreparerInstance.prepareUserConfig)
   ) {
-    throw new PackagelintInternalException('Invalid rulePreparerInstance');
+    throw new PackagelintException_Internal('Invalid rulePreparerInstance');
   }
 
   const preparedConfig = rulePreparerInstance.prepareUserConfig(userConfig);

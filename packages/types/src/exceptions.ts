@@ -3,57 +3,57 @@
 /**
  * Used when the incoming config is invalid
  */
-class PackagelintUserConfigException extends Error {
+class PackagelintException_UserConfig extends Error {
   constructor(errorMessage: string) {
     super(`Packagelint user config error: ${errorMessage}`);
-    this.name = 'PackagelintUserConfigException';
+    this.name = 'PackagelintException_UserConfig';
   }
 }
 
 /**
  * Used when the module containing a rule, ruleset, or reporter is missing or invalid
  */
-class PackagelintImportException extends Error {
+class PackagelintException_Import extends Error {
   constructor(errorMessage: string) {
     super(`Packagelint import error: ${errorMessage}`);
-    this.name = 'PackagelintImportException';
+    this.name = 'PackagelintException_Import';
   }
 }
 
 /**
  * Used when a reporter is invalid or incomplete
  */
-class PackagelintReporterException extends Error {
+class PackagelintException_Reporter extends Error {
   constructor(errorMessage: string) {
     super(`Packagelint reporter error: ${errorMessage}`);
-    this.name = 'PackagelintReporterException';
+    this.name = 'PackagelintException_Reporter';
   }
 }
 
 /**
  * Used when a rule or ruleset is invalid or incomplete
  */
-class PackagelintRuleDefinitionException extends Error {
+class PackagelintException_RuleDefinition extends Error {
   constructor(errorMessage: string) {
     super(`Packagelint rule config error: ${errorMessage}`);
-    this.name = 'PackagelintRuleDefinitionException';
+    this.name = 'PackagelintException_RuleDefinition';
   }
 }
 
 /**
  * Used when Packagelint hits an error within itself. This should never happen.
  */
-class PackagelintInternalException extends Error {
+class PackagelintException_Internal extends Error {
   constructor(errorMessage: string) {
     super(`Packagelint internal error: ${errorMessage}`);
-    this.name = 'PackagelintInternalException';
+    this.name = 'PackagelintException_Internal';
   }
 }
 
 export {
-  PackagelintUserConfigException,
-  PackagelintImportException,
-  PackagelintReporterException,
-  PackagelintRuleDefinitionException,
-  PackagelintInternalException,
+  PackagelintException_UserConfig,
+  PackagelintException_Import,
+  PackagelintException_Reporter,
+  PackagelintException_RuleDefinition,
+  PackagelintException_Internal,
 };

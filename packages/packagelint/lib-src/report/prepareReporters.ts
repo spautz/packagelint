@@ -1,7 +1,7 @@
 import {
   PackagelintPreparedConfig,
-  PackagelintReporterInstance,
   PackagelintReporterEventName,
+  PackagelintReporterInstance,
   PackagelintUserConfig,
 } from '@packagelint/types';
 

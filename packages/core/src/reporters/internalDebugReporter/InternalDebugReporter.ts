@@ -1,4 +1,4 @@
-import { PackagelintReporterInstance, PackagelintReporterEventName } from '@packagelint/types';
+import { PackagelintReporterEventName, PackagelintReporterInstance } from '@packagelint/types';
 
 type PackagelintInternalDebugReporter_EventsToLog = Record<PackagelintReporterEventName, boolean>;
 
@@ -41,21 +41,27 @@ class InternalDebugReporter implements PackagelintReporterInstance {
   onConfigStart(...args: Array<unknown>): void {
     this._logEvent('onConfigStart', ...args);
   }
+
   onConfigReady(...args: Array<unknown>): void {
     this._logEvent('onConfigReady', ...args);
   }
+
   onValidationStart(...args: Array<unknown>): void {
     this._logEvent('onValidationStart', ...args);
   }
+
   onValidationComplete(...args: Array<unknown>): void {
     this._logEvent('onValidationComplete', ...args);
   }
+
   onRuleStart(...args: Array<unknown>): void {
     this._logEvent('onRuleStart', ...args);
   }
+
   onRuleResult(...args: Array<unknown>): void {
     this._logEvent('onRuleResult', ...args);
   }
+
   getLastError(...args: Array<unknown>): void {
     this._logEvent('getLastError', ...args);
   }

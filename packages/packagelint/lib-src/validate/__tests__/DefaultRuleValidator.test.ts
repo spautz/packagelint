@@ -4,12 +4,12 @@ import {
   alwaysThrowRuleValidationFn,
 } from '@packagelint/core';
 import {
+  PackagelintException_Internal,
   PackagelintPreparedConfig,
   PackagelintPreparedRule,
   PackagelintRulePreparerInstance,
   PackagelintRuleValidatorInstance,
   PackagelintValidationFn,
-  PackagelintInternalException,
 } from '@packagelint/types';
 
 import { DefaultRuleValidator } from '../DefaultRuleValidator';
@@ -129,7 +129,7 @@ describe('DefaultRuleValidator basics', () => {
       const result = ruleValidator[fnName]();
 
       expect(result).toBeInstanceOf(Promise);
-      return expect(result).rejects.toBeInstanceOf(PackagelintInternalException);
+      return expect(result).rejects.toBeInstanceOf(PackagelintException_Internal);
     });
   });
 

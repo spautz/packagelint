@@ -20,11 +20,11 @@ describe('cli', () => {
       'getHighestErrorLevel',
       'defaultErrorLevelCounts',
       // Exceptions
-      'PackagelintUserConfigException',
-      'PackagelintImportException',
-      'PackagelintReporterException',
-      'PackagelintRuleDefinitionException',
-      'PackagelintInternalException',
+      'PackagelintException_UserConfig',
+      'PackagelintException_Import',
+      'PackagelintException_Reporter',
+      'PackagelintException_RuleDefinition',
+      'PackagelintException_Internal',
     ];
 
     expect(allExportNames.sort()).toEqual(expectedExports.sort());
