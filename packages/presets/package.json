@@ -1,6 +1,6 @@
 {
   "name": "@packagelint/presets",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Default set of rules for Packagelint",
   "keywords": [],
   "license": "MIT",
@@ -64,8 +64,8 @@
     "types": "tsc --p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@packagelint/core": "^0.0.4",
-    "@packagelint/types": "^0.0.4"
+    "@packagelint/core": "^0.0.5",
+    "@packagelint/types": "^0.0.5"
   },
   "typesVersions": {
     "<4": {

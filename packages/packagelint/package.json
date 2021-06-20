@@ -1,6 +1,6 @@
 {
   "name": "@packagelint/packagelint",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Configure and override rule configs for a linter, in an extension-friendly way",
   "keywords": [],
   "license": "MIT",
@@ -69,8 +69,8 @@
     "types": "tsc --p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@packagelint/core": "^0.0.4",
-    "@packagelint/types": "^0.0.4",
+    "@packagelint/core": "^0.0.5",
+    "@packagelint/types": "^0.0.5",
     "find-up": "^5.0.0",
     "semver": "^7.3.5",
     "v8-compile-cache": "^2.3.0",

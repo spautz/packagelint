@@ -1,6 +1,6 @@
 {
   "name": "@packagelint/types",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Types, utilities, and validators for Packagelint entities",
   "keywords": [],
   "license": "MIT",
