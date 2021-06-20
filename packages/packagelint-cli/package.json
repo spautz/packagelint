@@ -1,6 +1,6 @@
 {
-  "name": "@packagelint/packagelint-cli",
-  "version": "0.0.5",
+  "name": "packagelint-cli",
+  "version": "0.0.6",
   "description": "Run your local Packagelint via a global command",
   "keywords": [],
   "license": "MIT",
