@@ -9,16 +9,20 @@ cd "$(dirname "$0")/.."
 source ./scripts/helpers/helpers.sh
 
 
-if command_exists act; then
-  # act =  https://github.com/nektos/act
-  act
+if [[ $* == *--local* ]]; then
+
+  if command_exists act; then
+    # act =  https://github.com/nektos/act
+    act
+  else
+    echo "Could not find act"
+    exit 1
+  fi
 
   # @TODO: Detect actions-runner/Runner.Client
   # https://github.com/ChristopherHX/runner.server
 
 else
-  echo "Act not found: running commands locally..."
-
   # This is a manually-synced copy of what's in .github/worksflows/ci.yml
 
   run_command "./scripts/check-environment.sh"
@@ -30,3 +34,7 @@ else
   run_command "yarn examples"
 
 fi
+
+###################################################################################################
+
+echo "Local CI completed"
