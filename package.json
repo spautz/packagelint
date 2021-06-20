@@ -1,7 +1,7 @@
 {
   "name": "@packagelint/workspace",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Root workspace Packagelint",
   "license": "MIT",
   "homepage": "https://github.com/spautz/packagelint#readme",
