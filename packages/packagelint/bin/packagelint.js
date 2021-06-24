@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 /* eslint-env node */
+'use strict';
 
 require('v8-compile-cache');
 
-const { FAILURE__UNKNOWN } = require('../lib-dist/api');
+const { EXIT__UNKNOWN } = require('../lib-dist/api');
 
 const onFatalError = (...args) => {
   console.error('Packagelint fatal error: ', ...args);
-  process.exitCode = FAILURE__UNKNOWN;
+  process.exitCode = EXIT__UNKNOWN;
 };
 
 (async function packagelint() {

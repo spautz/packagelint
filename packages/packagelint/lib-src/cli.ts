@@ -9,12 +9,12 @@ import {
 } from '@packagelint/types';
 
 import {
-  FAILURE__UNKNOWN,
-  FAILURE__INTERNAL,
-  FAILURE__NO_CONFIG,
-  FAILURE__INVALID_CONFIG,
-  FAILURE__INVALID_REPORTER,
-  FAILURE__INVALID_RULE,
+  EXIT__UNKNOWN,
+  EXIT__INTERNAL_ERROR,
+  EXIT__NO_CONFIG,
+  EXIT__INVALID_CONFIG,
+  EXIT__INVALID_REPORTER,
+  EXIT__INVALID_RULE,
   PackagelintExitCode,
   findPackagelintConfigFile,
   prepareConfig,
@@ -45,14 +45,14 @@ async function packagelintCli(
     const packagelintConfigFileName = await findPackagelintConfigFile();
 
     if (!packagelintConfigFileName) {
-      return [FAILURE__NO_CONFIG, null];
+      return [EXIT__NO_CONFIG, null];
     }
 
     const userConfig = await resolveImportedValue<PackagelintUserConfig>(
       require(packagelintConfigFileName),
     );
     if (!userConfig) {
-      return [FAILURE__INVALID_CONFIG, null];
+      return [EXIT__INVALID_CONFIG, null];
     }
 
     const preparedConfig = await prepareConfig(userConfig);
@@ -61,15 +61,15 @@ async function packagelintCli(
     console.warn('RETURN exitCode: ', validationOutput);
     return [validationOutput.exitCode as PackagelintExitCode, validationOutput];
   } catch (e) {
-    let exitCode: PackagelintExitCode = FAILURE__UNKNOWN;
+    let exitCode: PackagelintExitCode = EXIT__UNKNOWN;
     if (e instanceof PackagelintException_UserConfig || e instanceof PackagelintException_Import) {
-      exitCode = FAILURE__INVALID_CONFIG;
+      exitCode = EXIT__INVALID_CONFIG;
     } else if (e instanceof PackagelintException_Reporter) {
-      exitCode = FAILURE__INVALID_REPORTER;
+      exitCode = EXIT__INVALID_REPORTER;
     } else if (e instanceof PackagelintException_RuleDefinition) {
-      exitCode = FAILURE__INVALID_RULE;
+      exitCode = EXIT__INVALID_RULE;
     } else if (e instanceof PackagelintException_Internal) {
-      exitCode = FAILURE__INTERNAL;
+      exitCode = EXIT__INTERNAL_ERROR;
     }
 
     return [exitCode, e];

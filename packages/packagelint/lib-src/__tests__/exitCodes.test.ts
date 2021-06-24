@@ -1,8 +1,8 @@
 import {
   ALL_EXIT_CODE_VALUES,
   ALL_EXIT_CODES,
-  SUCCESS,
-  FAILURE__VALIDATION,
+  EXIT__SUCCESS,
+  EXIT__VALIDATION_FAILED,
   isFailureExitCode,
   isSuccessExitCode,
   isValidExitCode,
@@ -26,22 +26,22 @@ describe('util/exitCodes', () => {
   });
 
   it(`recognizes success`, () => {
-    expect(isValidExitCode(SUCCESS)).toBe(true);
-    expect(isSuccessExitCode(SUCCESS)).toBe(true);
-    expect(isFailureExitCode(SUCCESS)).toBe(false);
+    expect(isValidExitCode(EXIT__SUCCESS)).toBe(true);
+    expect(isSuccessExitCode(EXIT__SUCCESS)).toBe(true);
+    expect(isFailureExitCode(EXIT__SUCCESS)).toBe(false);
   });
 
   it(`recognizes non-success`, () => {
-    expect(isValidExitCode(FAILURE__VALIDATION)).toBe(true);
-    expect(isSuccessExitCode(FAILURE__VALIDATION)).toBe(false);
-    expect(isFailureExitCode(FAILURE__VALIDATION)).toBe(true);
+    expect(isValidExitCode(EXIT__VALIDATION_FAILED)).toBe(true);
+    expect(isSuccessExitCode(EXIT__VALIDATION_FAILED)).toBe(false);
+    expect(isFailureExitCode(EXIT__VALIDATION_FAILED)).toBe(true);
   });
 
   it(`recognizes all exit code values`, () => {
     ALL_EXIT_CODE_VALUES.forEach((exitCodeValue) => {
       expect(isValidExitCode(exitCodeValue)).toBe(true);
 
-      const shouldBeSuccess = exitCodeValue === SUCCESS;
+      const shouldBeSuccess = exitCodeValue === EXIT__SUCCESS;
       expect(isSuccessExitCode(exitCodeValue)).toBe(shouldBeSuccess);
       expect(isFailureExitCode(exitCodeValue)).toBe(!shouldBeSuccess);
     });
