@@ -1,25 +1,19 @@
+import { PackagelintErrorLevel, PackagelintErrorLevelCounts } from './error-levels';
+import {
+  PackagelintAnyReporterOptions,
+  PackagelintReporterConstructor,
+  PackagelintReporterInstance,
+  PackagelintReporterName,
+} from './reporters';
+
 // General Utility Types
 
-import { PackagelintErrorLevel, PackagelintErrorLevelCounts } from './error-levels';
-
-export type PackagelintReporterEventName =
-  | 'onConfigStart'
-  | 'onConfigReady'
-  | 'onValidationStart'
-  | 'onValidationComplete'
-  | 'onRuleStart'
-  | 'onRuleResult'
-  | 'getLastError';
-
 export type PackagelintRuleName = string;
-export type PackagelintReporterName = string;
 
 export type PackagelintAnyRuleOptions = Record<string, any>;
 export type PackagelintAnyErrorData = Record<string, any>;
-export type PackagelintAnyReporterOptions = any;
 export type PackagelintUnknownRuleOptions = Record<string, unknown>;
 export type PackagelintUnknownErrorData = Record<string, unknown>;
-export type PackagelintUnknownReporterOptions = unknown;
 
 // Exports for Rules, Rulesets, and Reporters
 
@@ -181,69 +175,6 @@ export interface PackagelintRulesetDefinition {
 
   // @TODO: errorLevel?: PackagelintErrorLevel;
 }
-
-// Result reporters
-
-/**
- * Reporters *should* return nothing, but if any do return a value then we'll pass it back through
- */
-export type PackagelintUnknownReporterReturnValue = Promise<void | unknown> | void | unknown;
-
-/**
- *
- */
-export interface PackagelintReporterInstance {
-  /** @TODO */
-  entityType?: string;
-
-  readonly onConfigStart?: (
-    userConfig: PackagelintUserConfig,
-  ) => PackagelintUnknownReporterReturnValue;
-
-  readonly onConfigReady?: (
-    preparedConfig: PackagelintPreparedConfig,
-  ) => PackagelintUnknownReporterReturnValue;
-
-  readonly onValidationStart?: (
-    preparedConfig: PackagelintPreparedConfig,
-  ) => PackagelintUnknownReporterReturnValue;
-
-  readonly onValidationComplete?: (
-    fullResults: PackagelintOutput,
-  ) => PackagelintUnknownReporterReturnValue;
-
-  readonly onRuleStart?: (
-    preparedRule: PackagelintPreparedRule,
-  ) => PackagelintUnknownReporterReturnValue;
-
-  readonly onRuleResult?: (
-    preparedRule: PackagelintPreparedRule,
-    ruleResult: PackagelintValidationResult,
-  ) => PackagelintUnknownReporterReturnValue;
-
-  readonly getLastError?: () => Error | void;
-}
-
-/**
- * A PackagelintReporterInstance may be created from classes
- */
-export interface PackagelintReporterClassConstructor<
-  OptionsType extends PackagelintAnyRuleOptions = any,
-> {
-  new (options: OptionsType): PackagelintReporterInstance;
-}
-/**
- * A PackagelintReporterInstance may be created from functions
- */
-export type PackagelintReporterConstructorFunction<
-  OptionsType extends PackagelintAnyRuleOptions = any,
-> = (options: OptionsType) => PackagelintReporterInstance;
-/**
- * A PackagelintReporterInstance may be created from either classes or functions
- */
-export type PackagelintReporterConstructor<OptionsType extends PackagelintAnyRuleOptions = any> =
-  | PackagelintReporterClassConstructor<OptionsType>
-  | PackagelintReporterConstructorFunction<OptionsType>;
 
 // PreparedConfig: After preparing config and loading rules
 

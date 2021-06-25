@@ -5,7 +5,8 @@
 
 Types, utilities, and validators for Packagelint entities.
 
-This is not only a types package: it provides enums and type-checking functions.
+This is not just a types package: it provides constants, enums, and validation utils for writing your own Packagelint
+rules, reporters, and other internals.
 
 (Docs pending)
 

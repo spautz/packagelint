@@ -31,3 +31,14 @@ its rules and in its internal implementation.
 ## More Docs
 
 (Docs in progress)
+
+To do:
+
+- Rule Entry = string/array/object, which expand to one of:
+  - RuleCheck (RuleTest?) = the actual thing that runs
+  - Ruleset (RuleGroup?) = a group of rules (fn of options?)
+  - RuleCombo = boolean logic for combining, modifying, or reinterprets results
+    @TODO: {
+    ruleComboName: '@packagelint/core:andOperator'
+    rules: Array<RuleEntry> or Record<string, RuleEntry>
+    }
