@@ -1,11 +1,7 @@
-import {
-  PackagelintAnyRuleOptions,
-  PackagelintOutput,
-  PackagelintPreparedConfig,
-  PackagelintPreparedRule,
-  PackagelintUserConfig,
-  PackagelintValidationResult,
-} from '../types';
+import { PackagelintPreparedConfig, PackagelintUserConfig } from '../configs';
+import { PackagelintAnyRuleOptions } from '../rules';
+import { PackagelintOutput, PackagelintValidationResult } from '../results';
+import { PackagelintPreparedRule } from '../internals';
 
 export type PackagelintReporterName = string;
 

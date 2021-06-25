@@ -1,7 +1,7 @@
 import {
   PackagelintException_Import,
   PackagelintException_UserConfig,
-  PackagelintExportedRules,
+  PackagelintImportedRules,
   PackagelintRuleDefinition,
   PackagelintRuleName,
   PackagelintRulesetDefinition,
@@ -22,8 +22,8 @@ async function resolveRuleOrRuleset(
     throw new PackagelintException_UserConfig(`Rule "${name}" is not a valid rule name`);
   }
 
-  const packageExports = await resolveImportedValue<PackagelintExportedRules>(require(packageName));
-  const packagelintRules = await resolveImportedValue<PackagelintExportedRules['packagelintRules']>(
+  const packageExports = await resolveImportedValue<PackagelintImportedRules>(require(packageName));
+  const packagelintRules = await resolveImportedValue<PackagelintImportedRules['packagelintRules']>(
     packageExports.packagelintRules,
   );
 
