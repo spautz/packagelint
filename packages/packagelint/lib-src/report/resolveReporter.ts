@@ -1,12 +1,13 @@
 import {
   PackagelintException_Import,
   PackagelintException_UserConfig,
-  PackagelintExportedReporters,
+  PackagelintExportedReportersObject,
   PackagelintReporterConstructor,
   PackagelintReporterName,
+  PackagelintResolved3rdPartyModule,
+  PackagelintResolved3rdPartyModuleObject,
+  resolveImportedValue,
 } from '@packagelint/types';
-
-import { resolveImportedValue } from '../util';
 
 async function resolveReporter(
   name: PackagelintReporterName,
@@ -20,11 +21,11 @@ async function resolveReporter(
     throw new PackagelintException_UserConfig(`Reporter "${name}" is not a valid reporter name`);
   }
 
-  const packageExports = await resolveImportedValue<PackagelintExportedReporters>(
-    require(packageName),
+  const packageExports = await resolveImportedValue<PackagelintResolved3rdPartyModuleObject>(
+    require(packageName) as PackagelintResolved3rdPartyModule,
   );
   const packagelintReporters = await resolveImportedValue<
-    PackagelintExportedReporters['packagelintReporters']
+    PackagelintExportedReportersObject | undefined
   >(packageExports.packagelintReporters);
 
   if (!packagelintReporters) {

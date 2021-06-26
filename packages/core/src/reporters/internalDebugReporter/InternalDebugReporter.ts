@@ -15,6 +15,7 @@ const defaultEventsToLog: PackagelintInternalDebugReporter_EventsToLog = {
   onRuleResult: true,
   getLastError: true,
 };
+Object.freeze(defaultEventsToLog);
 
 class InternalDebugReporter implements PackagelintReporterInstance {
   _prefix = 'Packagelint InternalDebugReporter';

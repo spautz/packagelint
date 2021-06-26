@@ -13,7 +13,7 @@ import {
 } from '@packagelint/types';
 
 import { DefaultRuleValidator } from '../DefaultRuleValidator';
-import { FAILURE__VALIDATION } from '../../exitCodes';
+import { EXIT__VALIDATION_FAILED } from '../../exitCodes';
 
 describe('DefaultRuleValidator basics', () => {
   let ruleValidator: PackagelintRuleValidatorInstance;
@@ -211,7 +211,7 @@ describe('DefaultRuleValidator basics', () => {
         ignore: 0,
       },
       errorResults: [expectedFailureResult],
-      exitCode: FAILURE__VALIDATION,
+      exitCode: EXIT__VALIDATION_FAILED,
       highestErrorLevel: 'error',
       numRulesEnabled: 1,
       numRulesDisabled: 0,
@@ -246,7 +246,7 @@ describe('DefaultRuleValidator basics', () => {
         ignore: 0,
       },
       errorResults: [expectedThrownResult],
-      exitCode: FAILURE__VALIDATION,
+      exitCode: EXIT__VALIDATION_FAILED,
       highestErrorLevel: 'exception',
       numRulesEnabled: 1,
       numRulesDisabled: 0,
@@ -321,7 +321,7 @@ describe('DefaultRuleValidator basics', () => {
         ignore: 0,
       },
       errorResults: [expectedFailureResult, expectedThrownResult],
-      exitCode: FAILURE__VALIDATION,
+      exitCode: EXIT__VALIDATION_FAILED,
       highestErrorLevel: 'exception',
       numRulesEnabled: 3,
       numRulesDisabled: 1,

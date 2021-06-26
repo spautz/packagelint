@@ -14,7 +14,7 @@ import {
   isErrorLessSevereThan,
 } from '@packagelint/types';
 
-import { FAILURE__VALIDATION, SUCCESS } from '../exitCodes';
+import { EXIT__VALIDATION_FAILED, EXIT__SUCCESS } from '../exitCodes';
 import { broadcastEvent, broadcastEventUsingReporters } from '../report';
 import { countErrorTypes } from '../util';
 
@@ -209,8 +209,8 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
     const errorLevelCounts = countErrorTypes(errorResults);
     const highestErrorLevel = getHighestErrorLevel(errorLevelCounts);
     const exitCode = isErrorLessSevereThan(highestErrorLevel, failOnErrorLevel)
-      ? SUCCESS
-      : FAILURE__VALIDATION;
+      ? EXIT__SUCCESS
+      : EXIT__VALIDATION_FAILED;
 
     const output = {
       numRulesEnabled: enabledRuleResults.length,
