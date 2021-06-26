@@ -1,6 +1,6 @@
 import { resolveImportedValue } from '../utils';
 
-describe('3rdPartyModules/utils', () => {
+describe('3rd-party-modules/utils', () => {
   describe('resolveImportedValue', () => {
     it('promisifies raw values', () => {
       const resolvedValue = resolveImportedValue(123);

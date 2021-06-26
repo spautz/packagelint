@@ -9,7 +9,7 @@ import {
   isValidErrorLevel,
 } from '..';
 
-describe('errorLevels', () => {
+describe('error-levels/errorLevels', () => {
   describe('values', () => {
     it('exports all values', () => {
       const valuesFromArray = [...ALL_ERROR_LEVEL_VALUES].sort();
