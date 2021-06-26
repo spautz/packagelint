@@ -13,9 +13,14 @@ describe('cli', () => {
       'ERROR_LEVEL__SUGGESTION',
       'ERROR_LEVEL__IGNORE',
       'ERROR_LEVELS_IN_SEVERITY_ORDER',
+      'PACKAGELINT_REPORTER_EXPORTS_KEY',
+      'PACKAGELINT_RULE_EXPORTS_KEY',
       'isErrorLessSevereThan',
       'isErrorMoreSevereThan',
       'isValidErrorLevel',
+      // 3rd Party modules
+      'checkPackagelintExports',
+      'resolveImportedValue',
       // ErrorLevelCounts
       'getHighestErrorLevel',
       'defaultErrorLevelCounts',
@@ -25,6 +30,8 @@ describe('cli', () => {
       'PackagelintException_Reporter',
       'PackagelintException_RuleDefinition',
       'PackagelintException_Internal',
+      // Misc helpers
+      'isFunction',
     ];
 
     expect(allExportNames.sort()).toEqual(expectedExports.sort());

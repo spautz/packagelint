@@ -1,4 +1,8 @@
-import { PackagelintReporterConstructor, PackagelintRuleDefinition } from '@packagelint/types';
+import {
+  PackagelintReporterConstructor,
+  PackagelintRuleDefinition,
+  checkPackagelintExports,
+} from '@packagelint/types';
 
 import { InternalDebugReporter } from './reporters';
 import {
@@ -20,6 +24,7 @@ const packagelintRules: Record<string, PackagelintRuleDefinition<any>> = {
 };
 
 // Reporters and rules must each be found under the appropriate keys
+checkPackagelintExports({ packagelintReporters, packagelintRules });
 export { packagelintReporters, packagelintRules };
 
 // In addition to the main exports above, all the internal pieces are made available

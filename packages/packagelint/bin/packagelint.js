@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 /* eslint-env node */
-'use strict';
 
 require('v8-compile-cache');
 

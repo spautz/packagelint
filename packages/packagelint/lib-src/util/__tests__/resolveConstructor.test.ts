@@ -1,6 +1,6 @@
-import { constructClassOrFunction, resolveImportedValue } from '../resolvers';
+import { constructClassOrFunction } from '..';
 
-describe('util/resolvers', () => {
+describe('resolveConstructor', () => {
   describe('constructClassOrFunction', () => {
     it('instantiates simple classes', () => {
       const fnInsideConstructor = jest.fn();
@@ -134,74 +134,6 @@ describe('util/resolvers', () => {
       expect(fnInsideConstructor).toBeCalledWith('test', 123);
       expect(instance.value1).toBe('test');
       expect(instance.value2).toBe(123);
-    });
-  });
-
-  describe('resolveImportedValue', () => {
-    it('promisifies raw values', () => {
-      const resolvedValue = resolveImportedValue(123);
-
-      expect(resolvedValue).toBeInstanceOf(Promise);
-      expect(resolvedValue).resolves.toEqual(123);
-    });
-
-    it('handles and promisifies functions', () => {
-      const resolvedValue = resolveImportedValue(() => 123);
-
-      expect(resolvedValue).toBeInstanceOf(Promise);
-      expect(resolvedValue).resolves.toEqual(123);
-    });
-
-    it('handles existing promises', () => {
-      const resolvedValue = resolveImportedValue(Promise.resolve(123));
-
-      expect(resolvedValue).toBeInstanceOf(Promise);
-      expect(resolvedValue).resolves.toEqual(123);
-    });
-
-    it('handles functions that return promises', () => {
-      const resolvedValue = resolveImportedValue(() => Promise.resolve(123));
-
-      expect(resolvedValue).toBeInstanceOf(Promise);
-      expect(resolvedValue).resolves.toEqual(123);
-    });
-
-    it('does not alter functions that return functions', () => {
-      const myFn = jest.fn();
-      const resolvedValue = resolveImportedValue(() => myFn);
-
-      expect(resolvedValue).toBeInstanceOf(Promise);
-      expect(resolvedValue).resolves.toEqual(myFn);
-      expect(myFn).not.toBeCalled();
-    });
-
-    it('does not alter promises that return functions', () => {
-      const myFn = jest.fn();
-      const resolvedValue = resolveImportedValue(Promise.resolve(myFn));
-
-      expect(resolvedValue).toBeInstanceOf(Promise);
-      expect(resolvedValue).resolves.toEqual(myFn);
-      expect(myFn).not.toBeCalled();
-    });
-
-    it('rejects when functions throw', () => {
-      const badModule = () => {
-        throw new Error('Oh no!');
-      };
-      const resolvedValue = resolveImportedValue(badModule);
-
-      expect.assertions(2);
-      expect(resolvedValue).toBeInstanceOf(Promise);
-      return expect(resolvedValue).rejects.toThrowError('Oh no!');
-    });
-
-    it('rejects when promises are rejected', () => {
-      const badModule = Promise.reject('Oh no!');
-      const resolvedValue = resolveImportedValue(badModule);
-
-      expect.assertions(2);
-      expect(resolvedValue).toBeInstanceOf(Promise);
-      return expect(resolvedValue).rejects.toEqual('Oh no!');
     });
   });
 });

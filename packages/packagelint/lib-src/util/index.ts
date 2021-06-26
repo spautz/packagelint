@@ -5,7 +5,7 @@ import {
   PackagelintValidationResult,
 } from '@packagelint/types';
 
-export * from './resolvers';
+export * from './resolveConstructor';
 
 export function isRuleDefinition(ruleInfo: unknown): ruleInfo is PackagelintRuleDefinition {
   // @TODO: Proper validation

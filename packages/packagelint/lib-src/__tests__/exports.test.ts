@@ -18,7 +18,6 @@ describe('cli', () => {
       'resolveReporter',
       'isFunction',
       'constructClassOrFunction',
-      'resolveImportedValue',
       // Constants and utils
       'defaultUserConfig',
       'countErrorTypes',

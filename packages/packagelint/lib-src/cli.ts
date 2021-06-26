@@ -6,6 +6,7 @@ import {
   PackagelintException_UserConfig,
   PackagelintOutput,
   PackagelintUserConfig,
+  resolveImportedValue,
 } from '@packagelint/types';
 
 import {
@@ -18,7 +19,6 @@ import {
   PackagelintExitCode,
   findPackagelintConfigFile,
   prepareConfig,
-  resolveImportedValue,
   validatePreparedConfig,
 } from './api';
 

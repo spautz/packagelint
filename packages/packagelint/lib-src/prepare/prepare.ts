@@ -3,6 +3,7 @@ import {
   PackagelintPreparedConfig,
   PackagelintRulePreparerInstance,
   PackagelintUserConfig,
+  isFunction,
 } from '@packagelint/types';
 
 import {
@@ -13,7 +14,6 @@ import {
 import { defaultUserConfig } from '../defaultUserConfig';
 import { DefaultRulePreparer } from './DefaultRulePreparer';
 import { DefaultRuleValidator } from '../validate';
-import { isFunction } from '../util';
 
 /**
  * Expands, flattens, and resolves a User Config into a flat list of validate rules
