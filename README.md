@@ -7,42 +7,52 @@ Packagelint is a linter for the files that live _around_ your code. It's meant t
 like ESLint.
 
 Packagelint runs a series of validation rules -- defined in `.packagelint.js` -- against your project directory.
-It's most useful when you have a group of projects that should all follow common standards, like having a `.npmrc`
-file, certain `.npmrc` settings, particular config values for ESLint or Jest, or a certain version of React.
+It's most useful when you have a group of projects that should all follow common standards.
 
-## At a Glance
+Some things you can do with it _(once published)_
 
-- `.packagelint.js` sets options and errorLevels for the rules you want to run.
-- You can create multiple copies of a rule by customizing its name. For example: the `@packagelint/core:nvmrc` rule can
-  be configured once to require a `.nvmrc` file with NodeJS >= 10, at errorLevel "error", then again with NodeJS >= 14
-  at errorLevel "suggestion".
-- Reporters and exit code conditions may be customized to be strict or lenient.
+- Enforce `.nvmrc` and a specific version of NodeJS
+- Require specific NPM registry settings (e.g. to prevent [Dependency Confusion](https://medium.com/@alex.birsan/dependency-confusion-4a5d60fec610))
+- Suggest particular config values for ESLint, Jest, or other tools
+- Require a minimum version of React, or some other dependency
 
-## How it works
-
-Under the hood, it's like a hybrid between ESLint and Jest: rules are configured as if they're for a linter, but
-they're evaluated and reported as if they're automated tests.
-
-## NOT YET PUBLISHED
+## STILL IN DEVELOPMENT
 
 This tool is not yet ready for public use. Version `0.1.0` will be the first public release. Full docs will be available
 after `0.2.0`.
 
+## At a Glance
+
+- `.packagelint.js` sets options and errorLevels for the rules you want to run
+- You can configure multiple copies of a rule. For example, the `nvmrc` rule can be run once to require a `.nvmrc`
+  file with NodeJS `>=12`, at errorLevel "error"; and again with NodeJS `^16` at errorLevel "suggestion"
+- Reporters and exit code conditions may be customized to be strict or lenient
+
+It's like a hybrid between ESLint and Jest: rules are configured as if they're for a linter, but they're evaluated
+and reported as if they're automated tests.
+
 ## Packages
-
-#### [@packagelint/core](./packages/core/)
-
-[![npm version](https://img.shields.io/npm/v/@packagelint/core.svg)](https://www.npmjs.com/package/@packagelint/core)
-[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/core)](https://david-dm.org/spautz/packagelint?path=packages/core)
-
-A collection of validation checks, covering various standards and tools.
 
 #### [@packagelint/packagelint](./packages/packagelint/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/packagelint.svg)](https://www.npmjs.com/package/@packagelint/packagelint)
 [![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/packagelint)](https://david-dm.org/spautz/packagelint?path=packages/packagelint)
 
-The `packagelint` command itself, available as a CLI tool or as an importable API.
+The `packagelint` runtime, available as a CLI tool or as an importable API
+
+#### [@packagelint/core](./packages/core/)
+
+[![npm version](https://img.shields.io/npm/v/@packagelint/core.svg)](https://www.npmjs.com/package/@packagelint/core)
+[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/core)](https://david-dm.org/spautz/packagelint?path=packages/core)
+
+A collection of configurable rules, covering various standards and tools
+
+#### [@packagelint/presets](./packages/presets/)
+
+[![npm version](https://img.shields.io/npm/v/@packagelint/presets.svg)](https://www.npmjs.com/package/@packagelint/presets)
+[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/presets)](https://david-dm.org/spautz/packagelint?path=packages/presets)
+
+A collection of validation presets: ready-to-use rulesets for common scenarios
 
 #### [@packagelint/packagelint-cli](./packages/packagelint-cli/)
 
@@ -51,19 +61,12 @@ The `packagelint` command itself, available as a CLI tool or as an importable AP
 
 Run your local Packagelint via a global command
 
-#### [@packagelint/presets](./packages/presets/)
-
-[![npm version](https://img.shields.io/npm/v/@packagelint/presets.svg)](https://www.npmjs.com/package/@packagelint/presets)
-[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/presets)](https://david-dm.org/spautz/packagelint?path=packages/presets)
-
-A collection of validation presets: ready-to-use rulesets for common scenarios.
-
 #### [@packagelint/types](./packages/types/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/types.svg)](https://www.npmjs.com/package/@packagelint/types)
 [![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/types)](https://david-dm.org/spautz/packagelint?path=packages/types)
 
-Types, utilities, and validators for Packagelint internals.
+Types, utilities, and validators for Packagelint internals
 
 ## Documentation (incomplete)
 
