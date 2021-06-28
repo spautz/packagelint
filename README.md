@@ -33,42 +33,42 @@ and reported as if they're automated tests.
 
 ## Packages
 
-#### [@packagelint/packagelint](./packages/packagelint/)
+### [@packagelint/packagelint](./packages/packagelint/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/packagelint.svg)](https://www.npmjs.com/package/@packagelint/packagelint)
 [![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/packagelint)](https://david-dm.org/spautz/packagelint?path=packages/packagelint)
 
 The `packagelint` runtime, available as a CLI tool or as an importable API
 
-#### [@packagelint/core](./packages/core/)
+### [@packagelint/core](./packages/core/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/core.svg)](https://www.npmjs.com/package/@packagelint/core)
 [![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/core)](https://david-dm.org/spautz/packagelint?path=packages/core)
 
 A collection of configurable rules, covering various standards and tools
 
-#### [@packagelint/presets](./packages/presets/)
+### [@packagelint/presets](./packages/presets/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/presets.svg)](https://www.npmjs.com/package/@packagelint/presets)
 [![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/presets)](https://david-dm.org/spautz/packagelint?path=packages/presets)
 
 A collection of validation presets: ready-to-use rulesets for common scenarios
 
-#### [@packagelint/packagelint-cli](./packages/packagelint-cli/)
+### [@packagelint/packagelint-cli](./packages/packagelint-cli/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/packagelint-cli.svg)](https://www.npmjs.com/package/@packagelint/packagelint-cli)
 [![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/packagelint-cli)](https://david-dm.org/spautz/packagelint?path=packages/packagelint-cli)
 
 Run your local Packagelint via a global command
 
-#### [@packagelint/types](./packages/types/)
+### [@packagelint/types](./packages/types/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/types.svg)](https://www.npmjs.com/package/@packagelint/types)
 [![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/types)](https://david-dm.org/spautz/packagelint?path=packages/types)
 
 Types, utilities, and validators for Packagelint internals
 
-## Documentation (incomplete)
+## Documentation _(pending/incomplete)_
 
-- [Overview](./docs/README.md)
-- [Config Typings](docs/configs-and-typings.md)
+- [Overview](./docs/index.md)
+- [Typings](./packages/types/docs/index.md)

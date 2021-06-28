@@ -1,4 +1,4 @@
-# Packagelint: Overview
+# Packagelint
 
 Packagelint is a linter for the files that live _around_ your code. It's meant to complement traditional code linters
 like ESLint.
@@ -20,6 +20,9 @@ Some things you can do with it _(once published)_
   file with NodeJS `>=12`, at errorLevel "error"; and again with NodeJS `^16` at errorLevel "suggestion"
 - Reporters and exit code conditions may be customized to be strict or lenient
 
+It's like a hybrid between ESLint and Jest: rules are configured as if they're for a linter, but they're evaluated
+and reported as if they're automated tests.
+
 ## How it works
 
 Under the hood, it's like a hybrid between ESLint and Jest: rules are configured as if they're for a linter, but
@@ -33,18 +36,3 @@ its rules and in its internal implementation.
   base rule for validating `.nvmrc` can become multiple rules with different errorLevels and their own configs.
 - Rules and rulesets are scoped by package: `@packagelint/core:nvmrc` indicates a rule named `nvmrc` which is exported
   from the `@packagelint/core` npm package.
-
-## More Docs
-
-(Docs in progress)
-
-To do:
-
-- Rule Entry = string/array/object, which expand to one of:
-  - RuleCheck (RuleTest?) = the actual thing that runs
-  - Ruleset (RuleGroup?) = a group of rules (fn of options?)
-  - RuleCombo = boolean logic for combining, modifying, or reinterprets results
-    @TODO: {
-    ruleComboName: '@packagelint/core:andOperator'
-    rules: Array<RuleEntry> or Record<string, RuleEntry>
-    }
