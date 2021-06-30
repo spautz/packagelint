@@ -28,7 +28,7 @@ async function prepareConfig(
     ...defaultUserConfig,
     ...actualProjectConfig,
   };
-  const { RulePreparer, RuleValidator } = finalUserConfig;
+  const { _RulePreparer, _RuleValidator } = finalUserConfig;
 
   const reporters = await prepareReporters(finalUserConfig);
 
@@ -38,8 +38,8 @@ async function prepareConfig(
 
   // @TODO: Verbose option
 
-  const rulePreparerInstance = constructClassOrFunction(RulePreparer || DefaultRulePreparer);
-  const ruleValidatorInstance = constructClassOrFunction(RuleValidator || DefaultRuleValidator);
+  const rulePreparerInstance = constructClassOrFunction(_RulePreparer || DefaultRulePreparer);
+  const ruleValidatorInstance = constructClassOrFunction(_RuleValidator || DefaultRuleValidator);
 
   const preparedConfig = await prepareConfigRules(finalUserConfig, rulePreparerInstance);
   preparedConfig.reporters = reporters;

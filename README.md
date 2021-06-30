@@ -72,3 +72,24 @@ Types, utilities, and validators for Packagelint internals
 
 - [Overview](./docs/index.md)
 - [Typings](./packages/types/docs/index.md)
+
+## Roadmap and Status
+
+- [x] Proof of concept
+- [x] Project scaffolding and CLI setup
+- [x] Core functionality: Rule preparation
+- [x] Core functionality: Validation
+- [x] Core functionality: Reporting
+- [ ] Initial rules
+- [ ] Initial rulesets and combos
+- [ ] Docs in repo (in progress)
+- [ ] Docs online
+- [ ] Test coverage
+- [ ] Examples
+- [x] Rule entry shorthands
+- [ ] Full RuleCheck support (in progress)
+- [ ] Full RuleSet support
+- [ ] Full RuleCombo support
+- [ ] Support for Jest reporters
+- [x] Configs and patching
+- [ ] Rule/reporter import aliases

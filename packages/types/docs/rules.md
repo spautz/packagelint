@@ -1,29 +1,6 @@
-# Packagelint Types: Overview
+# Packagelint Types: Rules
 
-Types, utilities, and validators for Packagelint internals
-
-This is not just a types package: it provides constants, enums, and validation utils for writing your own Packagelint
-rules, reporters, and other internals.
-
-This overview gives a brief synopsis of the main entities used in Packagelint.
-See the neighboring files for more information on each.
-
-## Configs
-
-[Main doc: Configs](./configs.md)
-
-The `.packagelint.js` file in the root of your package supplies the **UserConfig**. This lists the rules and rulesets that
-will be validated against, along with any options or overrides for them, and any global options for Packagelint itself.
-
-The UserConfig is the entry point: no rules are run unless they're enabled here.
-
-The rules and rulesets in the UserConfig are expanded, flattened, and resolved, becoming a list of ready-to-run
-validations: the **PreparedConfig**. Because a rule's configuration can be overridden later, no rules are evaluated
-until after all have been prepared.
-
-## Rules
-
-[Main doc: Rules](./rules.md)
+## Overview
 
 "Rule" is the generic, abstract term for something that will eventually become one or more validation checks.
 
@@ -58,21 +35,3 @@ reinterpret their results after validation. RuleCombos are generally used to app
 allowing success if either of two rules passes, or requiring a particular rule to fail, for example.
 
 Similarly to RuleCheckDefinitions and RuleSetDefinitions, each RuleCombo is implemented via a **RuleComboDefinition**.
-
-## Reporters
-
-[Main doc: Reporters](./reporters.md)
-
-Like unit test reporters, a Packagelint **Reporter** can output results to the console or to a file.
-
-Packagelint supports Jest reporters out of the box, as well as Packagelint-specific reporters.
-
-## Output
-
-[Main doc: Output](./output.md)
-
-After validation has finished, the final **Output** object summarizes the ultimate success or failure,
-provides all of the individual results, and specifies the UserConfig and PreparedConfig that led to them.
-
-This is used to determine the exit code -- success or failure -- when running via CLI.
-It's also returned directly when Packagelint is run directly via API.
