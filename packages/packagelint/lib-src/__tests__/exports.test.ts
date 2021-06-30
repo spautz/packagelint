@@ -6,6 +6,7 @@ describe('cli', () => {
     const expectedExports = [
       // High-level API
       'findPackagelintConfigFile',
+      'runPackagelint',
       // Preparation
       'prepareConfig',
       'prepareConfigRules',
