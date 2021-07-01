@@ -1,6 +1,6 @@
 import { getHighestErrorLevel } from '..';
 
-describe('errorLevelCounts', () => {
+describe('error-levels/errorLevelCounts', () => {
   describe('severity level totals', () => {
     it('detects most severe level from a set of counts', () => {
       expect(

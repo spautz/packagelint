@@ -16,7 +16,7 @@ import { DefaultRuleValidator } from '../DefaultRuleValidator';
 import { EXIT__VALIDATION_FAILED } from '../../exitCodes';
 
 describe('DefaultRuleValidator basics', () => {
-  let ruleValidator: PackagelintRuleValidatorInstance;
+  let _RuleValidator: PackagelintRuleValidatorInstance;
   let samplePreparedConfig: PackagelintPreparedConfig;
   let samplePassingRuleValidationFn: PackagelintValidationFn;
   let sampleFailingRuleValidationFn: PackagelintValidationFn;
@@ -28,13 +28,13 @@ describe('DefaultRuleValidator basics', () => {
   let sampleDisabledRule: PackagelintPreparedRule;
 
   beforeEach(() => {
-    ruleValidator = new DefaultRuleValidator();
+    _RuleValidator = new DefaultRuleValidator();
     samplePreparedConfig = {
       failOnErrorLevel: 'error',
       rules: [],
       reporters: [],
       rulePreparerInstance: {} as PackagelintRulePreparerInstance,
-      ruleValidatorInstance: ruleValidator,
+      ruleValidatorInstance: _RuleValidator,
     };
 
     samplePassingRuleValidationFn = jest.fn(alwaysPassRuleValidationFn);
@@ -78,12 +78,12 @@ describe('DefaultRuleValidator basics', () => {
   });
 
   it('is a well-formed class', () => {
-    expect(ruleValidator).toBeInstanceOf(DefaultRuleValidator);
+    expect(_RuleValidator).toBeInstanceOf(DefaultRuleValidator);
   });
 
   it('requires a preparedConfig', () => {
     // @ts-expect-error
-    const result = ruleValidator.validatePreparedConfig();
+    const result = _RuleValidator.validatePreparedConfig();
 
     expect(result).toBeInstanceOf(Promise);
     return expect(result).rejects.toThrowError(
@@ -116,7 +116,7 @@ describe('DefaultRuleValidator basics', () => {
       const fnNameWithoutUnderscore = fnName.replace('_', '');
       expect(() => {
         // @ts-expect-error
-        ruleValidator[fnName]();
+        _RuleValidator[fnName]();
       }).toThrowError(
         `Packagelint internal error: Cannot ${fnNameWithoutUnderscore} when no preparedConfig is set`,
       );
@@ -126,7 +126,7 @@ describe('DefaultRuleValidator basics', () => {
   fnsThatRejectPromise.forEach((fnName) => {
     it(`${fnName} rejects without a preparedConfig`, () => {
       // @ts-expect-error
-      const result = ruleValidator[fnName]();
+      const result = _RuleValidator[fnName]();
 
       expect(result).toBeInstanceOf(Promise);
       return expect(result).rejects.toBeInstanceOf(PackagelintException_Internal);
@@ -134,7 +134,7 @@ describe('DefaultRuleValidator basics', () => {
   });
 
   it('accepts a valid preparedConfig', () => {
-    const result = ruleValidator.validatePreparedConfig(samplePreparedConfig);
+    const result = _RuleValidator.validatePreparedConfig(samplePreparedConfig);
 
     expect(result).toBeInstanceOf(Promise);
     return expect(result).resolves.toEqual({
@@ -158,7 +158,7 @@ describe('DefaultRuleValidator basics', () => {
   });
 
   it('runs a passing rule', async () => {
-    const result = await ruleValidator.validatePreparedConfig({
+    const result = await _RuleValidator.validatePreparedConfig({
       ...samplePreparedConfig,
       rules: [samplePassingRule],
     });
@@ -187,7 +187,7 @@ describe('DefaultRuleValidator basics', () => {
   });
 
   it('runs a failing rule', async () => {
-    const result = await ruleValidator.validatePreparedConfig({
+    const result = await _RuleValidator.validatePreparedConfig({
       ...samplePreparedConfig,
       rules: [sampleFailingRule],
     });
@@ -222,7 +222,7 @@ describe('DefaultRuleValidator basics', () => {
   });
 
   it('runs a rule that throws', async () => {
-    const result = await ruleValidator.validatePreparedConfig({
+    const result = await _RuleValidator.validatePreparedConfig({
       ...samplePreparedConfig,
       rules: [sampleThrowingRule],
     });
@@ -257,7 +257,7 @@ describe('DefaultRuleValidator basics', () => {
   });
 
   it('does not run disabled rules', async () => {
-    const result = await ruleValidator.validatePreparedConfig({
+    const result = await _RuleValidator.validatePreparedConfig({
       ...samplePreparedConfig,
       rules: [sampleDisabledRule],
     });
@@ -287,7 +287,7 @@ describe('DefaultRuleValidator basics', () => {
   // Tests below this point cover full scenarios.
 
   it('runs multiple rules', async () => {
-    const result = await ruleValidator.validatePreparedConfig({
+    const result = await _RuleValidator.validatePreparedConfig({
       ...samplePreparedConfig,
       rules: [sampleDisabledRule, sampleFailingRule, samplePassingRule, sampleThrowingRule],
     });

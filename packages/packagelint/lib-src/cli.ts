@@ -18,8 +18,7 @@ import {
   EXIT__INVALID_RULE,
   PackagelintExitCode,
   findPackagelintConfigFile,
-  prepareConfig,
-  validatePreparedConfig,
+  runPackagelint,
 } from './api';
 
 export interface PackagelintCliArgs {
@@ -55,8 +54,7 @@ async function packagelintCli(
       return [EXIT__INVALID_CONFIG, null];
     }
 
-    const preparedConfig = await prepareConfig(userConfig);
-    const validationOutput = await validatePreparedConfig(preparedConfig);
+    const validationOutput = await runPackagelint(userConfig);
 
     console.warn('RETURN exitCode: ', validationOutput);
     return [validationOutput.exitCode as PackagelintExitCode, validationOutput];

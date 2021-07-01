@@ -9,8 +9,8 @@ const defaultUserConfig: PackagelintUserConfig = {
   reporters: {
     '@packagelint/core:internalDebugReporter': true,
   },
-  RulePreparer: DefaultRulePreparer,
-  RuleValidator: DefaultRuleValidator,
+  _RulePreparer: DefaultRulePreparer,
+  _RuleValidator: DefaultRuleValidator,
 };
 
 export { defaultUserConfig };

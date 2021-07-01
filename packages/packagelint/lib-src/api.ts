@@ -1,4 +1,8 @@
 import findUp from 'find-up';
+import { PackagelintUserConfig } from '@packagelint/types';
+
+import { prepareConfig } from './prepare';
+import { validatePreparedConfig } from './validate';
 
 export * from './prepare';
 export * from './validate';
@@ -15,4 +19,10 @@ async function findPackagelintConfigFile(
   return findUp(configFileName, { cwd: pathToSearchFrom });
 }
 
-export { findPackagelintConfigFile };
+async function runPackagelint(userConfig: PackagelintUserConfig) {
+  const preparedConfig = await prepareConfig(userConfig);
+  const validationOutput = await validatePreparedConfig(preparedConfig);
+  return validationOutput;
+}
+
+export { findPackagelintConfigFile, runPackagelint };
