@@ -23,8 +23,6 @@ until after all have been prepared.
 
 ## Rules
 
-[Main doc: Rules](./rules.md)
-
 "Rule" is the generic, abstract term for something that will eventually become one or more validation checks.
 
 The UserConfig lists the rules to run: each is a **RuleEntry**, which specifies a rule name and some options for it.
@@ -35,6 +33,8 @@ Once that's imported, it'll either be a **RuleCheck**, **RuleSet**, or **RuleCom
 
 ### RuleChecks
 
+[Main doc: RuleChecks](./rule-checks.md)
+
 A RuleCheck is a 'normal' validation: it's what actually runs and checks the package for some condition.
 All RuleEntries eventually becomes one or more RuleChecks.
 
@@ -44,6 +44,8 @@ options -- are combined with the **RuleCheckDefinition** that implements it. Whe
 
 ### RuleSets
 
+[Main doc: RuleSets](./rule-sets.md)
+
 A RuleSet is just a list of further RuleEntries -- much like the one the UserConfig provides. It can be generated
 on-the-fly from the options, if needed, and RuleSets can contain other RuleSets. Similarly to RuleCheckDefinitions,
 each RuleSet is implemented via a **RuleSetDefinition**.
@@ -52,6 +54,8 @@ RuleSets are evaluated before validation begins: they ultimately resolve into Ru
 RuleCheckResult for them.
 
 ### RuleCombos
+
+[Main doc: RuleCombos](./rule-combos.md)
 
 A RuleCombo also lists further RuleEntries, but instead of expanding them before validation, it can combine or
 reinterpret their results after validation. RuleCombos are generally used to apply boolean logic to the results:

@@ -2,8 +2,9 @@
 
 ## Overview
 
-The `.packagelint.js` file in the root of your package supplies the **UserConfig**. This lists the rules and rulesets that
-will be validated against, along with any options or overrides for them, and any global options for Packagelint itself.
+The `.packagelint.js` file in the root of your package supplies the **UserConfig**. This lists the rules and rulesets
+that will be validated against -- each as a **RuleEntry** -- along with any options or overrides for them, and any
+global options for Packagelint itself.
 
 The UserConfig is the entry point: no rules are run unless they're enabled here.
 
@@ -52,6 +53,50 @@ module that provides rules or reporters, for example, you can create an alias so
 If you need to rewrite, replace, or extend the Packagelint internals, you can inject your own implementations via
 `_RulePreparer` and `_RuleValidator`. This is an easier alternative to forking `@packagelint/packagelint` itself.
 This should be exceedingly uncommon: its main use is testing open-source contributions before merge.
+
+## PackagelintRuleEntry
+
+```typescript
+type PackagelintRuleEntry =
+  /** A string: enable the rule, with default options */
+  | PackagelintRuleName
+  /** String & boolean: enable or disable the rule */
+  | [PackagelintRuleName, boolean]
+  /** String & string: enable the rule at the given errorLevel */
+  | [PackagelintRuleName, 'exception' | 'error' | 'warn' | 'suggestion' | 'ignore']
+  /** String & object: enable the rule with the given options */
+  | [PackagelintRuleName, OptionsType]
+  /** Object: a full PackagelintRuleConfig, see below */
+  | PackagelintRuleConfig;
+
+// Each PackagelintRuleEntry is expanded into a PackagelintRuleConfig
+
+type PackagelintRuleConfig = {
+  /** The rule's unique identifier. If this matches an existing Rule then it will apply these settings to that rule.
+   * If it is a new name then `extendRule` must be specified. */
+  name: PackagelintRuleName;
+  /** Whether or not to run the rule during validation */
+  enabled: boolean;
+  /** When making a new rule based off of an existing one, to give it different options or a different errorLevel,
+   *  its implementation and default options will be copied from the base rule name.
+   *  `name` must be a new, unrecognized value to do this. */
+  extendRule?: PackagelintRuleName;
+  /** If the rule fails, the errorLevel that its failure is reported as */
+  errorLevel: 'exception' | 'error' | 'warn' | 'suggestion' | 'ignore';
+  /** Rule-specific options */
+  options: OptionsType;
+  /** When making a new copy of a rule via `extendRule`, this controls whether the base rule's current options are
+   *  used, or whether its original defaultOptions are used. */
+  resetOptions?: boolean;
+};
+```
+
+### How to use it
+
+Whether you're configuring Packagelint for your own project, or defining a RuleSet or RuleCombo for others,
+RuleEntries are the main building block for what you'd like to actually run.
+
+All rules are ultimately represented by the RuleConfig -- the different RuleEntry options are just syntactic sugar.
 
 ## PackagelintPreparedConfig
 
