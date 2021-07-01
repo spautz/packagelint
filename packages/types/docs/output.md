@@ -11,7 +11,7 @@ It's also returned directly when Packagelint is run directly via API.
 ## PackagelintOutput
 
 ```typescript
-export interface PackagelintOutput {
+interface PackagelintOutput {
   // Values from earlier steps (see ./configs.md)
   userConfig: PackagelintUserConfig;
   preparedConfig: PackagelintPreparedConfig;

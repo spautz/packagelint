@@ -19,7 +19,7 @@ until after all have been prepared.
  * An unprocessed config, usually from a .packagelintrc file (after merging with defaults). This drives everything
  * about Packagelint: nothing will be loaded or evaluated unless it's specified here, either directly or indirectly.
  */
-export interface PackagelintUserConfig {
+interface PackagelintUserConfig {
   // Common options
   /** Controls the exit code of the `packagelint` cli: it will exit 1 if any rule fails at or above the specified level */
   failOnErrorLevel: 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore';
@@ -54,7 +54,7 @@ If you need to rewrite, replace, or extend the Packagelint internals, you can in
 `_RulePreparer` and `_RuleValidator`. This is an easier alternative to forking `@packagelint/packagelint` itself.
 This should be exceedingly uncommon: its main use is testing open-source contributions before merge.
 
-## PackagelintRuleEntry
+## PackagelintRuleEntry, PackagelintRuleConfig
 
 ```typescript
 type PackagelintRuleEntry =
@@ -63,7 +63,7 @@ type PackagelintRuleEntry =
   /** String & boolean: enable or disable the rule */
   | [PackagelintRuleName, boolean]
   /** String & string: enable the rule at the given errorLevel */
-  | [PackagelintRuleName, 'exception' | 'error' | 'warn' | 'suggestion' | 'ignore']
+  | [PackagelintRuleName, 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore']
   /** String & object: enable the rule with the given options */
   | [PackagelintRuleName, OptionsType]
   /** Object: a full PackagelintRuleConfig, see below */
@@ -71,7 +71,7 @@ type PackagelintRuleEntry =
 
 // Each PackagelintRuleEntry is expanded into a PackagelintRuleConfig
 
-type PackagelintRuleConfig = {
+interface PackagelintRuleConfig {
   /** The rule's unique identifier. If this matches an existing Rule then it will apply these settings to that rule.
    * If it is a new name then `extendRule` must be specified. */
   name: PackagelintRuleName;
@@ -82,13 +82,13 @@ type PackagelintRuleConfig = {
    *  `name` must be a new, unrecognized value to do this. */
   extendRule?: PackagelintRuleName;
   /** If the rule fails, the errorLevel that its failure is reported as */
-  errorLevel: 'exception' | 'error' | 'warn' | 'suggestion' | 'ignore';
+  errorLevel: 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore';
   /** Rule-specific options */
   options: OptionsType;
   /** When making a new copy of a rule via `extendRule`, this controls whether the base rule's current options are
    *  used, or whether its original defaultOptions are used. */
   resetOptions?: boolean;
-};
+}
 ```
 
 ### How to use it
@@ -108,7 +108,7 @@ All rules are ultimately represented by the RuleConfig -- the different RuleEntr
  */
 interface PackagelintPreparedConfig {
   // Values from the UserConfig
-  failOnErrorLevel: 'exception' | 'error' | 'warn' | 'suggestion' | 'ignore';
+  failOnErrorLevel: 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore';
   rulesConfig: PackagelintUserConfig['rules'];
   reportersConfig: PackagelintUserConfig['reporters'];
   aliasesConfig: PackagelintUserConfig['aliases'];
@@ -129,5 +129,36 @@ interface PackagelintPreparedConfig {
 ### How to use it
 
 You don't. This is internal to Packagelint itself.
+
+You will only see this if you're a library author creating your own Packagelint reporter, rules, or internals.
+
+## PackagelintPreparedRule
+
+```typescript
+interface PackagelintPreparedRule {
+  preparedRuleName: PackagelintRuleName;
+  docs: {
+    description: string;
+    [key: string]: string;
+  };
+  enabled: boolean;
+  extendedFrom: PackagelintRuleName | null; // from extendRule
+  fromRuleSet: PackagelintRuleSetName | null;
+  fromRuleCombo: PackagelintRuleSetName | null;
+  defaultErrorLevel: PackagelintErrorLevel;
+  errorLevel: ErrorLevel; // from errorLevel + defaultErrorLevel
+  defaultOptions: OptionsType;
+  options: OptionsType; // from options + defaultOptions, mediated by resetOptions
+  messages: Record<string, string>;
+  doValidation: (
+    options,
+    packagelintContext,
+  ) => PackagelintValidationResult | Promise<PackagelintValidationResult>;
+}
+```
+
+### How to use it
+
+You don't. This too is internal to Packagelint itself.
 
 You will only see this if you're a library author creating your own Packagelint reporter, rules, or internals.
