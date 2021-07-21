@@ -31,6 +31,7 @@ if [ ! $HAS_ENGINES ] || [ ! $HAS_ENGINES_NODE ]; then
   fi
 fi
 
+yarn install --frozen-lockfile
 yarn check --integrity
 
 ###################################################################################################
