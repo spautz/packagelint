@@ -64,7 +64,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
       preparedRuleName,
 
       // Helpers so that rules don't have to implement everything themselves
-      findFileUp: (_fileGlob: string) => {
+      findFileUp: (/* _fileGlob: string */) => {
         throw new Error('Not implemented');
       },
       // Setting errorData and returning errors
@@ -113,7 +113,8 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
         const validationErrorInfo = await preparedRule.doValidation(options, context);
         return this._processRuleResult(preparedRule, validationErrorInfo);
       } catch (e) {
-        return this._processRuleResult(preparedRule, e);
+        const error = e instanceof Error ? e : new Error('Validation error: ' + JSON.stringify(e));
+        return this._processRuleResult(preparedRule, error);
       }
     }
     // null indicates a successful run; undefined indicates no run at all

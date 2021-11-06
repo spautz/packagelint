@@ -19,7 +19,7 @@ async function checkPackagelintExports(
   }
 
   // Resolve the module itself, if needed
-  let resolvedModuleExports = await resolveImportedValue<PackagelintResolved3rdPartyModuleObject>(
+  const resolvedModuleExports = await resolveImportedValue<PackagelintResolved3rdPartyModuleObject>(
     moduleExports,
   );
   if (!resolvedModuleExports || typeof resolvedModuleExports !== 'object') {
@@ -45,7 +45,7 @@ async function checkPackagelintExports(
 }
 
 // This needs to be a standalone function so that it can be used as a type guard
-function isFunction(someValue: unknown): someValue is Function {
+function isFunction(someValue: unknown): someValue is (...args: Array<unknown>) => unknown {
   return typeof someValue === 'function';
 }
 

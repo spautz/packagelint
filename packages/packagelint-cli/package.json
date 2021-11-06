@@ -24,7 +24,7 @@
     "*.md"
   ],
   "engines": {
-    "node": "^12 || >=14"
+    "node": "^12 || ^14 || ^15 || ^16 || ^17"
   },
   "preferGlobal": true,
   "bin": {
@@ -44,7 +44,8 @@
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "format": "prettier --write .",
     "format:verify": "prettier --list-different .",
-    "lint": "tsdx lint . --max-warnings 0",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix --max-warnings 0",
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as "
   },
   "dependencies": {

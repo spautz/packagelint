@@ -57,19 +57,19 @@ describe('error-levels/errorLevels', () => {
     });
 
     it('throws when asked to check bad values', () => {
-      // @ts-expect-error
+      // @ts-expect-error Invalid errorLevel
       expect(() => isErrorMoreSevereThan('hello', ERROR_LEVEL__ERROR)).toThrowError(
         'Invalid errorLevel: "hello"',
       );
-      // @ts-expect-error
+      // @ts-expect-error Invalid errorLevel
       expect(() => isErrorMoreSevereThan(ERROR_LEVEL__ERROR, 'world')).toThrowError(
         'Invalid errorLevel: "world"',
       );
-      // @ts-expect-error
+      // @ts-expect-error Invalid errorLevel
       expect(() => isErrorLessSevereThan('hello', ERROR_LEVEL__ERROR)).toThrowError(
         'Invalid errorLevel: "hello"',
       );
-      // @ts-expect-error
+      // @ts-expect-error Invalid errorLevel
       expect(() => isErrorLessSevereThan(ERROR_LEVEL__ERROR, 'world')).toThrowError(
         'Invalid errorLevel: "world"',
       );

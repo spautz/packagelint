@@ -1,10 +1,28 @@
+/* eslint-env node */
+
 module.exports = {
   root: true,
-  extends: ['eslint:recommended', 'prettier/@typescript-eslint', 'prettier'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: ['eslint:recommended', 'prettier'],
 
-  parserOptions: {
-    ecmaVersion: 2020,
+  rules: {
+    '@typescript-eslint/explicit-module-boundary-types': 'error',
   },
+
+  overrides: [
+    {
+      files: ['**/*.test.*', '**/tests/*.*'],
+      env: {
+        jest: true,
+      },
+    },
+    {
+      // Only add typescript rules for typescript files
+      files: ['**/*.ts', '**/*.tsx'],
+      extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
+    },
+  ],
 
   ignorePatterns: [
     'build/',
@@ -12,6 +30,7 @@ module.exports = {
     'coverage/',
     'coverage-local/',
     'dist/',
+    'legacy-types/',
     'lib-dist/',
     'node_modules/',
   ],

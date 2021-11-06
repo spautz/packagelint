@@ -21,6 +21,7 @@ import {
   runPackagelint,
 } from './api';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PackagelintCliArgs {
   // @TODO
 }
@@ -35,9 +36,9 @@ const DEFAULT_CLI_ARGS: PackagelintCliArgs = {
  * 3. Perform validation
  * 4. Report results
  */
-async function packagelintCli(
-  _argv: Partial<PackagelintCliArgs> = {},
-): Promise<[PackagelintExitCode, PackagelintOutput | null]> {
+async function packagelintCli(/* _argv: Partial<PackagelintCliArgs> = {}, */): Promise<
+  [PackagelintExitCode, PackagelintOutput | null, Error?]
+> {
   // const cliArgs = { ...DEFAULT_CLI_ARGS, ...argv };
 
   try {
@@ -48,7 +49,7 @@ async function packagelintCli(
     }
 
     const userConfig = await resolveImportedValue<PackagelintUserConfig>(
-      require(packagelintConfigFileName),
+      import(packagelintConfigFileName),
     );
     if (!userConfig) {
       return [EXIT__INVALID_CONFIG, null];
@@ -58,7 +59,7 @@ async function packagelintCli(
 
     console.warn('RETURN exitCode: ', validationOutput);
     return [validationOutput.exitCode as PackagelintExitCode, validationOutput];
-  } catch (e) {
+  } catch (e: unknown) {
     let exitCode: PackagelintExitCode = EXIT__UNKNOWN;
     if (e instanceof PackagelintException_UserConfig || e instanceof PackagelintException_Import) {
       exitCode = EXIT__INVALID_CONFIG;
@@ -70,7 +71,9 @@ async function packagelintCli(
       exitCode = EXIT__INTERNAL_ERROR;
     }
 
-    return [exitCode, e];
+    const error = e instanceof Error ? e : new Error('Unknown error: ' + JSON.stringify(e));
+
+    return [exitCode, null, error];
   }
 }
 

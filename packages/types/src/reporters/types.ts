@@ -14,6 +14,7 @@ export type PackagelintReporterEventName =
   | 'onRuleResult'
   | 'getLastError';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PackagelintAnyReporterOptions = any;
 export type PackagelintUnknownReporterOptions = unknown;
 
@@ -63,7 +64,7 @@ export interface PackagelintReporterInstance {
  * A PackagelintReporterInstance may be created from classes
  */
 export interface PackagelintReporterClassConstructor<
-  OptionsType extends PackagelintAnyRuleOptions = any,
+  OptionsType extends PackagelintAnyRuleOptions = PackagelintAnyRuleOptions,
 > {
   new (options: OptionsType): PackagelintReporterInstance;
 }
@@ -71,11 +72,13 @@ export interface PackagelintReporterClassConstructor<
  * A PackagelintReporterInstance may be created from functions
  */
 export type PackagelintReporterConstructorFunction<
-  OptionsType extends PackagelintAnyRuleOptions = any,
+  OptionsType extends PackagelintAnyRuleOptions = PackagelintAnyRuleOptions,
 > = (options: OptionsType) => PackagelintReporterInstance;
 /**
  * A PackagelintReporterInstance may be created from either classes or functions
  */
-export type PackagelintReporterConstructor<OptionsType extends PackagelintAnyRuleOptions = any> =
+export type PackagelintReporterConstructor<
+  OptionsType extends PackagelintAnyRuleOptions = PackagelintAnyRuleOptions,
+> =
   | PackagelintReporterClassConstructor<OptionsType>
   | PackagelintReporterConstructorFunction<OptionsType>;

@@ -1,5 +1,5 @@
 import findUp from 'find-up';
-import { PackagelintUserConfig } from '@packagelint/types';
+import { PackagelintOutput, PackagelintUserConfig } from '@packagelint/types';
 
 import { prepareConfig } from './prepare';
 import { validatePreparedConfig } from './validate';
@@ -13,13 +13,13 @@ export * from './exitCodes';
 export * from './util';
 
 async function findPackagelintConfigFile(
-  configFileName: string = '.packagelint.js',
+  configFileName = '.packagelint.js',
   pathToSearchFrom: string = process.cwd(),
 ): Promise<string | undefined> {
   return findUp(configFileName, { cwd: pathToSearchFrom });
 }
 
-async function runPackagelint(userConfig: PackagelintUserConfig) {
+async function runPackagelint(userConfig: PackagelintUserConfig): Promise<PackagelintOutput> {
   const preparedConfig = await prepareConfig(userConfig);
   const validationOutput = await validatePreparedConfig(preparedConfig);
   return validationOutput;

@@ -34,8 +34,9 @@ describe('validate/validatePreparedConfig', () => {
         reporters: [],
         rulePreparerInstance: {} as PackagelintRulePreparerInstance,
         ruleValidatorInstance: {
+          // @ts-expect-error Invalid validatePreparedConfig function
           validatePreparedConfig: 'absent',
-        } as any,
+        },
       });
     }).toThrowError('Packagelint internal error: Invalid ruleValidatorInstance in preparedConfig');
   });

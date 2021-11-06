@@ -79,7 +79,7 @@ describe('util/countErrorTypes', () => {
       null,
       {
         preparedRuleName: 'test:example2',
-        // @ts-expect-error
+        // @ts-expect-error Invalid errorLevel
         errorLevel: 'better_suggestion',
         errorName: 'someErrorType',
         errorData: {},

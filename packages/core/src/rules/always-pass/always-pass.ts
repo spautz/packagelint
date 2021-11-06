@@ -1,6 +1,6 @@
-import { PackagelintRuleDefinition, PackagelintValidationContext } from '@packagelint/types';
+import { PackagelintRuleDefinition } from '@packagelint/types';
 
-export type AlwaysPassRuleOptions = {};
+export type AlwaysPassRuleOptions = Record<never, never>;
 
 const alwaysPassRuleDefinition: PackagelintRuleDefinition<AlwaysPassRuleOptions> = {
   name: 'always-pass',
@@ -16,10 +16,7 @@ const alwaysPassRuleDefinition: PackagelintRuleDefinition<AlwaysPassRuleOptions>
   doValidation: alwaysPassRuleValidationFn,
 };
 
-function alwaysPassRuleValidationFn(
-  _options: AlwaysPassRuleOptions,
-  _packageContext: PackagelintValidationContext,
-) {
+function alwaysPassRuleValidationFn(/* _options: AlwaysPassRuleOptions, _packageContext: PackagelintValidationContext */): null {
   return null;
 }
 

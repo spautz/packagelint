@@ -4,6 +4,7 @@ import { PackagelintPreparedRule } from '../internals';
 
 // Return value (and possible error) from a single validation function
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PackagelintAnyErrorData = Record<string, any>;
 export type PackagelintUnknownErrorData = Record<string, unknown>;
 

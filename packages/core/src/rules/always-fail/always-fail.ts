@@ -1,6 +1,10 @@
-import { PackagelintRuleDefinition, PackagelintValidationContext } from '@packagelint/types';
+import {
+  PackagelintRuleDefinition,
+  PackagelintValidationContext,
+  PackagelintValidationFnReturn,
+} from '@packagelint/types';
 
-export type AlwaysFailRuleOptions = {};
+export type AlwaysFailRuleOptions = Record<never, never>;
 
 const alwaysFailRuleDefinition: PackagelintRuleDefinition<AlwaysFailRuleOptions> = {
   name: 'always-fail',
@@ -19,7 +23,7 @@ const alwaysFailRuleDefinition: PackagelintRuleDefinition<AlwaysFailRuleOptions>
 function alwaysFailRuleValidationFn(
   _options: AlwaysFailRuleOptions,
   packageContext: PackagelintValidationContext,
-) {
+): PackagelintValidationFnReturn {
   return packageContext.createErrorToReturn('alwaysFail');
 }
 

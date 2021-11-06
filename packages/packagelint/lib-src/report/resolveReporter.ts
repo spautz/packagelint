@@ -22,7 +22,7 @@ async function resolveReporter(
   }
 
   const packageExports = await resolveImportedValue<PackagelintResolved3rdPartyModuleObject>(
-    require(packageName) as PackagelintResolved3rdPartyModule,
+    import(packageName) as PackagelintResolved3rdPartyModule,
   );
   const packagelintReporters = await resolveImportedValue<
     PackagelintExportedReportersObject | undefined

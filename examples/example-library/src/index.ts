@@ -1,4 +1,4 @@
-const exampleLibraryFn = () => {
+const exampleLibraryFn = (): void => {
   console.log('exampleLibraryFn!');
 };
 

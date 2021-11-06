@@ -28,7 +28,7 @@
     "*.md"
   ],
   "engines": {
-    "node": "^12 || >=14"
+    "node": "^12 || ^14 || ^15 || ^16 || ^17"
   },
   "bin": {
     "packagelint": "./bin/packagelint.js"
@@ -58,14 +58,15 @@
     "build:watch": "tsdx watch",
     "format": "prettier --write .",
     "format:verify": "prettier --list-different .",
-    "lint": "tsdx lint . --max-warnings 0",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix --max-warnings 0",
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as ",
     "test": "yon run test:coverage",
     "test:clean": "rimraf ./coverage-local",
-    "test:coverage": "yon run test:clean && tsdx test --coverage",
-    "test:nowatch": "yon run test:clean && tsdx test",
-    "test:watch": "yon run test:clean && tsdx test --watch",
-    "test:watchcoverage": "yon run test:clean && tsdx test --watchAll --coverage",
+    "test:coverage": "yon run test:clean && jest --coverage",
+    "test:nowatch": "yon run test:clean && jest --coverage=false --bail",
+    "test:watch": "yon run test:clean && jest --coverage=false --watch",
+    "test:watchcoverage": "yon run test:clean && jest --coverage --watchAll",
     "types": "tsc --p tsconfig.json --noEmit"
   },
   "dependencies": {
@@ -74,10 +75,10 @@
     "find-up": "^5.0.0",
     "semver": "^7.3.5",
     "v8-compile-cache": "^2.3.0",
-    "yargs": "^17.0.1"
+    "yargs": "^17.2.1"
   },
   "devDependencies": {
-    "@types/semver": "7.3.6"
+    "@types/semver": "7.3.9"
   },
   "typesVersions": {
     "<4": {
