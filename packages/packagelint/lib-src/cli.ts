@@ -37,7 +37,7 @@ const DEFAULT_CLI_ARGS: PackagelintCliArgs = {
  */
 async function packagelintCli(
   _argv: Partial<PackagelintCliArgs> = {},
-): Promise<[PackagelintExitCode, PackagelintOutput | null]> {
+): Promise<[PackagelintExitCode, PackagelintOutput | null, Error?]> {
   // const cliArgs = { ...DEFAULT_CLI_ARGS, ...argv };
 
   try {
@@ -58,7 +58,7 @@ async function packagelintCli(
 
     console.warn('RETURN exitCode: ', validationOutput);
     return [validationOutput.exitCode as PackagelintExitCode, validationOutput];
-  } catch (e) {
+  } catch (e: unknown) {
     let exitCode: PackagelintExitCode = EXIT__UNKNOWN;
     if (e instanceof PackagelintException_UserConfig || e instanceof PackagelintException_Import) {
       exitCode = EXIT__INVALID_CONFIG;
@@ -70,7 +70,9 @@ async function packagelintCli(
       exitCode = EXIT__INTERNAL_ERROR;
     }
 
-    return [exitCode, e];
+    const error = e instanceof Error ? e : new Error('Unknown error: ' + JSON.stringify(e));
+
+    return [exitCode, null, error];
   }
 }
 
