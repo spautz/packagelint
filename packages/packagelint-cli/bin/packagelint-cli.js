@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* eslint-env node */
 
-const findUp = require('find-up');
+const { findUp } = require('find-up');
 const path = require('path');
 
 (async () => {

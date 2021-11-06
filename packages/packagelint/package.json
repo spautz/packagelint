@@ -28,7 +28,7 @@
     "*.md"
   ],
   "engines": {
-    "node": "^12 || >=14"
+    "node": "^12 || ^14 || ^15 || ^16 || ^17"
   },
   "bin": {
     "packagelint": "./bin/packagelint.js"
@@ -71,13 +71,13 @@
   "dependencies": {
     "@packagelint/core": "^0.0.5",
     "@packagelint/types": "^0.0.5",
-    "find-up": "^5.0.0",
+    "find-up": "^6.2.0",
     "semver": "^7.3.5",
     "v8-compile-cache": "^2.3.0",
-    "yargs": "^17.0.1"
+    "yargs": "^17.2.1"
   },
   "devDependencies": {
-    "@types/semver": "7.3.6"
+    "@types/semver": "7.3.9"
   },
   "typesVersions": {
     "<4": {

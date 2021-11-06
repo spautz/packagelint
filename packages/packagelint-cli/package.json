@@ -24,7 +24,7 @@
     "*.md"
   ],
   "engines": {
-    "node": "^12 || >=14"
+    "node": "^12 || ^14 || ^15 || ^16 || ^17"
   },
   "preferGlobal": true,
   "bin": {
@@ -48,6 +48,6 @@
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as "
   },
   "dependencies": {
-    "find-up": "^5.0.0"
+    "find-up": "^6.2.0"
   }
 }
