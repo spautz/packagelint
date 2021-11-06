@@ -36,35 +36,38 @@ and reported as if they're automated tests.
 ### [@packagelint/packagelint](./packages/packagelint/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/packagelint.svg)](https://www.npmjs.com/package/@packagelint/packagelint)
-[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/packagelint)](https://david-dm.org/spautz/packagelint?path=packages/packagelint)
+[![test coverage](https://coveralls.io/repos/github/spautz/packagelint/badge.svg?branch=x-cov-packagelint)](https://coveralls.io/github/spautz/packagelint?branch=x-cov-packagelint)
+[![dependencies status](https://img.shields.io/librariesio/release/npm/@packagelint/packagelint.svg)](https://libraries.io/github/spautz/packagelint)
 
 The `packagelint` runtime, available as a CLI tool or as an importable API
 
 ### [@packagelint/core](./packages/core/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/core.svg)](https://www.npmjs.com/package/@packagelint/core)
-[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/core)](https://david-dm.org/spautz/packagelint?path=packages/core)
+[![test coverage](https://coveralls.io/repos/github/spautz/packagelint/badge.svg?branch=x-cov-core)](https://coveralls.io/github/spautz/packagelint?branch=x-cov-core)
+[![dependencies status](https://img.shields.io/librariesio/release/npm/@packagelint/core.svg)](https://libraries.io/github/spautz/packagelint)
 
 A collection of configurable rules, covering various standards and tools
 
 ### [@packagelint/presets](./packages/presets/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/presets.svg)](https://www.npmjs.com/package/@packagelint/presets)
-[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/presets)](https://david-dm.org/spautz/packagelint?path=packages/presets)
+[![dependencies status](https://img.shields.io/librariesio/release/npm/@packagelint/presets.svg)](https://libraries.io/github/spautz/packagelint)
 
 A collection of validation presets: ready-to-use rulesets for common scenarios
 
 ### [@packagelint/packagelint-cli](./packages/packagelint-cli/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/packagelint-cli.svg)](https://www.npmjs.com/package/@packagelint/packagelint-cli)
-[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/packagelint-cli)](https://david-dm.org/spautz/packagelint?path=packages/packagelint-cli)
+[![dependencies status](https://img.shields.io/librariesio/release/npm/@packagelint/packagelint-cli.svg)](https://libraries.io/github/spautz/packagelint)
 
 Run your local Packagelint via a global command
 
 ### [@packagelint/types](./packages/types/)
 
 [![npm version](https://img.shields.io/npm/v/@packagelint/types.svg)](https://www.npmjs.com/package/@packagelint/types)
-[![dependencies status](https://img.shields.io/david/spautz/packagelint.svg?path=packages/types)](https://david-dm.org/spautz/packagelint?path=packages/types)
+[![test coverage](https://coveralls.io/repos/github/spautz/packagelint/badge.svg?branch=x-cov-types)](https://coveralls.io/github/spautz/packagelint?branch=x-cov-types)
+[![dependencies status](https://img.shields.io/librariesio/release/npm/@packagelint/types.svg)](https://libraries.io/github/spautz/packagelint)
 
 Types, utilities, and validators for Packagelint internals
 
