@@ -57,10 +57,10 @@
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as ",
     "test": "yon run test:coverage",
     "test:clean": "rimraf ./coverage-local",
-    "test:coverage": "yon run test:clean && tsdx test --coverage",
-    "test:nowatch": "yon run test:clean && tsdx test",
-    "test:watch": "yon run test:clean && tsdx test --watch",
-    "test:watchcoverage": "yon run test:clean && tsdx test --watchAll --coverage",
+    "test:coverage": "yon run test:clean && jest --coverage",
+    "test:nowatch": "yon run test:clean && jest --coverage=false --bail",
+    "test:watch": "yon run test:clean && jest --coverage=false --watch",
+    "test:watchcoverage": "yon run test:clean && jest --coverage --watchAll",
     "types": "tsc --p tsconfig.json --noEmit"
   },
   "typesVersions": {

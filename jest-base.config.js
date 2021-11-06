@@ -1,8 +1,13 @@
 /* eslint-env node */
 
 module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
+  collectCoverage: true,
+  coverageReporters: ['json', 'html', 'lcov'],
+
   testPathIgnorePatterns: ['/build/', '/dist/', '/lib-dist/', '/node_modules/'],
   coveragePathIgnorePatterns: ['.*\\.(ignored|stories|test)\\.*'],
-  // coverageDirectory should be set by consumer
-  // collectCoverageFrom should be set by consumer
+
+  // This base config is incomplete: the consumer should set `roots`, `coverageDirectory`, and `collectCoverageFrom`
 };
