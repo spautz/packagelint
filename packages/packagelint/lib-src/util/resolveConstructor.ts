@@ -1,10 +1,18 @@
-interface GenericClassConstructor<ArgsType extends Array<any> = Array<any>, InstanceType = any> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyArray = Array<any>;
+type UnknownInstance = unknown;
+
+interface GenericClassConstructor<
+  ArgsType extends AnyArray = AnyArray,
+  InstanceType = UnknownInstance,
+> {
   new (...args: ArgsType): InstanceType;
 }
 
-type GenericFunctionConstructor<ArgsType extends Array<any> = Array<any>, InstanceType = any> = (
-  ...args: ArgsType
-) => InstanceType;
+type GenericFunctionConstructor<
+  ArgsType extends AnyArray = AnyArray,
+  InstanceType = UnknownInstance,
+> = (...args: ArgsType) => InstanceType;
 
 /**
  * Core functionality is wrapped up in classes -- or in a closure, if you prefer. This helper lets things like
@@ -13,8 +21,8 @@ type GenericFunctionConstructor<ArgsType extends Array<any> = Array<any>, Instan
 function constructClassOrFunction<
   ClassConstructorType extends GenericClassConstructor<ArgsType, InstanceType>,
   FunctionConstructorType extends GenericFunctionConstructor<ArgsType, InstanceType>,
-  ArgsType extends Array<any> = any,
-  InstanceType = any,
+  ArgsType extends AnyArray = AnyArray,
+  InstanceType = UnknownInstance,
 >(
   ReporterClassOrConstructor: ClassConstructorType | FunctionConstructorType,
   ...args: ArgsType
@@ -26,7 +34,7 @@ function constructClassOrFunction<
   }
 }
 
-function isFunction(someValue: unknown): someValue is Function {
+function isFunction(someValue: unknown): someValue is (...args: Array<unknown>) => unknown {
   return typeof someValue === 'function';
 }
 

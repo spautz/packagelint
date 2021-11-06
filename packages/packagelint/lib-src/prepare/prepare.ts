@@ -4,6 +4,7 @@ import {
   PackagelintRulePreparerInstance,
   PackagelintUserConfig,
   isFunction,
+  PackagelintRuleValidatorInstance,
 } from '@packagelint/types';
 
 import {
@@ -38,8 +39,12 @@ async function prepareConfig(
 
   // @TODO: Verbose option
 
-  const rulePreparerInstance = constructClassOrFunction(_RulePreparer || DefaultRulePreparer);
-  const ruleValidatorInstance = constructClassOrFunction(_RuleValidator || DefaultRuleValidator);
+  const rulePreparerInstance: PackagelintRulePreparerInstance = constructClassOrFunction(
+    _RulePreparer || DefaultRulePreparer,
+  );
+  const ruleValidatorInstance: PackagelintRuleValidatorInstance = constructClassOrFunction(
+    _RuleValidator || DefaultRuleValidator,
+  );
 
   const preparedConfig = await prepareConfigRules(finalUserConfig, rulePreparerInstance);
   preparedConfig.reporters = reporters;

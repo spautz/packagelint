@@ -1,7 +1,7 @@
 import fs from 'fs';
 import semver from 'semver';
 
-import { PackagelintRuleDefinition, PackagelintValidationContext } from '@packagelint/types';
+import { PackagelintRuleDefinition, PackagelintValidationFn } from '@packagelint/types';
 
 const { readFile } = fs.promises;
 
@@ -10,28 +10,10 @@ export type NvmrcRuleOptions = {
   version: string;
 };
 
-const nvmrcRuleDefinition: PackagelintRuleDefinition<NvmrcRuleOptions> = {
-  name: 'nvmrc',
-  docs: {
-    description: 'Require a .nvmrc file, maybe with a specific version range',
-    url: 'https://github.com/spautz/packagelint',
-  },
-  defaultOptions: {
-    fileName: '.nvmrc',
-    version: '>=10',
-  },
-  messages: {
-    fileNotFound: '{{fileName}} not found',
-    invalidNvmrc: 'Invalid {{fileName}}: must contain a version number',
-    invalidVersion: 'Invalid Node version in {{fileName}}: must match "{{version}}"',
-  },
-  doValidation: nvmrcRuleValidation,
-};
-
-async function nvmrcRuleValidation(
-  options: NvmrcRuleOptions,
-  packageContext: PackagelintValidationContext,
-) {
+const nvmrcRuleValidation: PackagelintValidationFn<NvmrcRuleOptions> = async (
+  options,
+  packageContext,
+) => {
   const { fileName, version } = options;
   const { findFileUp, createErrorToReturn, setErrorData } = packageContext;
 
@@ -52,6 +34,24 @@ async function nvmrcRuleValidation(
   }
 
   return null;
-}
+};
+
+const nvmrcRuleDefinition: PackagelintRuleDefinition<NvmrcRuleOptions> = {
+  name: 'nvmrc',
+  docs: {
+    description: 'Require a .nvmrc file, maybe with a specific version range',
+    url: 'https://github.com/spautz/packagelint',
+  },
+  defaultOptions: {
+    fileName: '.nvmrc',
+    version: '>=10',
+  },
+  messages: {
+    fileNotFound: '{{fileName}} not found',
+    invalidNvmrc: 'Invalid {{fileName}}: must contain a version number',
+    invalidVersion: 'Invalid Node version in {{fileName}}: must match "{{version}}"',
+  },
+  doValidation: nvmrcRuleValidation,
+};
 
 export { nvmrcRuleDefinition, nvmrcRuleValidation };

@@ -1,4 +1,4 @@
-import { getHighestErrorLevel } from '..';
+import { getHighestErrorLevel, PackagelintErrorLevelCounts } from '..';
 
 describe('error-levels/errorLevelCounts', () => {
   describe('severity level totals', () => {
@@ -35,8 +35,7 @@ describe('error-levels/errorLevelCounts', () => {
         }),
       ).toBe('ignore');
 
-      // @ts-expect-error
-      expect(getHighestErrorLevel({})).toBe('ignore');
+      expect(getHighestErrorLevel({} as PackagelintErrorLevelCounts)).toBe('ignore');
     });
   });
 });

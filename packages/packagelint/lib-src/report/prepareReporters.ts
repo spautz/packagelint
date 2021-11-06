@@ -39,6 +39,8 @@ function broadcastEventUsingReporters(
   const allReporterResults = reporters.map((reporterInstance: PackagelintReporterInstance) => {
     if (reporterInstance[eventName]) {
       // @TODO: More error-checking
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return reporterInstance[eventName](...eventArgs);
     }

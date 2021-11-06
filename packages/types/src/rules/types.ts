@@ -3,6 +3,7 @@ import { PackagelintAnyErrorData, PackagelintUnknownErrorData } from '../results
 
 export type PackagelintRuleName = string;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PackagelintAnyRuleOptions = Record<string, any>;
 export type PackagelintUnknownRuleOptions = Record<string, unknown>;
 

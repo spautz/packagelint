@@ -4,6 +4,7 @@ import { PackagelintRuleDefinition, PackagelintRulesetDefinition } from '../rule
 import { PACKAGELINT_RULE_EXPORTS_KEY, PACKAGELINT_REPORTER_EXPORTS_KEY } from './exportKeys';
 
 type ResolvePossiblePromise<T> = T extends Promise<infer U> ? U : T;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ResolvePossibleFunction<T> = T extends (...args: any) => any ? ReturnType<T> : T;
 
 export type PackagelintFlexibleExportType<T> = T | Promise<T> | (() => T | Promise<T>);

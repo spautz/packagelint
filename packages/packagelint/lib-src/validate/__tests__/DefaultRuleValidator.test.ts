@@ -82,7 +82,7 @@ describe('DefaultRuleValidator basics', () => {
   });
 
   it('requires a preparedConfig', () => {
-    // @ts-expect-error
+    // @ts-expect-error preparedConfig is required
     const result = _RuleValidator.validatePreparedConfig();
 
     expect(result).toBeInstanceOf(Promise);
@@ -115,7 +115,7 @@ describe('DefaultRuleValidator basics', () => {
     it(`${fnName} throws without a preparedConfig`, () => {
       const fnNameWithoutUnderscore = fnName.replace('_', '');
       expect(() => {
-        // @ts-expect-error
+        // @ts-expect-error preparedConfig is required
         _RuleValidator[fnName]();
       }).toThrowError(
         `Packagelint internal error: Cannot ${fnNameWithoutUnderscore} when no preparedConfig is set`,
@@ -125,7 +125,7 @@ describe('DefaultRuleValidator basics', () => {
 
   fnsThatRejectPromise.forEach((fnName) => {
     it(`${fnName} rejects without a preparedConfig`, () => {
-      // @ts-expect-error
+      // @ts-expect-error preparedConfig is required
       const result = _RuleValidator[fnName]();
 
       expect(result).toBeInstanceOf(Promise);

@@ -67,7 +67,7 @@ class InternalDebugReporter implements PackagelintReporterInstance {
     this._logEvent('getLastError', ...args);
   }
 
-  _logEvent(eventName: PackagelintReporterEventName, ...args: Array<any>): void {
+  _logEvent(eventName: PackagelintReporterEventName, ...args: Array<unknown>): void {
     if (this._eventsToLog[eventName]) {
       this._callback(`${this._prefix}: ${eventName}`, ...args);
     }

@@ -24,7 +24,7 @@ async function resolveRuleOrRuleset(
   }
 
   const packageExports = await resolveImportedValue<PackagelintResolved3rdPartyModuleObject>(
-    require(packageName) as PackagelintResolved3rdPartyModule,
+    import(packageName) as PackagelintResolved3rdPartyModule,
   );
   const packagelintRules = await resolveImportedValue<PackagelintExportedRulesObject | undefined>(
     packageExports.packagelintRules,

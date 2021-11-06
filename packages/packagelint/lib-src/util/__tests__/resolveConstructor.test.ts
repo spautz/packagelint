@@ -11,7 +11,7 @@ describe('resolveConstructor', () => {
         }
       }
 
-      const instance = constructClassOrFunction(MyClass);
+      const instance: MyClass = constructClassOrFunction(MyClass);
 
       expect(instance).toBeInstanceOf(MyClass);
       expect(fnInsideConstructor).toBeCalled();
@@ -75,7 +75,9 @@ describe('resolveConstructor', () => {
         wasCreated: jest.fn(),
       };
 
-      const instance = constructClassOrFunction(MyOldSchoolClass);
+      const instance = constructClassOrFunction(
+        MyOldSchoolClass,
+      ) as typeof MyOldSchoolClass.prototype;
 
       expect(instance).toBeInstanceOf(MyOldSchoolClass);
       expect(fnInsideConstructor).toBeCalled();
@@ -107,7 +109,9 @@ describe('resolveConstructor', () => {
         return { thisIsAFakeInstance: true };
       };
 
-      const instance = constructClassOrFunction(myClosureConstructor);
+      const instance = constructClassOrFunction(myClosureConstructor) as ReturnType<
+        typeof myClosureConstructor
+      >;
 
       expect(instance.thisIsAFakeInstance).toBe(true);
       expect(fnInsideConstructor).toBeCalled();
@@ -126,7 +130,9 @@ describe('resolveConstructor', () => {
         };
       };
 
-      const instance = constructClassOrFunction(myClosureConstructor, 'test', 123);
+      const instance = constructClassOrFunction(myClosureConstructor, 'test', 123) as ReturnType<
+        typeof myClosureConstructor
+      >;
 
       expect(instance.thisIsAFakeInstance).toBe(true);
       expect(fnInsideConstructor).toBeCalled();

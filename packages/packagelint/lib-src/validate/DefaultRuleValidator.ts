@@ -64,7 +64,7 @@ class DefaultRuleValidator implements Required<PackagelintRuleValidatorInstance>
       preparedRuleName,
 
       // Helpers so that rules don't have to implement everything themselves
-      findFileUp: (_fileGlob: string) => {
+      findFileUp: (/* _fileGlob: string */) => {
         throw new Error('Not implemented');
       },
       // Setting errorData and returning errors

@@ -12,10 +12,11 @@ import {
   nvmrcRuleDefinition,
 } from './rules';
 
-const packagelintReporters: Record<string, PackagelintReporterConstructor<any>> = {
+const packagelintReporters: Record<string, PackagelintReporterConstructor> = {
   internalDebugReporter: InternalDebugReporter,
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const packagelintRules: Record<string, PackagelintRuleDefinition<any>> = {
   'always-fail': alwaysFailRuleDefinition,
   'always-pass': alwaysPassRuleDefinition,

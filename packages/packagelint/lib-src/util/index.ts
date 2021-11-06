@@ -9,14 +9,12 @@ export * from './resolveConstructor';
 
 export function isRuleDefinition(ruleInfo: unknown): ruleInfo is PackagelintRuleDefinition {
   // @TODO: Proper validation
-  // @ts-ignore
-  return !!ruleInfo?.doValidation;
+  return !!(ruleInfo && (ruleInfo as PackagelintRuleDefinition).doValidation);
 }
 
 export function isRulesetDefinition(ruleInfo: unknown): ruleInfo is PackagelintRulesetDefinition {
   // @TODO: Proper validation
-  // @ts-ignore
-  return !!ruleInfo?.rules;
+  return !!(ruleInfo && (ruleInfo as PackagelintRulesetDefinition).rules);
 }
 
 export function countErrorTypes(

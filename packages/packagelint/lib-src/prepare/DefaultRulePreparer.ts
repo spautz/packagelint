@@ -60,6 +60,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
     const ruleEntryObject = this._expandRuleEntryIntoConfig(ruleEntry);
 
     // @TODO: Proper splitting of rule result types
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const { name, enabled, extendRule, errorLevel, options, resetOptions, messages } =
       ruleEntryObject;
@@ -241,7 +242,7 @@ class DefaultRulePreparer implements Required<PackagelintRulePreparerInstance> {
       ...this._userConfig,
       rules: this._getPreparedRuleList(),
       // @FIXME: Need an intermediate typing here, or else to only pass back a ruleList
-    } as any as PackagelintPreparedConfig;
+    } as unknown as PackagelintPreparedConfig;
   }
 }
 
