@@ -1,4 +1,4 @@
-import { findUp } from 'find-up';
+import findUp from 'find-up';
 import { PackagelintUserConfig } from '@packagelint/types';
 
 import { prepareConfig } from './prepare';

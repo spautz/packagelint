@@ -48,6 +48,6 @@
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as "
   },
   "dependencies": {
-    "find-up": "^6.2.0"
+    "find-up": "^5.0.0"
   }
 }
