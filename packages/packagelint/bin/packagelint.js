@@ -16,9 +16,9 @@ const onFatalError = (...args) => {
 
   const { packagelintCli } = require('../lib-dist/cli');
   try {
-    const [exitCode, validationOutput] = await packagelintCli(process.argv);
+    const [exitCode, validationOutput, error] = await packagelintCli(process.argv);
 
-    console.log('packagelintCli() ', exitCode, validationOutput);
+    console.log('packagelintCli() ', exitCode, validationOutput, error);
 
     process.exitCode = exitCode;
   } catch (e) {

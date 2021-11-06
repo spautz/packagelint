@@ -44,7 +44,8 @@
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "format": "prettier --write .",
     "format:verify": "prettier --list-different .",
-    "lint": "tsdx lint . --max-warnings 0",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix --max-warnings 0",
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as "
   },
   "dependencies": {

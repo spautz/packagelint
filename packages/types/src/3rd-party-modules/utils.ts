@@ -19,7 +19,7 @@ async function checkPackagelintExports(
   }
 
   // Resolve the module itself, if needed
-  let resolvedModuleExports = await resolveImportedValue<PackagelintResolved3rdPartyModuleObject>(
+  const resolvedModuleExports = await resolveImportedValue<PackagelintResolved3rdPartyModuleObject>(
     moduleExports,
   );
   if (!resolvedModuleExports || typeof resolvedModuleExports !== 'object') {

@@ -13,7 +13,7 @@ export * from './exitCodes';
 export * from './util';
 
 async function findPackagelintConfigFile(
-  configFileName: string = '.packagelint.js',
+  configFileName = '.packagelint.js',
   pathToSearchFrom: string = process.cwd(),
 ): Promise<string | undefined> {
   return findUp(configFileName, { cwd: pathToSearchFrom });
