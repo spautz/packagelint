@@ -31,7 +31,12 @@ export type PackagelintExportedRules =
 
 export type PackagelintExportedRulesObject = Record<
   string,
-  PackagelintRuleCheckDefinition | PackagelintRuleSetDefinition | PackagelintRuleComboDefinition
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | PackagelintRuleCheckDefinition<any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | PackagelintRuleSetDefinition<any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | PackagelintRuleComboDefinition<any>
 >;
 
 /**

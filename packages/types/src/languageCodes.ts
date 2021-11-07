@@ -1,4 +1,4 @@
-export type PackagelintLanguageCode = keyof typeof languageCodes;
+export type PackagelintLanguageCode = typeof languageCodes[number];
 
 // This is from ISO-639-1
 const languageCodes = [

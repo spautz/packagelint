@@ -6,7 +6,7 @@ import { PackagelintPreparedRule } from '../rules/preparedRule';
 
 export type PackagelintReporterName = string;
 
-export type PackagelintUnknownReporterOptions = unknown;
+export type PackagelintUnknownReporterOptions = Record<string, unknown>;
 
 // Result reporters
 

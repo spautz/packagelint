@@ -6,8 +6,8 @@
 import { PackagelintPreparedConfig } from '../configs/preparedConfig';
 import { PackagelintOutput } from '../results/output';
 import {
-  PackagelintRuleValidationFnContext,
-  PackagelintRuleValidationFnReturn,
+  PackagelintRuleCheckValidationFnContext,
+  PackagelintRuleCheckValidationFnReturn,
 } from '../rules/ruleCheck';
 import { PackagelintValidationResult } from '../results/validationResult';
 import { PackagelintPreparedRule } from '../rules/preparedRule';
@@ -22,7 +22,7 @@ export interface PackagelintRuleValidatorInstance {
 
   readonly _makeValidationContext?: (
     preparedRule: PackagelintPreparedConfig,
-  ) => PackagelintRuleValidationFnContext;
+  ) => PackagelintRuleCheckValidationFnContext;
 
   readonly _validateAllRules?: () => Promise<Array<PackagelintValidationResult>>;
 
@@ -35,7 +35,7 @@ export interface PackagelintRuleValidatorInstance {
 
   readonly _processRuleResult?: (
     preparedRule: PackagelintPreparedRule,
-    rawResult: PackagelintRuleValidationFnReturn | Error,
+    rawResult: PackagelintRuleCheckValidationFnReturn | Error,
   ) => PackagelintValidationResult;
 
   readonly _afterRule?: (

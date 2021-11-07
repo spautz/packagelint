@@ -1,30 +1,35 @@
 import {
-  PackagelintRuleDefinition,
-  PackagelintValidationContext,
-  PackagelintValidationFnReturn,
+  PackagelintRuleCheckDefinition,
+  PackagelintRuleCheckValidationFn,
 } from '@packagelint/types';
 
-export type AlwaysFailRuleOptions = Record<never, never>;
+export type AlwaysFailRuleParams = {
+  OptionsType: Record<never, never>;
+  ErrorNames: 'alwaysFail';
+  ErrorData: undefined;
+};
 
-const alwaysFailRuleDefinition: PackagelintRuleDefinition<AlwaysFailRuleOptions> = {
+const alwaysFailRuleValidationFn: PackagelintRuleCheckValidationFn<AlwaysFailRuleParams> = (
+  _options,
+  packageContext,
+) => {
+  return packageContext.createErrorToReturn('alwaysFail');
+};
+
+const alwaysFailRuleDefinition: PackagelintRuleCheckDefinition<AlwaysFailRuleParams> = {
   name: 'always-fail',
   docs: {
-    description: 'This rule will always fail.',
     url: 'https://github.com/spautz/packagelint',
+    description: 'This rule will always fail.',
   },
   defaultErrorLevel: 'error',
   defaultOptions: {},
-  messages: {
-    alwaysFail: 'This rule will always fail',
+  validationMessages: {
+    en: {
+      alwaysFail: 'This rule will always fail',
+    },
   },
   doValidation: alwaysFailRuleValidationFn,
 };
-
-function alwaysFailRuleValidationFn(
-  _options: AlwaysFailRuleOptions,
-  packageContext: PackagelintValidationContext,
-): PackagelintValidationFnReturn {
-  return packageContext.createErrorToReturn('alwaysFail');
-}
 
 export { alwaysFailRuleDefinition, alwaysFailRuleValidationFn };

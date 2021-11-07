@@ -5,7 +5,7 @@ import { PackagelintLanguageCode } from '../languageCodes';
 
 import {
   PackagelintRuleName,
-  PackagelintRuleValidationFnContext,
+  PackagelintRuleCheckValidationFnContext,
   PackagelintUnknownRuleOptions,
 } from './ruleCheck';
 
@@ -30,7 +30,7 @@ export interface PackagelintPreparedRule {
 
   doValidation: (
     options: PackagelintUnknownRuleOptions,
-    packagelintContext: PackagelintRuleValidationFnContext,
+    packagelintContext: PackagelintRuleCheckValidationFnContext,
   ) => PackagelintValidationResult | Promise<PackagelintValidationResult>;
   validationMessages: {
     [language in PackagelintLanguageCode]: {

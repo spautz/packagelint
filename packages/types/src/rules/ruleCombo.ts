@@ -5,17 +5,20 @@ import { PackagelintLanguageCode } from '../languageCodes';
 
 import {
   PackagelintRuleName,
-  PackagelintRuleValidationFnContext,
-  PackagelintRuleValidationFnReturn,
-  PackagelintUnknownRuleError,
+  PackagelintRuleCheckValidationFnContext,
+  PackagelintRuleCheckValidationFnReturn,
   PackagelintUnknownRuleErrorData,
   PackagelintUnknownRuleOptions,
 } from './ruleCheck';
 
+export interface PackagelintRuleComboDefinitionParams {
+  OptionsType: PackagelintUnknownRuleOptions;
+  ErrorNames: string;
+  ErrorData: PackagelintUnknownRuleErrorData | null | undefined;
+}
+
 export interface PackagelintRuleComboDefinition<
-  OptionsType extends PackagelintUnknownRuleOptions = PackagelintUnknownRuleOptions,
-  ErrorNames extends PackagelintUnknownRuleError = PackagelintUnknownRuleError,
-  ErrorDataType extends PackagelintUnknownRuleErrorData = PackagelintUnknownRuleErrorData,
+  RuleComboParams extends PackagelintRuleComboDefinitionParams = PackagelintRuleComboDefinitionParams,
 > {
   /* Unique identifier for the rulecombo */
   name: PackagelintRuleName;
@@ -27,43 +30,40 @@ export interface PackagelintRuleComboDefinition<
   /* Error level for the result, if not overridden or set by each rule. Defaults to "error". */
   defaultErrorLevel: PackagelintErrorLevel;
   /* Options for the rulecombo, if not overridden by its rule entry */
-  defaultOptions: OptionsType;
+  defaultOptions: RuleComboParams['OptionsType'];
   /* The rules whose results the rulecombo will evaluate */
   ruleInputs:
     | Array<PackagelintRuleEntry>
     | Record<PackagelintRuleName, PackagelintRuleEntry>
     | ((
-        options: OptionsType,
+        options: RuleComboParams['OptionsType'],
       ) => Array<PackagelintRuleEntry> | Record<PackagelintRuleName, PackagelintRuleEntry>);
   /* Function that implements the evaluation. Receives a PackagelintValidationResult for each item in ruleInputs  */
-  doEvaluation: PackagelintRuleComboEvaluationFn<OptionsType, ErrorNames, ErrorDataType>;
+  doEvaluation: PackagelintRuleComboEvaluationFn<RuleComboParams>;
   /* Human-readable messages for failed combo results, if you don't want to use one from the ruleInputs */
   evaluationMessages: {
     [language in PackagelintLanguageCode]: {
-      [key in ErrorNames]: string;
+      [key in RuleComboParams['ErrorNames']]: string;
     };
   };
 }
 
 export type PackagelintRuleComboEvaluationFn<
-  OptionsType extends PackagelintUnknownRuleOptions = PackagelintUnknownRuleOptions,
-  ErrorNames extends PackagelintUnknownRuleError = PackagelintUnknownRuleError,
-  ErrorDataType extends PackagelintUnknownRuleErrorData = PackagelintUnknownRuleErrorData,
+  RuleComboParams extends PackagelintRuleComboDefinitionParams = PackagelintRuleComboDefinitionParams,
 > = (
   ruleInputResults:
     | Array<PackagelintValidationResult>
     | Record<PackagelintRuleName, PackagelintValidationResult>,
-  options: OptionsType,
-  comboContext: PackagelintComboFnContext<ErrorNames, ErrorDataType>,
+  options: RuleComboParams['OptionsType'],
+  comboContext: PackagelintComboFnContext<RuleComboParams>,
 ) =>
-  | PackagelintRuleValidationFnReturn<ErrorNames, ErrorDataType>
-  | Promise<PackagelintRuleValidationFnReturn<ErrorNames, ErrorDataType>>;
+  | PackagelintRuleCheckValidationFnReturn<RuleComboParams>
+  | Promise<PackagelintRuleCheckValidationFnReturn<RuleComboParams>>;
 
-// A smaller version of PackagelintRuleValidationFnContext which doesn't provide any implementation-time helpers
+// A smaller version of PackagelintRuleCheckValidationFnContext which doesn't provide any implementation-time helpers
 export type PackagelintComboFnContext<
-  ErrorNames extends PackagelintUnknownRuleError = PackagelintUnknownRuleError,
-  ErrorDataType extends PackagelintUnknownRuleErrorData = PackagelintUnknownRuleErrorData,
+  RuleComboParams extends PackagelintRuleComboDefinitionParams = PackagelintRuleComboDefinitionParams,
 > = Pick<
-  PackagelintRuleValidationFnContext<ErrorNames, ErrorDataType>,
+  PackagelintRuleCheckValidationFnContext<RuleComboParams>,
   'preparedRuleName' | 'createErrorToReturn' | 'setErrorData'
 >;

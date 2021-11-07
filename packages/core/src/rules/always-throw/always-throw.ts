@@ -1,8 +1,16 @@
-import { PackagelintRuleDefinition } from '@packagelint/types';
+import { PackagelintRuleCheckDefinition } from '@packagelint/types';
 
-export type AlwaysThrowRuleOptions = Record<never, never>;
+export type AlwaysThrowRuleParams = {
+  OptionsType: Record<never, never>;
+  ErrorNames: never;
+  ErrorData: undefined;
+};
 
-const alwaysThrowRuleDefinition: PackagelintRuleDefinition<AlwaysThrowRuleOptions> = {
+function alwaysThrowRuleValidationFn(/* _options: AlwaysThrowRuleOptions, _packageContext: PackagelintValidationContext, */): null {
+  throw new Error('This rule will always throw an error');
+}
+
+const alwaysThrowRuleDefinition: PackagelintRuleCheckDefinition<AlwaysThrowRuleParams> = {
   name: 'always-throw',
   docs: {
     description: 'This rule will always throw an error.',
@@ -10,12 +18,8 @@ const alwaysThrowRuleDefinition: PackagelintRuleDefinition<AlwaysThrowRuleOption
   },
   defaultErrorLevel: 'exception',
   defaultOptions: {},
-  messages: {},
+  validationMessages: {},
   doValidation: alwaysThrowRuleValidationFn,
 };
-
-function alwaysThrowRuleValidationFn(/* _options: AlwaysThrowRuleOptions, _packageContext: PackagelintValidationContext, */): null {
-  throw new Error('This rule will always throw an error');
-}
 
 export { alwaysThrowRuleDefinition, alwaysThrowRuleValidationFn };
