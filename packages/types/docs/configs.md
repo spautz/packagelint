@@ -60,10 +60,10 @@ interface PackagelintUserConfig {
 
 Most projects will only need to set the first two or three fields above: the rest will be filled in with defaults.
 
-The allowList and denyList can be used to add extra security and protect against some supply chain attacks. If you
-want to prohibit any 3rd party rules and only allow those from Packagelint and your own internal packages, for
-example, you could set `moduleAllowList: ['@packagelint/*', '@mycompany/*']`. You can even prohibit Packagelint's
-own core rules in this way, if you'd like.
+The allowList and denyList can be used to add extra security restrictions for rules. If you want to prohibit 3rd party
+rules and only allow those from Packagelint and your own internal packages, for example, you could set
+`moduleAllowList: ['@packagelint/*', '@mycompany/*']`. You can even prohibit Packagelint's own rule implementations
+in this way, if you'd like.
 
 The aliases can be used to hotfix and replace one module with another -- if you fork `@packagelint/core` or another
 module that provides rules or reporters, for example, you can create an alias so that rules/reporters imported from
@@ -176,6 +176,7 @@ interface PackagelintPreparedRule {
     [key: string]: string;
   };
   extendedFrom: string | null; // from extendRule
+  wasResolved: boolean;
   originalRuleEntries: Array<PackagelintRuleEntry>;
   defaultErrorLevel: PackagelintErrorLevel;
   errorLevel: 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore'; // from errorLevel + defaultErrorLevel

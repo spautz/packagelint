@@ -1,4 +1,4 @@
-import { PackagelintErrorLevel } from './types';
+export type PackagelintErrorLevel = 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore';
 
 const ERROR_LEVEL__EXCEPTION = 'exception' as const;
 const ERROR_LEVEL__ERROR = 'error' as const;

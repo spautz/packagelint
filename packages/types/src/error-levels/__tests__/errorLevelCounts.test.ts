@@ -1,4 +1,4 @@
-import { getHighestErrorLevel, PackagelintErrorLevelCounts } from '..';
+import { getHighestErrorLevel, PackagelintErrorLevelCounts } from '../errorLevelCounts';
 
 describe('error-levels/errorLevelCounts', () => {
   describe('severity level totals', () => {
@@ -24,7 +24,7 @@ describe('error-levels/errorLevelCounts', () => {
       ).toBe('suggestion');
     });
 
-    it('resolves to "ignore" if there are no errors', () => {
+    it('returns null if there are no errors', () => {
       expect(
         getHighestErrorLevel({
           exception: 0,
@@ -33,9 +33,9 @@ describe('error-levels/errorLevelCounts', () => {
           suggestion: 0,
           ignore: 0,
         }),
-      ).toBe('ignore');
+      ).toBe(null);
 
-      expect(getHighestErrorLevel({} as PackagelintErrorLevelCounts)).toBe('ignore');
+      expect(getHighestErrorLevel({} as PackagelintErrorLevelCounts)).toBe(null);
     });
   });
 });

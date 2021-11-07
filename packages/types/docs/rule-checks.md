@@ -29,7 +29,10 @@ interface PackagelintRuleCheckDefinition {
   /* Options for the rule, if not overridden by its rule entry */
   defaultOptions: OptionsType;
   /* Function that implements the rule's checks */
-  doValidation: (options, packagelintContext) => PackagelintRuleCheckResult | null;
+  doValidation: (
+    options,
+    packagelintContext,
+  ) => PackagelintRuleCheckResult | Promise<PackagelintRuleCheckResult>;
   /* Human-readable messages for failed validate results */
   validationMessages: {
     [language: string]: {
@@ -48,7 +51,7 @@ When enabled, this is merged with the RuleConfig to become a PreparedRule, which
 ## PackagelintRuleCheckResult
 
 ```typescript
-type PackagelintRuleCheckResult = [errorName: string | null, errorData?: ErrorDataType] | null;
+type PackagelintRuleCheckResult = [errorName: string, errorData?: ErrorDataType] | null;
 ```
 
 ### How to use it
@@ -56,6 +59,7 @@ type PackagelintRuleCheckResult = [errorName: string | null, errorData?: ErrorDa
 If you're implementing your own rule validation functions, as a library author, then this is what your `doValidation`
 should return.
 
-If the validation check passes, return `null` -- either overall or for the errorName.
+If the validation check passes, it should explicitly return `null`.
 
-If the validation check fails, it should provide an `errorName` which matches one of the keys in `validationMessages`.
+If the validation check fails, it should provide an `errorName` which matches one of the keys in `validationMessages`,
+with additional optional data if desired.

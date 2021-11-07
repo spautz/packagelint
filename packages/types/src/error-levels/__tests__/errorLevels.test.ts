@@ -7,7 +7,7 @@ import {
   isErrorLessSevereThan,
   isErrorMoreSevereThan,
   isValidErrorLevel,
-} from '..';
+} from '../errorLevels';
 
 describe('error-levels/errorLevels', () => {
   describe('values', () => {

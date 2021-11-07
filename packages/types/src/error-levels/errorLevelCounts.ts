@@ -1,5 +1,12 @@
-import { PackagelintErrorLevel, PackagelintErrorLevelCounts } from './types';
-import { ERROR_LEVEL__IGNORE, ERROR_LEVELS_IN_SEVERITY_ORDER } from './errorLevels';
+import { PackagelintErrorLevel, ERROR_LEVELS_IN_SEVERITY_ORDER } from './errorLevels';
+
+export type PackagelintErrorLevelCounts = {
+  exception: number;
+  error: number;
+  warning: number;
+  suggestion: number;
+  ignore: number;
+};
 
 const defaultErrorLevelCounts: PackagelintErrorLevelCounts = {
   exception: 0,
@@ -12,13 +19,13 @@ Object.freeze(defaultErrorLevelCounts);
 
 function getHighestErrorLevel(
   errorLevelCounts: PackagelintErrorLevelCounts,
-): PackagelintErrorLevel {
+): PackagelintErrorLevel | null {
   const highestErrorLevel = ERROR_LEVELS_IN_SEVERITY_ORDER.find((errorLevel) => {
     const count = errorLevelCounts[errorLevel];
     return count > 0;
   });
 
-  return highestErrorLevel || ERROR_LEVEL__IGNORE;
+  return highestErrorLevel || null;
 }
 
 export { defaultErrorLevelCounts, getHighestErrorLevel };
