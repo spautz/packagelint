@@ -96,3 +96,4 @@ Types, utilities, and validators for Packagelint internals
 - [ ] Support for Jest reporters
 - [x] Configs and patching
 - [ ] Rule/reporter import aliases
+- [ ] Run Packagelint through a unit test runner

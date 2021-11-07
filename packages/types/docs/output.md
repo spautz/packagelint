@@ -3,10 +3,9 @@
 ## Overview
 
 After validation has finished, the final **Output** object summarizes the ultimate success or failure,
-provides all of the individual results, and specifies the UserConfig and PreparedConfig that led to them.
+provides all of the individual results, and retains the UserConfig and PreparedConfig that led to them.
 
 This is used to determine the exit code -- success or failure -- when running via CLI.
-It's also returned directly when Packagelint is run directly via API.
 
 ## PackagelintOutput
 
@@ -25,12 +24,18 @@ interface PackagelintOutput {
 
   // Summary and detail information about error levels
   highestErrorLevel: PackagelintErrorLevel | null;
-  errorLevelCounts: PackagelintErrorLevelCounts;
+  errorLevelCounts: {
+    exception: number;
+    error: number;
+    warning: number;
+    suggestion: number;
+    ignore: number;
+  };
 
   // The full details used to generate the results
-  rules: Array<PackagelintPreparedRule>;
   allResults: Array<PackagelintValidationResult>;
   errorResults: Array<PackagelintValidationError>;
+  resultsByName: Record<PackagelintRuleName, PackagelintValidationResult>;
 }
 ```
 
@@ -38,3 +43,22 @@ interface PackagelintOutput {
 
 That's up to you: when you run Packagelint via its API (see `runPackagelint()`) it will return this object.
 You're free to do whatever you want with its values.
+
+## PackagelintValidationResult
+
+```typescript
+type PackagelintValidationResult = {
+  preparedRule: PackagelintPreparedRule;
+  errorName: string;
+  errorData?: ErrorDataType;
+  errorLevel: PackagelintErrorLevel;
+  errorMessage: string;
+} | null;
+```
+
+### How to use it
+
+If you're processing results yourself after calling Packagelint via its API, this will be available for each rule.
+This is also what each ruleInput in a **RuleCombo**'d evaluation function receives, for each input rule.
+
+`null` indicates that the validation was successful; the above object indicates it was not successful.

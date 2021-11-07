@@ -7,8 +7,8 @@
 Types, utilities, and validators for Packagelint internals
 
 This is not just a types package: it provides constants, enums, and validation utils for writing your own Packagelint
-rules, reporters, and other internals.
+rules, rulesets, and other components.
 
-(Docs pending)
+Draft docs are in [./docs](./docs)
 
 For more information or related packages, see the [Packagelint workspace](https://github.com/spautz/packagelint).

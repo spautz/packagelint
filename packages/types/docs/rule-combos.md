@@ -2,7 +2,7 @@
 
 ## Overview
 
-A RuleCombo also lists further RuleEntries, but instead of expanding them before validation, it can combine or
+A RuleCombo has a list of further RuleEntries, but instead of expanding them before validation, it can combine or
 reinterpret their results after validation. RuleCombos are generally used to apply boolean logic to the results:
 allowing success if either of two rules passes, or requiring a particular rule to fail, for example.
 
@@ -16,7 +16,7 @@ interface PackagelintRuleComboDefinition {
   name: PackagelintRuleName;
   /* Human-readable information about the rulecombo */
   docs: {
-    description: string;
+    url: string;
     [key: string]: string;
   };
   /* Options for the rulecombo, if not overridden by its rule entry */
@@ -26,7 +26,7 @@ interface PackagelintRuleComboDefinition {
     | Array<PackagelintRuleEntry>
     | Record<string, PackagelintRuleEntry>
     | ((options) => Array<PackagelintRuleEntry> | Record<string, PackagelintRuleEntry>);
-  /* Function that implements the evaluation */
+  /* Function that implements the evaluation. Receives a PackagelintValidationResult for each item in ruleInputs  */
   doEvaluation: (options, ruleResults) => PackagelintRuleCheckResult | null;
 }
 ```
