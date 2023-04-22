@@ -30,6 +30,8 @@ describe('cli', () => {
       'PackagelintException_Reporter',
       'PackagelintException_RuleDefinition',
       'PackagelintException_Internal',
+      // Languages
+      'languageCodes',
       // Misc helpers
       'isFunction',
     ];

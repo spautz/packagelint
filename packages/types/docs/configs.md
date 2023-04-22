@@ -2,14 +2,14 @@
 
 ## Overview
 
-The `.packagelint.js` file in the root of your package supplies the **UserConfig**. This lists the rules and rulesets
-that will be validated against -- each as a **RuleEntry** -- along with any options or overrides for them, and any
-global options for Packagelint itself.
+The `.packagelint.js` file supplies the **UserConfig**. This lists the rules and rulesets that will be checked --
+each as a **RuleEntry** -- along with any options or overrides for them, and any global options for Packagelint
+itself. This file should live next to each `package.json` you want to check.
 
 The UserConfig is the entry point: no rules are run unless they're enabled here.
 
-The rules and rulesets in the UserConfig are expanded, flattened, and resolved, becoming a list of ready-to-run
-validations: the **PreparedConfig**. Because a rule's configuration can be overridden later, no rules are evaluated
+The rules and rulesets in the UserConfig are resolved, expanded, and ultimately flattened into a list of ready-to-run
+validations: the **PreparedConfig**. Because a rule's configuration may be overridden later, no rules are evaluated
 until after all have been prepared.
 
 ## PackagelintUserConfig
@@ -27,10 +27,24 @@ interface PackagelintUserConfig {
   rules: Array<PackagelintRuleEntry>;
   /** Result reporters and their configs, keyed by name */
   reporters: Record<string, PackagelintAnyReporterOptions>;
+  /** Rules can supply error messages in multiple languages: this changes the preferred language */
+  language: string;
 
   // Uncommon options
+  /** A set of module names, module+rule names, or regular expressions which restricts which modules and rules are
+   * allowed. Useful to restrict Packagelint to only use rules from certain sources */
+  moduleAllowList: Array<string | RegExp>;
+  /** A set of module names, module+rule names, or regular expressions for prohibiting certain modules and rules,
+   * even if moduleAllowList would allow them. Useful to restrict Packagelint to only use rules from certain sources */
+  moduleDenyList: Array<string | RegExp>;
+  /** If something tries to resolve a module, rule, or ruleset which moduleAllowList does not permit, it will be
+   * treated as this errorLevel. Defaults to 'exception' */
+  moduleAllowListErrorLevel: 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore';
+  /** If something tries to resolve a module, rule, or ruleset which moduleDenyList prohibits, it will be
+   * treated as this errorLevel. Defaults to 'exception' */
+  moduleDenyListErrorLevel: 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore';
   /** Maps a module or rule name to another. Useful for replacing a rule's implementation */
-  aliases: Record<string, string>;
+  ruleAliases: Record<string, string>;
   /** Maps a module or reporter name to another. Useful for replacing a reporter's implementation */
   reporterAliases: Record<string, string>;
 
@@ -46,19 +60,24 @@ interface PackagelintUserConfig {
 
 Most projects will only need to set the first two or three fields above: the rest will be filled in with defaults.
 
+The allowList and denyList can be used to add extra security restrictions for rules. If you want to prohibit 3rd party
+rules and only allow those from Packagelint and your own internal packages, for example, you could set
+`moduleAllowList: ['@packagelint/*', '@mycompany/*']`. You can even prohibit Packagelint's own rule implementations
+in this way, if you'd like.
+
 The aliases can be used to hotfix and replace one module with another -- if you fork `@packagelint/core` or another
 module that provides rules or reporters, for example, you can create an alias so that rules/reporters imported from
-`@packagelint/core` will instead be imported from a different package name. This is uncommon.
+`@packagelint/core` will instead be imported from the new package name.
 
 If you need to rewrite, replace, or extend the Packagelint internals, you can inject your own implementations via
 `_RulePreparer` and `_RuleValidator`. This is an easier alternative to forking `@packagelint/packagelint` itself.
-This should be exceedingly uncommon: its main use is testing open-source contributions before merge.
+This is uncommon: its main use is testing open-source contributions before merge.
 
 ## PackagelintRuleEntry, PackagelintRuleConfig
 
 ```typescript
 type PackagelintRuleEntry =
-  /** A string: enable the rule, with default options */
+  /** A string: enable the rule */
   | PackagelintRuleName
   /** String & boolean: enable or disable the rule */
   | [PackagelintRuleName, boolean]
@@ -67,20 +86,20 @@ type PackagelintRuleEntry =
   /** String & object: enable the rule with the given options */
   | [PackagelintRuleName, OptionsType]
   /** Object: a full PackagelintRuleConfig, see below */
-  | PackagelintRuleConfig;
+  | PackagelintRuleConfig<OptionsType>;
 
 // Each PackagelintRuleEntry is expanded into a PackagelintRuleConfig
 
 interface PackagelintRuleConfig {
-  /** The rule's unique identifier. If this matches an existing Rule then it will apply these settings to that rule.
-   * If it is a new name then `extendRule` must be specified. */
-  name: PackagelintRuleName;
+  /** The rule's unique identifier. If this matches an existing Rule then it will merge these settings over its
+   * current or default config. If it is a new, unrecognized name then `extendRule` must be specified. */
+  name: string;
   /** Whether or not to run the rule during validation */
   enabled: boolean;
-  /** When making a new rule based off of an existing one, to give it different options or a different errorLevel,
-   *  its implementation and default options will be copied from the base rule name.
-   *  `name` must be a new, unrecognized value to do this. */
-  extendRule?: PackagelintRuleName;
+  /** Used when making a new rule name which extends from an existing one, to give it its own options or a different
+   * errorLevel. Its implementation and default options will be copied from the base rule name.
+   * `name` must be a new, unrecognized value to do this. */
+  extendRule?: string;
   /** If the rule fails, the errorLevel that its failure is reported as */
   errorLevel: 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore';
   /** Rule-specific options */
@@ -88,6 +107,12 @@ interface PackagelintRuleConfig {
   /** When making a new copy of a rule via `extendRule`, this controls whether the base rule's current options are
    *  used, or whether its original defaultOptions are used. */
   resetOptions?: boolean;
+  /** Override or expand error messages, e.g. for different languages */
+  validationMessages: {
+    [language: string]: {
+      [key: string]: string;
+    };
+  };
 }
 ```
 
@@ -108,11 +133,17 @@ All rules are ultimately represented by the RuleConfig -- the different RuleEntr
  */
 interface PackagelintPreparedConfig {
   // Values from the UserConfig
+  originalUserConfig: PackagelintUserConfig;
   failOnErrorLevel: 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore';
-  rulesConfig: PackagelintUserConfig['rules'];
-  reportersConfig: PackagelintUserConfig['reporters'];
-  aliasesConfig: PackagelintUserConfig['aliases'];
-  reporterAliasesConfig: PackagelintUserConfig['reporterAliases'];
+  originalRules: PackagelintUserConfig['rules'];
+  originalReporters: PackagelintUserConfig['reporters'];
+
+  moduleAllowList: PackagelintUserConfig['moduleAllowList'];
+  moduleDenyList: PackagelintUserConfig['moduleDenyList'];
+  moduleAllowListErrorLevel: PackagelintUserConfig['moduleAllowListErrorLevel'];
+  moduleDenyListErrorLevel: PackagelintUserConfig['moduleDenyListErrorLevel'];
+  ruleAliases: PackagelintUserConfig['ruleAliases'];
+  reporterAliases: PackagelintUserConfig['reporterAliases'];
 
   // Results of preparation
   preparedRules: Array<PackagelintPreparedRule>;
@@ -128,37 +159,42 @@ interface PackagelintPreparedConfig {
 
 ### How to use it
 
-You don't. This is internal to Packagelint itself.
-
-You will only see this if you're a library author creating your own Packagelint reporter, rules, or internals.
+This is internal to Packagelint.
 
 ## PackagelintPreparedRule
 
 ```typescript
+/**
+ * After a rule entry has been processed, it results in one or more RuleChecks. Each RuleCheck, when fully resolved
+ * and merged, becomes its own PreparedRule.
+ */
 interface PackagelintPreparedRule {
-  preparedRuleName: PackagelintRuleName;
+  name: string;
+  enabled: boolean;
   docs: {
-    description: string;
+    url: string;
     [key: string]: string;
   };
-  enabled: boolean;
-  extendedFrom: PackagelintRuleName | null; // from extendRule
-  fromRuleSet: PackagelintRuleSetName | null;
-  fromRuleCombo: PackagelintRuleSetName | null;
+  extendedFrom: string | null; // from extendRule
+  wasResolved: boolean;
+  originalRuleEntries: Array<PackagelintRuleEntry>;
   defaultErrorLevel: PackagelintErrorLevel;
-  errorLevel: ErrorLevel; // from errorLevel + defaultErrorLevel
+  errorLevel: 'exception' | 'error' | 'warning' | 'suggestion' | 'ignore'; // from errorLevel + defaultErrorLevel
   defaultOptions: OptionsType;
   options: OptionsType; // from options + defaultOptions, mediated by resetOptions
-  messages: Record<string, string>;
+
   doValidation: (
     options,
     packagelintContext,
   ) => PackagelintValidationResult | Promise<PackagelintValidationResult>;
+  validationMessages: {
+    [language: string]: {
+      [key: string]: string;
+    };
+  };
 }
 ```
 
 ### How to use it
 
-You don't. This too is internal to Packagelint itself.
-
-You will only see this if you're a library author creating your own Packagelint reporter, rules, or internals.
+This is internal to Packagelint.

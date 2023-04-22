@@ -11,15 +11,12 @@ Packagelint supports Jest reporters out of the box, as well as Packagelint-speci
 ```typescript
 interface PackagelintReporterInstance {
   onConfigStart: (userConfig: PackagelintUserConfig) => Promise<void> | void;
-
   onConfigReady: (preparedConfig: PackagelintPreparedConfig) => Promise<void> | void;
 
   onValidationStart: (preparedConfig: PackagelintPreparedConfig) => Promise<void> | void;
-
   onValidationComplete: (fullResults: PackagelintOutput) => Promise<void> | void;
 
   onRuleStart: (preparedRule: PackagelintPreparedRule) => Promise<void> | void;
-
   onRuleResult: (
     preparedRule: PackagelintPreparedRule,
     ruleResult: PackagelintValidationResult,

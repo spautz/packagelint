@@ -1,7 +1,9 @@
-import { PackagelintReporterConstructor } from '../reporters';
-import { PackagelintRuleDefinition, PackagelintRulesetDefinition } from '../rules';
+import { PackagelintReporterConstructor } from '../reporters/reporterInstance';
+import { PackagelintRuleCheckDefinition } from '../rules/ruleCheck';
+import { PackagelintRuleSetDefinition } from '../rules/ruleSet';
 
 import { PACKAGELINT_RULE_EXPORTS_KEY, PACKAGELINT_REPORTER_EXPORTS_KEY } from './exportKeys';
+import { PackagelintRuleComboDefinition } from '../rules/ruleCombo';
 
 type ResolvePossiblePromise<T> = T extends Promise<infer U> ? U : T;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +31,12 @@ export type PackagelintExportedRules =
 
 export type PackagelintExportedRulesObject = Record<
   string,
-  PackagelintRuleDefinition | PackagelintRulesetDefinition
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | PackagelintRuleCheckDefinition<any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | PackagelintRuleSetDefinition<any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | PackagelintRuleComboDefinition<any>
 >;
 
 /**

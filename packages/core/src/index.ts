@@ -1,6 +1,6 @@
 import {
-  PackagelintReporterConstructor,
-  PackagelintRuleDefinition,
+  PackagelintExportedRulesObject,
+  PackagelintExportedReportersObject,
   checkPackagelintExports,
 } from '@packagelint/types';
 
@@ -12,12 +12,11 @@ import {
   nvmrcRuleDefinition,
 } from './rules';
 
-const packagelintReporters: Record<string, PackagelintReporterConstructor> = {
+const packagelintReporters: PackagelintExportedReportersObject = {
   internalDebugReporter: InternalDebugReporter,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const packagelintRules: Record<string, PackagelintRuleDefinition<any>> = {
+const packagelintRules: PackagelintExportedRulesObject = {
   'always-fail': alwaysFailRuleDefinition,
   'always-pass': alwaysPassRuleDefinition,
   'always-throw': alwaysThrowRuleDefinition,

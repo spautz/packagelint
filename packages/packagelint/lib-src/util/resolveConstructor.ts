@@ -34,8 +34,4 @@ function constructClassOrFunction<
   }
 }
 
-function isFunction(someValue: unknown): someValue is (...args: Array<unknown>) => unknown {
-  return typeof someValue === 'function';
-}
-
-export { constructClassOrFunction, isFunction };
+export { constructClassOrFunction };

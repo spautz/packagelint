@@ -1,16 +1,26 @@
 import fs from 'fs';
 import semver from 'semver';
 
-import { PackagelintRuleDefinition, PackagelintValidationFn } from '@packagelint/types';
+import {
+  PackagelintRuleCheckDefinition,
+  PackagelintRuleCheckValidationFn,
+} from '@packagelint/types';
 
 const { readFile } = fs.promises;
 
-export type NvmrcRuleOptions = {
-  fileName: string;
-  version: string;
+export type NvmrcRuleParams = {
+  OptionsType: {
+    fileName: string;
+    version: string;
+  };
+  ErrorNames: 'fileNotFound' | 'invalidNvmrc' | 'invalidVersion';
+  ErrorData: {
+    nvmrcFilePaths?: Array<string> | null;
+    nvmrcFileContent?: string;
+  };
 };
 
-const nvmrcRuleValidation: PackagelintValidationFn<NvmrcRuleOptions> = async (
+const nvmrcRuleValidation: PackagelintRuleCheckValidationFn<NvmrcRuleParams> = async (
   options,
   packageContext,
 ) => {
@@ -36,20 +46,22 @@ const nvmrcRuleValidation: PackagelintValidationFn<NvmrcRuleOptions> = async (
   return null;
 };
 
-const nvmrcRuleDefinition: PackagelintRuleDefinition<NvmrcRuleOptions> = {
+const nvmrcRuleDefinition: PackagelintRuleCheckDefinition<NvmrcRuleParams> = {
   name: 'nvmrc',
   docs: {
-    description: 'Require a .nvmrc file, maybe with a specific version range',
     url: 'https://github.com/spautz/packagelint',
+    description: 'Require a .nvmrc file, maybe with a specific version range',
   },
   defaultOptions: {
     fileName: '.nvmrc',
     version: '>=10',
   },
-  messages: {
-    fileNotFound: '{{fileName}} not found',
-    invalidNvmrc: 'Invalid {{fileName}}: must contain a version number',
-    invalidVersion: 'Invalid Node version in {{fileName}}: must match "{{version}}"',
+  validationMessages: {
+    en: {
+      fileNotFound: '{{fileName}} not found',
+      invalidNvmrc: 'Invalid {{fileName}}: must contain a version number',
+      invalidVersion: 'Invalid Node version in {{fileName}}: must match "{{version}}"',
+    },
   },
   doValidation: nvmrcRuleValidation,
 };
